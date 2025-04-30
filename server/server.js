@@ -6,7 +6,6 @@ import { createServer } from "http";
 import bodyParser from "body-parser";
 import passport from "passport";
 import mongoose from "mongoose";
-import { mongoURI } from "./config/keys.js";
 
 // Load environment variables
 config();
@@ -22,7 +21,7 @@ app.use(bodyParser.json());
 app.use(passport.initialize());
 
 // DB Config
-const db = mongoURI;
+const db = process.env.MONGODB_URL;
 
 // Connect to MongoDB
 mongoose
