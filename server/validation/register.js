@@ -19,7 +19,7 @@ const validateRegisterInput = (data) => {
   // User unique ID checks
   if (Validator.isEmpty(data.user_unique_id)) {
     errors.user_unique_id = "User ID is required";
-  } else if (!Validator.isLength(data.user_unique_id, { min: 2, max: 4 })) {
+  } else if (!Validator.isLength(data.user_unique_id, { min: 3, max: 8 })) {
     errors.user_unique_id = "User ID must be between 3 and 8 characters";
   }
 
