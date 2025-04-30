@@ -19,6 +19,7 @@ git init
 
 ## 🏗️ 2. Структура проекта
 
+```bash
 /discord-clone
 ├── client/ # Frontend (React + Redux + Tailwind)
 │ ├── public/
@@ -46,6 +47,7 @@ git init
 ├── .gitignore
 ├── README.md
 └── ROADMAP.md
+```
 
 ## 📦 3. Инициализация проектов
 
