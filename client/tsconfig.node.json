@@ -14,15 +14,13 @@
     "noEmit": true,
 
     /* Linting */
+    "composite": true,
+    "allowSyntheticDefaultImports": true,
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true,
-
-    "paths": {
-      "@/*": ["./src/*"]
-    }
+    "noUncheckedSideEffectImports": true
   },
   "include": ["vite.config.ts"]
 }
