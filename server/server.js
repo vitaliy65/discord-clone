@@ -22,6 +22,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(passport.initialize());
 
+// Passport config
+import { passportConfig } from "./config/passport.js";
+passportConfig(passport);
+
 // DB Config
 const db = process.env.MONGODB_URL;
 
