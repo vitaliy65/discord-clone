@@ -41,5 +41,10 @@ app.get("/", (req, res) => {
 
 // Start server
 httpServer.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`\nServer running on port: ${PORT}`);
+  console.log(`Socket.IO server running at http://localhost:${PORT}`);
+  console.log(
+    `Client URL: ${process.env.CLIENT_URL || "http://localhost:5173"}`
+  );
+  console.log(`Environment: ${process.env.NODE_ENV || "development"}`);
 });
