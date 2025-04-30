@@ -36,7 +36,7 @@ export default function Register() {
     e.preventDefault();
     axios
       .post("http://localhost:3000/api/users/register", userData)
-      .then((response) => {
+      .then(() => {
         // Handle successful registration (e.g., redirect to login)
         navigator("/login", { replace: true });
       })
