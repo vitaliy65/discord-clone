@@ -7,6 +7,8 @@ import bodyParser from "body-parser";
 import passport from "passport";
 import mongoose from "mongoose";
 
+import user from "./routes/api/user.js";
+
 // Load environment variables
 config();
 
@@ -54,6 +56,7 @@ io.on("connection", (socket) => {
 app.get("/", (req, res) => {
   res.json({ message: "Server is running" });
 });
+app.use("/api/users", users);
 
 // Start server
 httpServer.listen(PORT, () => {
