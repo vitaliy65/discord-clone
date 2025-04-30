@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Input from "@/components/auth/custom.input";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { SERVER_URL } from "@/utils/constants";
 
 export interface RegisterUserData {
   user_unique_id: string;
@@ -35,7 +36,7 @@ export default function Register() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     axios
-      .post("http://localhost:3000/api/users/register", userData)
+      .post(`http://${SERVER_URL}/api/users/register`, userData)
       .then(() => {
         // Handle successful registration (e.g., redirect to login)
         navigator("/login", { replace: true });
