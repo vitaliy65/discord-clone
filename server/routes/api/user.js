@@ -1,13 +1,14 @@
-import User from "../../models/User"; // Використовується нижній регістр для відповідності назві файлу
+import User from "../../models/User.js"; // Використовується нижній регістр для відповідності назві файлу
 import bcrypt from "bcryptjs";
 import { Router } from "express";
 import gravatar from "gravatar";
 import jwt from "jsonwebtoken";
 import passport from "passport";
 
-//Load input validation
-const validateRegisterInput = require("../../validation/register");
-const validateLoginInput = require("../../validation/login");
+// Load input validation
+import validateRegisterInput from "../../validation/register.js";
+import validateLoginInput from "../../validation/login.js";
+
 const router = Router();
 const secretOrKey = process.env.secretOrKey;
 
@@ -170,4 +171,5 @@ router.put("/:id", (req, res) => {
     });
 });
 
-export default router;
+const userRoutes = router;
+export default userRoutes;
