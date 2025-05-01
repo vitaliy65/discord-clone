@@ -8,6 +8,8 @@ import passport from "passport";
 import mongoose from "mongoose";
 
 import userRoutes from "./routes/api/user.js";
+import friendRoutes from "./routes/api/friend.js";
+import friendRequestRoutes from "./routes/api/friendRequest.js";
 
 // Load environment variables
 config();
@@ -61,6 +63,8 @@ app.get("/", (req, res) => {
   res.json({ message: "Server is running" });
 });
 app.use("/api/users", userRoutes);
+app.use("/api/friend", friendRoutes);
+app.use("/api/friendRequest", friendRequestRoutes);
 
 // Start server
 httpServer.listen(PORT, () => {
