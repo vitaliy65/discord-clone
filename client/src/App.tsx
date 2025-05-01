@@ -11,6 +11,7 @@ import Login from "./pages/auth/login";
 import Register from "./pages/auth/register";
 import NotFound from "./pages/not-found";
 import AuthLayout from "./pages/auth/authLayout";
+import Me from "./pages/me/page";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -18,6 +19,7 @@ const router = createBrowserRouter(
       {/* Main Layout */}
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
+        <Route path="channels/me" element={<Me />} />
       </Route>
 
       {/* Auth Layout */}

@@ -1,3 +1,5 @@
+import "@/styles/pages/auth/register.css";
+
 export default function Input({
   type,
   name,
@@ -21,9 +23,9 @@ export default function Input({
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className="border border-gray-300 p-2 rounded"
+        className="input-field"
       />
-      {lable && <label className="text-red-700 text-left mt-1">{lable}</label>}
+      {lable && <label className="input-label">{lable}</label>}
     </div>
   );
 }

@@ -4,6 +4,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { SERVER_URL } from "@/utils/constants";
 
+import "@/styles/pages/auth/register.css";
+
 export interface RegisterUserData {
   user_unique_id: string;
   username: string;
@@ -47,12 +49,9 @@ export default function Register() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center">
-      <h1 className="text-3xl font-bold">Register</h1>
-      <form
-        className="flex flex-col items-center gap-4 mt-4 w-full"
-        onSubmit={handleSubmit}
-      >
+    <div className="register-container">
+      <h1 className="register-title">Register</h1>
+      <form className="register-form" onSubmit={handleSubmit}>
         <Input
           type="text"
           name="user_unique_id"
@@ -85,9 +84,15 @@ export default function Register() {
           onChange={handleInputChange}
           placeholder="password"
         />
-        <button className="bg-blue-500 w-full text-white p-2 mt-8 rounded">
-          Register
-        </button>
+
+        <button className="submit-button">Register</button>
+
+        <div className="flex justify-center gap-2 text-center">
+          <p>Already have an account?</p>
+          <a href="/login" className="already-have-account-link">
+            Login
+          </a>
+        </div>
       </form>
     </div>
   );
