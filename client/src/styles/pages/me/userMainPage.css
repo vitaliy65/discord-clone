@@ -1,0 +1,4 @@
+.user-main-page-container {
+  @apply flex flex-row w-screen h-screen
+}
+
