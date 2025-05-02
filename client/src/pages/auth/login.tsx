@@ -14,6 +14,7 @@ export interface LoginUserData {
 
 export default function Login() {
   const [isVisible, setIsVisible] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [toMainPage, setToMainPage] = useState(false);
   const [userData, setUserData] = useState<LoginUserData>({
     email: "",
@@ -35,6 +36,7 @@ export default function Login() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true);
     axios
       .post(`http://${SERVER_URL}/api/users/login`, userData)
       .then((response) => {
@@ -45,6 +47,7 @@ export default function Login() {
         localStorage.setItem("user", JSON.stringify(userData));
       })
       .catch((error) => {
+        setIsLoading(false);
         setIsVisible(true);
         setError(error.response.data);
       });
@@ -81,7 +84,11 @@ export default function Login() {
             placeholder="password"
           />
 
-          <button className="submit-button">Login</button>
+          {isLoading ? (
+            <div className="loading-spinner"></div>
+          ) : (
+            <button className="submit-button">Login</button>
+          )}
 
           <div className="flex justify-center gap-2 text-center">
             <p>Don't have an account?</p>

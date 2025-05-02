@@ -27,3 +27,7 @@
 .already-have-account-link{
     @apply text-blue-500 hover:underline cursor-pointer
 }
+
+.loading-spinner{
+    @apply w-10 h-10 mt-6 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto
+}

@@ -16,6 +16,7 @@ export interface RegisterUserData {
 
 export default function Register() {
   const [isVisible, setIsVisible] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [userData, setUserData] = useState<RegisterUserData>({
     user_unique_id: "",
     username: "",
@@ -39,6 +40,7 @@ export default function Register() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true);
     axios
       .post(`http://${SERVER_URL}/api/users/register`, userData)
       .then(() => {
@@ -46,6 +48,7 @@ export default function Register() {
       })
       .catch((error) => {
         setIsVisible(true);
+        setIsLoading(false);
         setError(error.response.data);
       });
   };
@@ -93,7 +96,11 @@ export default function Register() {
             placeholder="password"
           />
 
-          <button className="submit-button">Register</button>
+          {isLoading ? (
+            <div className="loading-spinner"></div>
+          ) : (
+            <button className="submit-button">Register</button>
+          )}
 
           <div className="flex justify-center gap-2 text-center">
             <p>Already have an account?</p>
