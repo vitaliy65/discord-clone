@@ -3,6 +3,7 @@ import Input from "@/components/auth/custom.input";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { SERVER_URL } from "@/utils/constants";
+import FadeInFadeOut from "@/components/animatedComponents/fadeInFadeOut";
 
 import "@/styles/pages/auth/login.css";
 
@@ -12,6 +13,8 @@ export interface LoginUserData {
 }
 
 export default function Login() {
+  const [isVisible, setIsVisible] = useState(true);
+  const [toMainPage, setToMainPage] = useState(false);
   const [userData, setUserData] = useState<LoginUserData>({
     email: "",
     password: "",
@@ -36,45 +39,61 @@ export default function Login() {
       .post(`http://${SERVER_URL}/api/users/login`, userData)
       .then((response) => {
         const { token } = response.data;
+        setIsVisible(false);
+        setToMainPage(true);
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(userData));
-        navigator("/channels/me", { replace: true });
       })
       .catch((error) => {
+        setIsVisible(true);
         setError(error.response.data);
       });
   };
 
   return (
-    <div className="login-container">
-      <h1 className="login-title">Login</h1>
-      <form className="login-form" onSubmit={handleSubmit}>
-        <Input
-          type="email"
-          name="email"
-          lable={error.email}
-          value={userData.email}
-          onChange={handleInputChange}
-          placeholder="Email"
-        />
-        <Input
-          type="password"
-          name="password"
-          lable={error.password}
-          value={userData.password}
-          onChange={handleInputChange}
-          placeholder="password"
-        />
+    <FadeInFadeOut
+      isVisible={isVisible}
+      onExitComplete={() => {
+        if (toMainPage) {
+          navigator("/channels/me", { replace: true });
+        } else {
+          navigator("/register", { replace: true });
+        }
+      }}
+    >
+      <div className="login-container">
+        <h1 className="login-title">Login</h1>
+        <form className="login-form" onSubmit={handleSubmit}>
+          <Input
+            type="email"
+            name="email"
+            lable={error.email}
+            value={userData.email}
+            onChange={handleInputChange}
+            placeholder="Email"
+          />
+          <Input
+            type="password"
+            name="password"
+            lable={error.password}
+            value={userData.password}
+            onChange={handleInputChange}
+            placeholder="password"
+          />
 
-        <button className="submit-button">Login</button>
+          <button className="submit-button">Login</button>
 
-        <div className="flex justify-center gap-2 text-center">
-          <p>Don't have an account?</p>
-          <a href="/register" className="dont-have-account-link">
-            Register
-          </a>
-        </div>
-      </form>
-    </div>
+          <div className="flex justify-center gap-2 text-center">
+            <p>Don't have an account?</p>
+            <a
+              className="dont-have-account-link"
+              onClick={() => setIsVisible(false)}
+            >
+              Register
+            </a>
+          </div>
+        </form>
+      </div>
+    </FadeInFadeOut>
   );
 }
