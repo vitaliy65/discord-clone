@@ -13,13 +13,25 @@ import NotFound from "./pages/not-found";
 import AuthLayout from "./pages/auth/authLayout";
 import Me from "./pages/me/page";
 
+import CheckAuth from "./components/auth/checkAuth";
+
+import "@/styles/App.css";
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
+      <Route
+        path="channels/me"
+        element={
+          <CheckAuth>
+            <Me />
+          </CheckAuth>
+        }
+      />
+
       {/* Main Layout */}
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
-        <Route path="channels/me" element={<Me />} />
       </Route>
 
       {/* Auth Layout */}

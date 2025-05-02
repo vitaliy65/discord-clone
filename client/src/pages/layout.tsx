@@ -4,7 +4,7 @@ import Footer from "../components/nav/footer";
 
 export default function Layout() {
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen">
+    <div className="flex-row min-h-screen min-w-screen">
       <Header />
       <Outlet />
       <Footer />

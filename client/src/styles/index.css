@@ -4,6 +4,7 @@
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
+  
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
@@ -26,4 +27,12 @@
   button {
     background-color: #f9f9f9;
   }
+}
+
+.items-position-center{
+  @apply flex justify-center items-center h-screen w-screen;
+}
+
+.main-loading-spinner{
+  @apply w-20 h-20 border-4 border-blue-500 border-y-transparent rounded-full animate-spin
 }

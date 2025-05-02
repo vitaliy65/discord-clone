@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Input from "@/components/auth/custom.input";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { SERVER_URL } from "@/utils/constants";
+import { SERVER_API_URL } from "@/utils/constants";
 import FadeInFadeOut from "@/components/animatedComponents/fadeInFadeOut";
 
 import "@/styles/pages/auth/register.css";
@@ -42,7 +42,7 @@ export default function Register() {
     e.preventDefault();
     setIsLoading(true);
     axios
-      .post(`http://${SERVER_URL}/api/users/register`, userData)
+      .post(`${SERVER_API_URL}/users/register`, userData)
       .then(() => {
         setIsVisible(false);
       })
