@@ -1,12 +1,14 @@
 import { ReactNode, useEffect, useState } from "react";
-import { SERVER_API_URL } from "@/utils/constants";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useAppDispatch, useAppSelector } from "@/_hooks/hooks";
+import { fetchUserData } from "@/_store/user/userSlice";
 
 export default function CheckAuth({ children }: { children: ReactNode }) {
   // Check if the user is authenticated by checking the token in local storage
   const [isLoading, setIsLoading] = useState(true);
   const navigator = useNavigate();
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.user.user);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -19,13 +21,9 @@ export default function CheckAuth({ children }: { children: ReactNode }) {
           return;
         }
 
-        const response = await axios.get(`${SERVER_API_URL}/users/current`, {
-          headers: {
-            Authorization: token, // Use token directly
-          },
-        });
+        await dispatch(fetchUserData(token));
 
-        localStorage.setItem("user", JSON.stringify(response.data));
+        localStorage.setItem("user", JSON.stringify(user));
         setIsLoading(false);
       } catch (error) {
         console.error("Error checking authentication:", error);
@@ -34,7 +32,7 @@ export default function CheckAuth({ children }: { children: ReactNode }) {
     };
 
     checkAuth();
-  }, [navigator]);
+  }, [user.id]);
 
   if (isLoading) {
     return (

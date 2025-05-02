@@ -14,12 +14,15 @@ import AuthLayout from "./pages/auth/authLayout";
 import Me from "./pages/me/page";
 
 import CheckAuth from "./components/auth/checkAuth";
+import { store } from "@/_store/store";
 
 import "@/styles/App.css";
+import { Provider } from "react-redux";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
+      {/* Check Auth pages*/}
       <Route
         path="channels/me"
         element={
@@ -48,9 +51,9 @@ const router = createBrowserRouter(
 
 function App() {
   return (
-    <>
+    <Provider store={store}>
       <RouterProvider router={router} />
-    </>
+    </Provider>
   );
 }
 

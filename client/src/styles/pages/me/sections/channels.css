@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+.channel-section-container {
+    @apply flex flex-col items-center min-w-20 h-full gap-3 py-3 px-2
+}
+
+.channel-button-img{
+    @apply flex justify-center items-center h-12 w-12 overflow-hidden cursor-pointer
+}
+
+.me-channel-underline{
+    @apply border rounded-2xl w-full px-2
+}

@@ -7,9 +7,9 @@ import "@/styles/pages/me/userMainPage.css";
 export default function Me() {
   return (
     <div className="user-main-page-container">
-      <Channels></Channels>
-      <Friends></Friends>
-      <Chat></Chat>
+      <Channels />
+      <Friends />
+      <Chat />
     </div>
   );
 }

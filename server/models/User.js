@@ -32,6 +32,11 @@ const userSchema = new mongoose.Schema({
     enum: ["user", "admin"],
     default: "user",
   },
+  onlineStatus: {
+    type: String,
+    enum: ["online", "offline"],
+    default: "offline",
+  },
   friends: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -48,6 +53,12 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "FriendRequest",
       },
+    },
+  ],
+  Channels: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Channel",
     },
   ],
 });

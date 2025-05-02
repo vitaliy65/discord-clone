@@ -130,10 +130,14 @@ router.get(
   (req, res) => {
     res.json({
       id: req.user.id,
-      username: req.user.username,
       email: req.user.email,
+      username: req.user.username,
       user_unique_id: req.user.user_unique_id,
       avatar: req.user.avatar,
+      onlineStatus: req.user.onlineStatus,
+      friends: req.user.friends,
+      FriendRequests: req.user.friendRequests,
+      channels: req.user.Channels,
     });
   }
 );
@@ -155,10 +159,10 @@ router.delete(
   }
 );
 
-// @route   PUT api/users/updateCurrentUser
+// @route   PATCH api/users/updateCurrentUser
 // @desc    Update current user
 // @access  Private
-router.put(
+router.patch(
   "/updateCurrentUser",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {

@@ -14,6 +14,24 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --mainText: #949ba4;
+  --channelsBackground: #1e1f22;
+  --friendsBackground: #2b2d31;
+  --mainBackground: #313338;
+  --friendListBackground: #3b3c41;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-channels: var(--channelsBackground);
+  --color-friends: var(--friendsBackground);
+  --color-chat: var(--mainBackground);
+  --color-main-text: var(--mainText);
+  --color-friend-list-background: var(--friendListBackground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: light) {

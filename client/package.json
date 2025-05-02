@@ -11,12 +11,15 @@
     "start": "vite preview"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.7.0",
     "antd": "^5.24.9",
     "axios": "^1.9.0",
     "motion": "^12.9.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-redux": "^9.2.0",
     "react-router-dom": "^7.5.3",
+    "redux": "^5.0.1",
     "socket.io-client": "^4.8.1",
     "tailwindcss": "^4.1.4",
     "zustand": "^5.0.3"
