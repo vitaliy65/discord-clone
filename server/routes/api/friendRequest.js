@@ -1,5 +1,6 @@
 import { config } from "dotenv";
 import User from "../../models/User.js"; // Використовується нижній регістр для відповідності назві файлу
+import Chat from "../../models/Chat.js";
 import { Router } from "express";
 import passport from "passport";
 import FriendRequest from "../../models/FriendRequest.js";
@@ -17,18 +18,18 @@ router.post(
   "/send",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    const { friendUsername } = req.body;
+    const { username } = req.body;
 
     try {
       // check if user send request to himself
-      if (req.user.username === friendUsername) {
+      if (req.user.username === username) {
         return res
           .status(400)
           .json({ error: "You cannot send a friend request to yourself" });
       }
 
       // Find friend
-      const friend = await User.findOne({ username: friendUsername });
+      const friend = await User.findOne({ username: username });
       if (!friend) {
         return res.status(404).json({ error: "User not found" });
       }
@@ -92,6 +93,13 @@ router.post(
         return res.status(403).json({ error: "Not authorized" });
       }
 
+      // Check if the request is already accepted
+      if (friendRequest.status === "accepted") {
+        return res
+          .status(400)
+          .json({ error: "Friend request already accepted" });
+      }
+
       // Update the status of the friend request
       friendRequest.status = "accepted";
       await friendRequest.save();
@@ -102,6 +110,16 @@ router.post(
 
       const sender = await User.findById(friendRequest.sender);
       sender.friends.push(req.user._id);
+      await sender.save();
+
+      // Create new chat for the two users
+      const chat = await Chat.create({
+        participants: [req.user._id, friendRequest.sender],
+        messages: [],
+      });
+      req.user.chats.push(chat._id);
+      await req.user.save();
+      sender.chats.push(chat._id);
       await sender.save();
 
       // Remove from my friend requests

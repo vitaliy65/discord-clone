@@ -7,10 +7,15 @@ import bodyParser from "body-parser";
 import passport from "passport";
 import mongoose from "mongoose";
 
+// routes
 import userRoutes from "./routes/api/user.js";
 import friendRoutes from "./routes/api/friend.js";
 import friendRequestRoutes from "./routes/api/friendRequest.js";
 import channelRoutes from "./routes/api/channel.js";
+import chatRoutes from "./routes/api/chat.js";
+
+//handlers
+import handleChat from "./handlers/chatHandler.js";
 
 // Load environment variables
 config();
@@ -53,6 +58,9 @@ const io = new Server(httpServer, {
 io.on("connection", (socket) => {
   console.log("Client connected:", socket.id);
 
+  // Initialize chat handlers
+  handleChat(io, socket);
+
   socket.on("disconnect", () => {
     console.log("Client disconnected:", socket.id);
   });
@@ -67,6 +75,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/friend", friendRoutes);
 app.use("/api/friendRequest", friendRequestRoutes);
 app.use("/api/channel", channelRoutes);
+app.use("/api/chat", chatRoutes);
 
 // Start server
 httpServer.listen(PORT, () => {

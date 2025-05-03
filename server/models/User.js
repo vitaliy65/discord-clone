@@ -55,10 +55,16 @@ const userSchema = new mongoose.Schema({
       },
     },
   ],
-  Channels: [
+  channels: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Channel",
+    },
+  ],
+  chats: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Chat",
     },
   ],
 });

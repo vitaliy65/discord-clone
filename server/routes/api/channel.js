@@ -15,11 +15,11 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     // Check if user has any channels
-    if (req.user.Channels.length === 0) {
+    if (req.user.channels.length === 0) {
       return res.status(400).json({ error: "No channels found" });
     }
 
-    Channel.find({ _id: { $in: req.user.Channels } })
+    Channel.find({ _id: { $in: req.user.channels } })
       .then((channels) => {
         res.json(channels);
       })
@@ -37,7 +37,7 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     // Check if user has access to this channel
-    if (!req.user.Channels.includes(req.params.id)) {
+    if (!req.user.channels.includes(req.params.id)) {
       return res.status(403).json({ error: "Access denied to this channel" });
     }
 
@@ -81,7 +81,7 @@ router.post(
       await newChannel.save();
 
       // Add channel ID to user's channels list
-      req.user.Channels.push(newChannel._id);
+      req.user.channels.push(newChannel._id);
       await req.user.save();
 
       res.status(201).json(newChannel);
@@ -101,7 +101,7 @@ router.delete(
   async (req, res) => {
     try {
       // Check if user has access to this channel
-      if (!req.user.Channels.includes(req.params.id)) {
+      if (!req.user.channels.includes(req.params.id)) {
         return res.status(403).json({ error: "Access denied to this channel" });
       }
 
@@ -114,7 +114,7 @@ router.delete(
       await Channel.findByIdAndDelete(req.params.id);
 
       // Remove channel from user's channels list
-      req.user.Channels = req.user.Channels.filter(
+      req.user.channels = req.user.channels.filter(
         (channelId) => channelId.toString() !== req.params.id
       );
       await req.user.save();
