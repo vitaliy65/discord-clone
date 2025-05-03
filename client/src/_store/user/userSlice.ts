@@ -43,10 +43,8 @@ const userSlice = createSlice({
         // Update the user state with the fetched data
         state.user = action.payload;
       })
-      .addCase(fetchUserData.rejected, (state, action) => {
-        // Handle error state if needed
-        state.user = initialState.user; // Reset to initial state on error
-        console.error("Failed to fetch user data:", action.error);
+      .addCase(fetchUserData.rejected, () => {
+        console.error("Failed to fetch user data");
       });
   },
 });

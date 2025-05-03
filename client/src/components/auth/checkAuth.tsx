@@ -14,14 +14,13 @@ export default function CheckAuth({ children }: { children: ReactNode }) {
     const checkAuth = async () => {
       try {
         setIsLoading(true);
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("token") || "";
+        const res = await dispatch(fetchUserData(token));
 
-        if (!token) {
+        if (res.type === "user/fetchUserData/rejected") {
           navigator("/login", { replace: true });
           return;
         }
-
-        await dispatch(fetchUserData(token));
 
         localStorage.setItem("user", JSON.stringify(user));
         setIsLoading(false);
