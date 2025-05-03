@@ -16,10 +16,12 @@
   -moz-osx-font-smoothing: grayscale;
 
   --mainText: #949ba4;
-  --channelsBackground: #1e1f22;
-  --friendsBackground: #2b2d31;
-  --mainBackground: #313338;
-  --friendListBackground: #3b3c41;
+  --channelsBackground: #10151b;
+  --friendsBackground: #1d2631;
+  --mainBackground: #283443;
+  --friendListBackground: #324255;
+  --clicked: #324255;
+  --customFocus: #3d5067;
 }
 
 @theme inline {
@@ -30,6 +32,8 @@
   --color-chat: var(--mainBackground);
   --color-main-text: var(--mainText);
   --color-friend-list-background: var(--friendListBackground);
+  --color-custom-focus: var(--customFocus);
+  --color-clicked: var(--clicked);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }

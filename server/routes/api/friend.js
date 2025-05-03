@@ -23,7 +23,14 @@ router.get(
 
     User.find({ _id: { $in: req.user.friends } })
       .then((friends) => {
-        res.json(friends);
+        // filtered friends to exclude sensitive information
+        const filteredFriends = friends.map((friend) => {
+          const { password, role, __v, friendRequests, ...filteredfriend } =
+            friend.toObject();
+          return filteredfriend;
+        });
+
+        res.json(filteredFriends);
       })
       .catch((err) =>
         res.status(500).json({ error: "Error fetching friends" })
@@ -53,7 +60,10 @@ router.get(
         if (!friend) {
           return res.status(404).json({ error: "Friend not found" });
         }
-        res.json(friend);
+        // filtered friend to exclude sensitive information
+        const { password, role, __v, friendRequests, ...filteredfriend } =
+          friend.toObject();
+        res.json(filteredfriend);
       })
       .catch((err) => res.status(500).json({ error: "Error fetching friend" }));
   }
