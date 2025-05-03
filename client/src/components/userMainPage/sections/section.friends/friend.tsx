@@ -1,12 +1,12 @@
 import { FriendType } from "@/_store/friend/friendSlice";
 
-import { useAppDispatch } from "@/_hooks/hooks";
+// import { useAppDispatch } from "@/_hooks/hooks";
 //import { setCurrentChatByFriendId } from "@/app/_state/chat/chatSlice";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 export default function Friend({ friend }: { friend: FriendType }) {
-  const navigator = useNavigate();
-  const dispatch = useAppDispatch();
+  // const navigator = useNavigate();
+  // const dispatch = useAppDispatch();
 
   const handleOpenChat = async () => {
     // await dispatch(setCurrentChatByFriendId(id));

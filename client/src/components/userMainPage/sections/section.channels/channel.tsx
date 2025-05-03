@@ -1,11 +1,17 @@
+import { ChannelType } from "@/_store/channel/channelSlice";
 import { motion } from "motion/react";
 
 interface ChannelsIconProps {
+  channel: ChannelType;
   isActive: boolean;
   onClick: () => void;
 }
 
-export default function ChannelsIcon({ isActive, onClick }: ChannelsIconProps) {
+export default function ChannelsIcon({
+  channel,
+  isActive,
+  onClick,
+}: ChannelsIconProps) {
   return (
     <motion.button
       initial={{ borderRadius: "32px" }}
@@ -16,7 +22,7 @@ export default function ChannelsIcon({ isActive, onClick }: ChannelsIconProps) {
       onClick={onClick}
     >
       <img
-        src="/channels/chat.png"
+        src={channel.channelAvatar}
         alt="channelsIcon"
         width={128}
         height={128}

@@ -1,11 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userSlice from "./user/userSlice";
 import friendSlice from "./friend/friendSlice";
+import channelSlice from "./channel/channelSlice";
 
 export const store = configureStore({
   reducer: {
-    //auth: authSlice,
     user: userSlice,
+    channel: channelSlice,
     // chat: chatSlice,
     friend: friendSlice,
     // filterFriend: filterFriendSlice,

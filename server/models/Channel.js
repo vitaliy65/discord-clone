@@ -1,15 +1,20 @@
 import mongoose from "mongoose";
 
 const channelSchema = new mongoose.Schema({
-  channelName: {
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  name: {
     type: String,
     required: true,
   },
-  channelDescription: {
+  description: {
     type: String,
     required: true,
   },
-  channelAvatar: {
+  avatar: {
     type: String,
     required: true,
   },
@@ -19,8 +24,15 @@ const channelSchema = new mongoose.Schema({
   },
   members: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+      userServerRole: {
+        type: String,
+        enum: ["admin", "moderator", "member"],
+        default: "member",
+      },
     },
   ],
 });

@@ -2,6 +2,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/_hooks/hooks";
 import { fetchUserData } from "@/_store/user/userSlice";
+import InitialDataLoader from "@/components/dataLoader/initialDataLoader";
 
 export default function CheckAuth({ children }: { children: ReactNode }) {
   // Check if the user is authenticated by checking the token in local storage
@@ -14,8 +15,7 @@ export default function CheckAuth({ children }: { children: ReactNode }) {
     const checkAuth = async () => {
       try {
         setIsLoading(true);
-        const token = localStorage.getItem("token") || "";
-        const res = await dispatch(fetchUserData(token));
+        const res = await dispatch(fetchUserData());
 
         if (res.type === "user/fetchUserData/rejected") {
           navigator("/login", { replace: true });
@@ -41,5 +41,5 @@ export default function CheckAuth({ children }: { children: ReactNode }) {
     );
   }
 
-  return children;
+  return <InitialDataLoader>{children}</InitialDataLoader>;
 }

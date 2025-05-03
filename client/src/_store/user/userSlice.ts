@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { SERVER_API_URL } from "@/utils/constants";
+import { ErrorResponse } from "react-router-dom";
 
 // Define the state type
 export interface UserState {
@@ -43,8 +44,8 @@ const userSlice = createSlice({
         // Update the user state with the fetched data
         state.user = action.payload;
       })
-      .addCase(fetchUserData.rejected, () => {
-        console.error("Failed to fetch user data");
+      .addCase(fetchUserData.rejected, (state, action) => {
+        console.error("Failed to fetch user data", action.error);
       });
   },
 });
@@ -52,16 +53,16 @@ const userSlice = createSlice({
 // Async thunk to fetch user data
 export const fetchUserData = createAsyncThunk(
   "user/fetchUserData",
-  async (token: string) => {
+  async () => {
     try {
       const response = await axios.get(`${SERVER_API_URL}/users/current`, {
         headers: {
-          Authorization: token,
+          Authorization: localStorage.getItem("token") || "",
         },
       });
       return response.data;
     } catch (error) {
-      throw new Error("Failed to fetch user data");
+      throw new Error((error as Error).message);
     }
   }
 );

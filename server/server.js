@@ -10,6 +10,7 @@ import mongoose from "mongoose";
 import userRoutes from "./routes/api/user.js";
 import friendRoutes from "./routes/api/friend.js";
 import friendRequestRoutes from "./routes/api/friendRequest.js";
+import channelRoutes from "./routes/api/channel.js";
 
 // Load environment variables
 config();
@@ -65,6 +66,7 @@ app.get("/", (req, res) => {
 app.use("/api/users", userRoutes);
 app.use("/api/friend", friendRoutes);
 app.use("/api/friendRequest", friendRequestRoutes);
+app.use("/api/channel", channelRoutes);
 
 // Start server
 httpServer.listen(PORT, () => {
