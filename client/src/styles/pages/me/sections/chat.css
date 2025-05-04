@@ -1,1 +1,25 @@
 @import "tailwindcss";
+
+.select-chat-container {
+    @apply rounded-full p-0.5 px-2;
+}
+
+.chat-container {
+    @apply flex justify-between flex-col w-full h-full max-h-full;
+}
+
+.chat-header-container {
+    @apply flex justify-start items-center flex-row w-full p-4 h-14 gap-4;
+}
+
+.message-container {
+    @apply flex flex-col;
+}
+
+.messages-container {
+    @apply flex flex-col w-full h-full;
+}
+
+.input-container {
+    @apply flex justify-start items-center flex-row w-full p-4 h-14;
+}

@@ -1,55 +1,42 @@
 import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "@/_hooks/hooks";
-import { socket } from "@/utils/socket";
-import { addMessage } from "@/_store/chat/chatSlice";
+import { useAppSelector } from "@/_hooks/hooks";
+
+import ChatHeader from "./sections/section.chat/chat-header";
+import Messages from "./sections/section.chat/messages";
+import ChatInput from "./sections/section.chat/input";
+
+import "@/styles/pages/me/sections/chat.css";
 
 export default function Chat() {
-  const dispatch = useAppDispatch();
-  const currentUser = useAppSelector((state) => state.user.user);
-  const currentChat = useAppSelector((state) => state.chat);
-  const messages = useAppSelector((state) =>
-    currentChat ? state.chat.messages[currentChat._id] : []
-  );
+  const { chats, currentChat } = useAppSelector((state) => state.chat);
 
   useEffect(() => {
-    // Join user's room for receiving messages
-    socket.emit("join_user_room", currentUser.id);
+    if (currentChat) {
+      const chat = chats.find((chat) => chat._id === currentChat);
+      if (chat) {
+        const chatContainer = document.querySelector(".messages-container");
+        if (chatContainer) {
+          chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+      }
+    }
+  }, [currentChat, chats.length]);
 
-    // Listen for new messages
-    socket.on("receive_message", (data) => {
-      dispatch(addMessage(data));
-    });
-
-    return () => {
-      socket.off("receive_message");
-    };
-  }, [dispatch, currentUser.id]);
-
-  const sendMessage = (message: string) => {
-    if (!currentChat) return;
-
-    socket.emit("send_message", {
-      chatId: currentChat._id,
-      message,
-      senderId: currentUser.id,
-    });
-  };
+  if (currentChat == null) {
+    return (
+      <div className="items-position-center bg-channels">
+        <p className="select-chat-container bg-friends">
+          Select a chat to start messaging
+        </p>
+      </div>
+    );
+  }
 
   return (
-    <div className="chat-container">
-      <div className="messages-container">
-        {messages?.map((msg, index) => (
-          <div
-            key={index}
-            className={`message ${
-              msg.sender === currentUser.id ? "sent" : "received"
-            }`}
-          >
-            {msg.content}
-          </div>
-        ))}
-      </div>
-      {/* Add your message input component here */}
+    <div className="chat-container bg-channels">
+      <ChatHeader />
+      <Messages />
+      <ChatInput />
     </div>
   );
 }

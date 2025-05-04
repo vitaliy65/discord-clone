@@ -1,6 +1,10 @@
 @import "tailwindcss";
 
 /* friend list section */
+.friends-container{
+    @apply flex flex-col min-w-2xs h-screen
+}
+
 .friend-button{
     @apply flex flex-row items-center gap-3 w-full rounded-sm cursor-pointer p-1
 }
@@ -23,8 +27,8 @@
 
 
 /* seacrh friend input field */
-.search-friend-container{
-    @apply flex justify-center items-center drop-shadow-sm border-b border-b-neutral-800 w-full p-4 h-14
+.search-friend-container {
+    @apply flex justify-center items-center w-full p-4 h-14 drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)];
 }
 
 .search-friend-input{

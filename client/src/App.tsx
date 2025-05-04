@@ -32,6 +32,15 @@ const router = createBrowserRouter(
         }
       />
 
+      <Route
+        path="channels/me/:id"
+        element={
+          <CheckAuth>
+            <Me />
+          </CheckAuth>
+        }
+      />
+
       {/* Main Layout */}
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />

@@ -17,16 +17,25 @@ export interface FriendType {
 
 type FriendState = {
   friends: FriendType[];
+  selectedFriend: FriendType | null;
 };
 
 const initialState: FriendState = {
   friends: [],
+  selectedFriend: null,
 };
 
 const friendSlice = createSlice({
   name: "friend",
   initialState,
-  reducers: {},
+  reducers: {
+    setCurrentFriend: (state, action: PayloadAction<FriendType | null>) => {
+      state.selectedFriend = action.payload;
+    },
+    removeCurrentFriend: (state) => {
+      state.selectedFriend = null;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(
       fetchFriends.fulfilled,
@@ -62,5 +71,5 @@ export const fetchFriends = createAsyncThunk(
     }
   }
 );
-
+export const { setCurrentFriend, removeCurrentFriend } = friendSlice.actions;
 export default friendSlice.reducer;

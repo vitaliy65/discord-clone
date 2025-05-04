@@ -1,10 +1,11 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { SERVER_API_URL } from "@/utils/constants";
+import { socket } from "@/utils/socket";
 
 export interface ChatType {
   chats: {
-    chatId: string;
+    _id: string;
     participants: string[];
     messages: {
       sender: string;
@@ -28,31 +29,43 @@ const chatSlice = createSlice({
       action: PayloadAction<{ chatId: string; sender: string; content: string }>
     ) => {
       const { chatId, sender, content } = action.payload;
-      const chatIndex = state.chats.findIndex((chat) => chat.chatId === chatId);
+      const chatIndex = state.chats.findIndex((chat) => chat._id === chatId);
 
       if (chatIndex !== -1) {
         state.chats[chatIndex].messages.push({ sender, content });
-      } else {
-        state.chats.push({
-          chatId,
-          messages: [{ sender, content }],
+
+        socket.emit("send_message", {
+          chatId: chatId,
+          content: content,
+          senderId: sender,
         });
+      } else {
+        console.error("Chat not found");
       }
     },
     setCurrentChat: (state, action) => {
       state.currentChat = action.payload;
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchChats.fulfilled, (state, action) => {
+        state.chats = action.payload;
+      })
+      .addCase(fetchChats.rejected, (state) => {
+        state.chats = [];
+      });
+  },
 });
 
 // fetch user chats
-export const fetchUserChats = createAsyncThunk(
+export const fetchChats = createAsyncThunk(
   "chat/fetchUserChats",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${SERVER_API_URL}/api/chat/list`, {
+      const response = await axios.get(`${SERVER_API_URL}/chat/list`, {
         headers: {
-          Authorization: `${localStorage.getItem("token")}`,
+          Authorization: localStorage.getItem("token"),
         },
       });
       return response.data;

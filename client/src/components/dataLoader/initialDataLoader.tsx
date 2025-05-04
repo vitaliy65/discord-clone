@@ -2,6 +2,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { useAppDispatch } from "@/_hooks/hooks";
 import { fetchChannels } from "@/_store/channel/channelSlice";
 import { fetchFriends } from "@/_store/friend/friendSlice";
+import { fetchChats } from "@/_store/chat/chatSlice";
 
 interface InitialDataLoaderProps {
   children: ReactNode;
@@ -20,6 +21,7 @@ export default function InitialDataLoader({
         await Promise.all([
           dispatch(fetchChannels()),
           dispatch(fetchFriends()),
+          dispatch(fetchChats()),
           // Add other data fetching here
         ]);
 

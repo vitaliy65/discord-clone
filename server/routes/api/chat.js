@@ -15,11 +15,11 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     // Check if user has any chats
-    if (req.user.Chats.length === 0) {
+    if (req.user.chats.length === 0) {
       return res.status(400).json({ error: "No chats found" });
     }
 
-    Chat.find({ _id: { $in: req.user.Chats } })
+    Chat.find({ _id: { $in: req.user.chats } })
       .then((chats) => {
         res.json(chats);
       })
@@ -37,7 +37,7 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     // Check if user has access to the chat
-    if (!req.user.Chats.includes(req.params.id)) {
+    if (!req.user.chats.includes(req.params.id)) {
       return res.status(403).json({ error: "Access denied" });
     }
 
