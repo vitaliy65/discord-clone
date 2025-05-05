@@ -1,4 +1,3 @@
-import "@/styles/index.css";
 import {
   Route,
   createBrowserRouter,
@@ -12,11 +11,16 @@ import Register from "./pages/auth/register";
 import NotFound from "./pages/not-found";
 import AuthLayout from "./pages/auth/authLayout";
 import Me from "./pages/me/page";
+import { useEffect } from "react";
+import { socket } from "@/utils/socket";
+import { initializeSocketEvents } from "@/utils/socket";
 
 import CheckAuth from "./components/auth/checkAuth";
 import { store } from "@/_store/store";
 
 import "@/styles/App.css";
+import "@/styles/index.css";
+
 import { Provider } from "react-redux";
 
 const router = createBrowserRouter(
@@ -59,6 +63,17 @@ const router = createBrowserRouter(
 );
 
 function App() {
+  useEffect(() => {
+    // Connect to socket server
+    socket.connect();
+    initializeSocketEvents(store);
+
+    // Clean up on component unmount
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
   return (
     <Provider store={store}>
       <RouterProvider router={router} />

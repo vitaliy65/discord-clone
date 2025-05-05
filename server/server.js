@@ -22,6 +22,7 @@ config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const dev = process.env.NODE_ENV !== "production";
 
 // Middleware
 app.use(cors());
@@ -49,8 +50,11 @@ const httpServer = createServer(app);
 // Initialize Socket.IO ===================================================================
 const io = new Server(httpServer, {
   cors: {
-    origin: process.env.CLIENT_URL || "http://localhost:5173",
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    origin: dev
+      ? "http://localhost:5173" // 👈 клієнтський домен у режимі розробки
+      : "https://discord-clone-dq4f.onrender.com", // 👈 клієнтський домен у режимі продакшн
+    methods: ["GET", "POST"],
+    credentials: true,
   },
 });
 
@@ -59,10 +63,16 @@ io.on("connection", (socket) => {
   console.log("Client connected:", socket.id);
 
   // Initialize chat handlers
-  handleChat(io, socket);
+  socket.on("send_message", ({ chatId, content, senderId }) =>
+    handleChat({ chatId, content, senderId, socket, io })
+  );
 
   socket.on("disconnect", () => {
     console.log("Client disconnected:", socket.id);
+  });
+
+  socket.on("register_user", (userId) => {
+    socket.join(userId);
   });
 });
 // ========================================================================================
@@ -80,7 +90,6 @@ app.use("/api/chat", chatRoutes);
 // Start server
 httpServer.listen(PORT, () => {
   console.log(`\nServer running on port: ${PORT}`);
-  console.log(`Socket.IO server running at ${process.env.CLIENT_URL}:${PORT}`);
-  console.log(`Client URL: ${process.env.CLIENT_URL}`);
+  console.log(`Socket.IO server running!`);
   console.log(`Environment: ${process.env.NODE_ENV || "development"}`);
 });

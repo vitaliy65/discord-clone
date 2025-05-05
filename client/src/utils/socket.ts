@@ -1,23 +1,22 @@
 import { io } from "socket.io-client";
-import { SERVER_API_URL } from "./constants";
+import { SERVER_URL } from "./constants";
+import { reciveMessage } from "@/_store/chat/chatSlice";
+import { store as StoreType } from "@/_store/store";
 
-// Create socket instance
-export const socket = io(SERVER_API_URL, {
-  autoConnect: true,
-  reconnection: true,
-  reconnectionAttempts: 5,
-  reconnectionDelay: 1000,
+export const socket = io(SERVER_URL, {
+  withCredentials: true,
 });
 
-// Add event listeners
-socket.on("connect", () => {
-  console.log("Connected to socket server");
-});
+let isInitialized = false;
 
-socket.on("disconnect", () => {
-  console.log("Disconnected from socket server");
-});
+export const initializeSocketEvents = (store: typeof StoreType) => {
+  if (isInitialized) return;
 
-socket.on("connect_error", (error) => {
-  console.error("Socket connection error:", error);
-});
+  socket.on("receive_message", (data) => {
+    const { chatId, message } = data;
+    store.dispatch(reciveMessage({ chatId, message }));
+    console.log("Received message: ", data);
+  });
+
+  isInitialized = true;
+};

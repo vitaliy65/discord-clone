@@ -1,7 +1,10 @@
 import { FriendType, setCurrentFriend } from "@/_store/friend/friendSlice";
 
 import { useAppDispatch } from "@/_hooks/hooks";
-import { setCurrentChat } from "@/_store/chat/chatSlice";
+import {
+  setCurrentChat,
+  setCurrentChatMessages,
+} from "@/_store/chat/chatSlice";
 import { useNavigate } from "react-router-dom";
 
 export default function Friend({
@@ -15,8 +18,12 @@ export default function Friend({
   const dispatch = useAppDispatch();
 
   const handleOpenChat = async () => {
-    await dispatch(setCurrentChat(chatId));
-    await dispatch(setCurrentFriend(friend));
+    Promise.all([
+      dispatch(setCurrentChat(chatId)),
+      dispatch(setCurrentChatMessages(chatId)),
+      dispatch(setCurrentFriend(friend)),
+    ]);
+
     await navigator(`/channels/me/${chatId}`, {
       state: { chatId },
     });

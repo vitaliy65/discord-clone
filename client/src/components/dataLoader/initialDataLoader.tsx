@@ -1,8 +1,9 @@
 import { ReactNode, useEffect, useState } from "react";
-import { useAppDispatch } from "@/_hooks/hooks";
+import { useAppDispatch, useAppSelector } from "@/_hooks/hooks";
 import { fetchChannels } from "@/_store/channel/channelSlice";
 import { fetchFriends } from "@/_store/friend/friendSlice";
 import { fetchChats } from "@/_store/chat/chatSlice";
+import { socket } from "@/utils/socket";
 
 interface InitialDataLoaderProps {
   children: ReactNode;
@@ -12,6 +13,7 @@ export default function InitialDataLoader({
   children,
 }: InitialDataLoaderProps) {
   const [isLoading, setIsLoading] = useState(true);
+  const userId = useAppSelector((state) => state.user.user.id);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -22,8 +24,9 @@ export default function InitialDataLoader({
           dispatch(fetchChannels()),
           dispatch(fetchFriends()),
           dispatch(fetchChats()),
-          // Add other data fetching here
         ]);
+
+        socket.emit("register_user", userId);
 
         setIsLoading(false);
       } catch (error) {

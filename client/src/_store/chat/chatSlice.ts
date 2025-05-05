@@ -2,22 +2,27 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { SERVER_API_URL } from "@/utils/constants";
 import { socket } from "@/utils/socket";
+import { message } from "antd";
+
+export interface MessageType {
+  sender: string;
+  content: string;
+}
 
 export interface ChatType {
   chats: {
     _id: string;
     participants: string[];
-    messages: {
-      sender: string;
-      content: string;
-    }[];
+    messages: MessageType[];
   }[];
   currentChat: string | null;
+  currentChatMessages: MessageType[];
 }
 
 const initialState: ChatType = {
   chats: [],
   currentChat: null,
+  currentChatMessages: [],
 };
 
 const chatSlice = createSlice({
@@ -25,26 +30,41 @@ const chatSlice = createSlice({
   initialState,
   reducers: {
     addMessage: (
-      state,
+      _,
       action: PayloadAction<{ chatId: string; sender: string; content: string }>
     ) => {
       const { chatId, sender, content } = action.payload;
+      // Only emit to Socket.IO, don't add locally
+      socket.emit("send_message", {
+        chatId: chatId,
+        content: content,
+        senderId: sender,
+      });
+    },
+    reciveMessage: (
+      state,
+      action: PayloadAction<{ chatId: string; message: MessageType }>
+    ) => {
+      const { chatId, message } = action.payload;
       const chatIndex = state.chats.findIndex((chat) => chat._id === chatId);
-
       if (chatIndex !== -1) {
-        state.chats[chatIndex].messages.push({ sender, content });
-
-        socket.emit("send_message", {
-          chatId: chatId,
-          content: content,
-          senderId: sender,
-        });
+        state.chats[chatIndex].messages.push(message);
+        state.currentChatMessages.push(message);
       } else {
         console.error("Chat not found");
       }
     },
     setCurrentChat: (state, action) => {
       state.currentChat = action.payload;
+    },
+    setCurrentChatMessages: (state, action) => {
+      const chatId = action.payload;
+      const chatIndex = state.chats.findIndex((chat) => chat._id === chatId);
+      if (chatIndex !== -1) {
+        state.currentChatMessages = state.chats[chatIndex].messages;
+      } else {
+        console.error("Chat not found");
+      }
     },
   },
   extraReducers: (builder) => {
@@ -76,5 +96,10 @@ export const fetchChats = createAsyncThunk(
   }
 );
 
-export const { addMessage, setCurrentChat } = chatSlice.actions;
+export const {
+  addMessage,
+  setCurrentChat,
+  setCurrentChatMessages,
+  reciveMessage,
+} = chatSlice.actions;
 export default chatSlice.reducer;
