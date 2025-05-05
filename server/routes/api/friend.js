@@ -87,11 +87,10 @@ router.delete(
     }
 
     // remove the friend from the user's friends list
-    User.findByIdAndDelete(req.params.id)
-      .then(() => {
-        res.json({ success: true });
-      })
-      .catch((err) => res.status(500).json({ error: "Error deleting friend" }));
+    req.user.friends = req.user.friends.filter(
+      (friendId) => friendId.toString() !== req.params.id
+    );
+    req.user.save();
   }
 );
 

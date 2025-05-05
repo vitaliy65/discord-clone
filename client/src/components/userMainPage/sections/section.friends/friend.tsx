@@ -1,4 +1,8 @@
-import { FriendType, setCurrentFriend } from "@/_store/friend/friendSlice";
+import {
+  deleteFriend,
+  FriendType,
+  setCurrentFriend,
+} from "@/_store/friend/friendSlice";
 
 import { useAppDispatch } from "@/_hooks/hooks";
 import {
@@ -6,6 +10,9 @@ import {
   setCurrentChatMessages,
 } from "@/_store/chat/chatSlice";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import PopUpContainer from "@/components/animatedComponents/popUpContainer";
+import ProfileWithStatus from "@/components/img-containers/profile-status";
 
 export default function Friend({
   friend,
@@ -16,6 +23,7 @@ export default function Friend({
 }) {
   const navigator = useNavigate();
   const dispatch = useAppDispatch();
+  const [openPopUp, setOpenPopUp] = useState(false);
 
   const handleOpenChat = async () => {
     Promise.all([
@@ -29,36 +37,50 @@ export default function Friend({
     });
   };
 
+  // const handleDeleteFriend = async () => {
+  //   await dispatch(deleteFriend(friend._id));
+  // };
+
   return (
     <li className="w-full">
       <button
         className="friend-button hover:bg-custom-focus focus:bg-clicked"
         onClick={handleOpenChat}
       >
-        <div className="friend-image-container">
-          <img
-            className="friend-img"
-            src={friend.avatar ? friend.avatar : "/friend/user.png"}
-            alt=""
-            width={128}
-            height={128}
-          />
-          <img
-            className="friend-online-status"
-            src={
-              friend.onlineStatus
-                ? "/user/active user.png"
-                : "/user/not active user.png"
-            }
-            alt=""
-            width={128}
-            height={128}
-          />
+        <div className="flex flex-row gap-3">
+          <ProfileWithStatus user={friend} />
+          <p className="border-friend-list-background">{friend.username}</p>
         </div>
-        <p className="border-friend-list-background username">
-          {friend.username}
-        </p>
+        <button
+          className="delete-friend-button"
+          onClick={() => setOpenPopUp(true)}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
       </button>
+
+      <PopUpContainer
+        text={"Подтвердите удаление пользователя из вашего списка друзей:"}
+        buttonText={"удалить"}
+        isVisible={openPopUp}
+        onClickAccept={() => {
+          /*handleDeleteFriend*/
+        }}
+        onClickCancel={() => setOpenPopUp(false)}
+      />
     </li>
   );
 }

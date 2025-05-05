@@ -11,7 +11,7 @@ export default function Message({ message }: { message: MessageType }) {
         message.sender === currentUserId ? "bg-sender" : ""
       }`}
     >
-      <p className="p-1">{message.content}</p>
+      <p className="message-text">{message.content}</p>
       <span
         className={`message-time ${
           message.sender === currentUserId ? "text-blue-300" : "text-gray-500"

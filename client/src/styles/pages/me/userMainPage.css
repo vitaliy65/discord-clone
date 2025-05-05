@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
 .user-main-page-container {
-  @apply flex flex-row w-screen h-screen
+  @apply flex flex-row w-screen h-screen overflow-hidden;
 }
 

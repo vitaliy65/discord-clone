@@ -46,6 +46,14 @@ const friendSlice = createSlice({
     builder.addCase(fetchFriends.rejected, (state) => {
       state.friends = [];
     });
+    builder.addCase(
+      deleteFriend.fulfilled,
+      (state, action: PayloadAction<FriendType>) => {
+        state.friends = state.friends.filter(
+          (friend) => friend._id !== action.payload._id
+        );
+      }
+    );
   },
 });
 
@@ -71,5 +79,27 @@ export const fetchFriends = createAsyncThunk(
     }
   }
 );
+
+export const deleteFriend = createAsyncThunk(
+  "friend/deleteFriend",
+  async (friendId: string, { rejectWithValue }) => {
+    try {
+      const response = await axios.delete(
+        `${SERVER_API_URL}/friend/${friendId}`,
+        {
+          headers: {
+            Authorization: `${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      console.error(error);
+      return rejectWithValue([]);
+    }
+  }
+);
+
 export const { setCurrentFriend, removeCurrentFriend } = friendSlice.actions;
 export default friendSlice.reducer;

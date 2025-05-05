@@ -5,19 +5,26 @@
 }
 
 .chat-container {
-    @apply flex justify-between flex-col w-full h-full max-h-full;
+    @apply flex flex-col w-full h-screen overflow-hidden;
 }
 
 .chat-header-container {
     @apply flex justify-start items-center flex-row w-full p-4 h-14 gap-4;
 }
 
+
+
+
 .message-container {
-    @apply flex flex-row items-end w-fit h-fit rounded-xl p-0.5 px-2;
+    @apply flex flex-row items-end w-fit max-w-3xl h-fit rounded-xl p-0.5 px-2 whitespace-pre-wrap overflow-hidden break-words;
+}
+
+.message-text {
+    @apply flex p-1 overflow-hidden [overflow-wrap:break-word];
 }
 
 .message-sender{
-    @apply flex justify-end lg:justify-start;
+    @apply flex w-full justify-end lg:justify-start;
 }
 
 .message-receiver{
@@ -31,6 +38,9 @@
 .messages-container {
     @apply flex flex-col p-4 w-full h-full overflow-y-scroll scroll-smooth gap-2;
 }
+
+
+
 
 .input-container {
     @apply flex justify-start items-center flex-row w-full p-4 h-14;
