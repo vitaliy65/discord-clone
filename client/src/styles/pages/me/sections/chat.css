@@ -13,11 +13,23 @@
 }
 
 .message-container {
-    @apply flex flex-col;
+    @apply flex flex-row items-end w-fit h-fit rounded-xl p-0.5 px-2;
+}
+
+.message-sender{
+    @apply flex justify-end lg:justify-start;
+}
+
+.message-receiver{
+ @apply flex justify-start;
+}
+
+.message-time{
+    @apply h-fit text-xs ml-2;
 }
 
 .messages-container {
-    @apply flex flex-col w-full h-full;
+    @apply flex flex-col p-4 w-full h-full overflow-y-scroll scroll-smooth gap-2;
 }
 
 .input-container {

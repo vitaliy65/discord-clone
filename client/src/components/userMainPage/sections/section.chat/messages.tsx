@@ -1,29 +1,38 @@
 import { useAppSelector } from "@/_hooks/hooks";
+import Message from "./message";
+import { useEffect } from "react";
 
 export default function Messages() {
   const messages = useAppSelector((state) => state.chat.currentChatMessages);
   const currentUserId = useAppSelector((state) => state.user.user.id);
 
+  useEffect(() => {
+    const chatContainer = document.querySelector(".messages-container");
+    if (chatContainer) {
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+  }, [messages]); // Run effect when messages array changes
+
   return (
-    <div className="messages-container">
+    <ul className="messages-container">
       {messages &&
         messages.length > 0 &&
         messages.map((message, index) => {
           if (!message) return null;
 
           return (
-            <div
+            <li
               key={index}
-              className={`message ${
+              className={`${
                 message.sender === currentUserId
                   ? "message-sender"
                   : "message-receiver"
               }`}
             >
-              {message.content}
-            </div>
+              <Message message={message} />
+            </li>
           );
         })}
-    </div>
+    </ul>
   );
 }

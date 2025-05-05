@@ -6,6 +6,7 @@ import { socket } from "@/utils/socket";
 export interface MessageType {
   sender: string;
   content: string;
+  timestamp: string;
 }
 
 export interface ChatType {

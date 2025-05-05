@@ -7,13 +7,6 @@ export default function ChatInput() {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user.user);
   const currentChatId = useAppSelector((state) => state.chat.currentChat);
-  const messagesContainer = document.querySelector(".messages-container");
-
-  const scrollToBottom = () => {
-    if (messagesContainer) {
-      messagesContainer.scrollTop = messagesContainer.scrollHeight;
-    }
-  };
 
   const handleSendMessage = async (
     e: React.KeyboardEvent<HTMLInputElement>
@@ -33,9 +26,6 @@ export default function ChatInput() {
 
       // Handle sending the message
       setMessage("");
-
-      // Scroll to the bottom of the messages container
-      scrollToBottom();
     }
   };
 

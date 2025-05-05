@@ -19,7 +19,7 @@
   --channelsBackground: #10151b;
   --friendsBackground: #1d2631;
   --mainBackground: #283443;
-  --friendListBackground: #324255;
+  --senderMessage: #4c75a8;
   --clicked: #324255;
   --customFocus: #3d5067;
 }
@@ -29,9 +29,9 @@
   --color-foreground: var(--foreground);
   --color-channels: var(--channelsBackground);
   --color-friends: var(--friendsBackground);
-  --color-chat: var(--mainBackground);
+  --color-message: var(--mainBackground);
   --color-main-text: var(--mainText);
-  --color-friend-list-background: var(--friendListBackground);
+  --color-sender: var(--senderMessage);
   --color-custom-focus: var(--customFocus);
   --color-clicked: var(--clicked);
   --font-sans: var(--font-geist-sans);
