@@ -5,7 +5,7 @@
 }
 
 .popup-menu{
-    @apply flex items-center justify-center bg-friends rounded-lg shadow-lg p-6 flex-col gap-4 w-1/4 h-1/4 overflow-hidden z-50
+    @apply flex items-center justify-center rounded-lg shadow-lg p-6 flex-col gap-4 w-1/4 h-1/4 overflow-hidden z-50
 }
 
 .popup-menu-button-accept{

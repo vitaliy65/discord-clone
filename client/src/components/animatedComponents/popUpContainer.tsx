@@ -24,7 +24,7 @@ export default function PopUpContainer({
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.3 }}
             exit={{ opacity: 0, scale: 0 }}
-            className="popup-menu"
+            className="popup-menu bg-friends"
           >
             <p className="text-center">{text}</p>
             <div className="flex gap-4">
