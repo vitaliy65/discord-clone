@@ -2,7 +2,6 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { SERVER_API_URL } from "@/utils/constants";
 import { socket } from "@/utils/socket";
-import { message } from "antd";
 
 export interface MessageType {
   sender: string;
