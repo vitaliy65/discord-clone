@@ -1,5 +1,5 @@
 import {
-  deleteFriend,
+  // deleteFriend,
   FriendType,
   setCurrentFriend,
 } from "@/_store/friend/friendSlice";
