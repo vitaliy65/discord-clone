@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import FilterButton from "../custom.buttons/filterButton";
 import AddFriendButton from "../custom.buttons/addFriendButton";
 import { useAppDispatch, useAppSelector } from "@/_hooks/hooks";
