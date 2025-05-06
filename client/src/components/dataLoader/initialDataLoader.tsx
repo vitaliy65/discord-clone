@@ -4,6 +4,7 @@ import { fetchChannels } from "@/_store/channel/channelSlice";
 import { fetchFriends } from "@/_store/friend/friendSlice";
 import { fetchChats } from "@/_store/chat/chatSlice";
 import { socket } from "@/utils/socket";
+import { fetchFriendRequestList } from "@/_store/friendRequest/friendRequestSlice";
 
 interface InitialDataLoaderProps {
   children: ReactNode;
@@ -24,6 +25,7 @@ export default function InitialDataLoader({
           dispatch(fetchChannels()),
           dispatch(fetchFriends()),
           dispatch(fetchChats()),
+          dispatch(fetchFriendRequestList()),
         ]);
 
         socket.emit("register_user", userId);
@@ -40,7 +42,7 @@ export default function InitialDataLoader({
 
   if (isLoading) {
     return (
-      <div className="items-position-center">
+      <div className="items-position-center w-screen h-screen">
         <div className="main-loading-spinner"></div>
       </div>
     );

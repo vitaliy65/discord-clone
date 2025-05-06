@@ -24,7 +24,7 @@ export default function Chat() {
 
   if (currentChat == null) {
     return (
-      <div className="items-position-center bg-channels">
+      <div className="items-position-center w-full h-full bg-channels">
         <p className="select-chat-container bg-friends">
           Select a chat to start messaging
         </p>

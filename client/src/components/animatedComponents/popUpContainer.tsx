@@ -1,21 +1,39 @@
 import { AnimatePresence, motion } from "motion/react";
 import "@/styles/animated-components/pop-up.css";
+import Input from "../auth/custom.input";
+import { useState } from "react";
 
 export default function PopUpContainer({
   text,
   buttonText,
   isVisible,
+  hasInput,
+  inputErrorPlaceHolder,
+  onAnimationEnd,
   onClickAccept,
   onClickCancel,
 }: {
   text: string;
   buttonText: string;
   isVisible: boolean;
-  onClickAccept: () => void;
+  hasInput?: boolean;
+  inputErrorPlaceHolder?: string;
+  onAnimationEnd?: () => void;
+  onClickAccept: (prop?: string) => void;
   onClickCancel: () => void;
 }) {
+  const [username, setUsername] = useState("");
+
+  const handleAccept = () => {
+    if (hasInput) {
+      onClickAccept(username);
+    } else {
+      onClickAccept();
+    }
+  };
+
   return (
-    <AnimatePresence initial={true} mode="wait">
+    <AnimatePresence initial={true} mode="wait" onExitComplete={onAnimationEnd}>
       {isVisible ? (
         <div className="popup-bg" onClick={onClickCancel}>
           <motion.div
@@ -27,9 +45,19 @@ export default function PopUpContainer({
             className="popup-menu bg-friends"
           >
             <p className="text-center">{text}</p>
-            <div className="flex gap-4">
+            {hasInput && inputErrorPlaceHolder != null && (
+              <Input
+                type="text"
+                name="username"
+                lable={inputErrorPlaceHolder}
+                placeholder="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            )}
+            <div className="flex justify-between w-full gap-4">
               <button
-                onClick={onClickAccept}
+                onClick={handleAccept}
                 className="popup-menu-button-accept"
               >
                 {buttonText}

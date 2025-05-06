@@ -1,0 +1,34 @@
+@import "tailwindcss";
+
+.filter-button{
+    @apply hover:text-zinc-300 flex justify-center items-center p-1.5 h-6 rounded-sm cursor-pointer
+}
+
+.add-friend-button{
+    @apply  flex justify-center items-center p-1.5 h-6 rounded-sm cursor-pointer
+}
+
+/* button click active */
+.active{
+    @apply text-white
+}
+
+.active-add{
+    @apply text-green-600 bg-transparent
+}
+
+.not-active-add{
+    @apply bg-green-600 text-white
+}
+
+.friend-request-filter-button{
+    @apply flex justify-end items-end
+}
+
+.friend-request-counter{
+    @apply flex absolute justify-center items-center w-5 h-5 translate-x-2 translate-y-1 rounded-full bg-red-600
+}
+
+.counter{
+    @apply text-sm font-bold
+}

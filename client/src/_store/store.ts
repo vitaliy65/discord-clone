@@ -3,6 +3,8 @@ import userSlice from "./user/userSlice";
 import friendSlice from "./friend/friendSlice";
 import channelSlice from "./channel/channelSlice";
 import chatSlice from "./chat/chatSlice";
+import filterFriendSlice from "./filter/filterFriendSlice";
+import friendRequestSlice from "./friendRequest/friendRequestSlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,8 +12,8 @@ export const store = configureStore({
     channel: channelSlice,
     chat: chatSlice,
     friend: friendSlice,
-    // filterFriend: filterFriendSlice,
-    // friendRequest: friendRequestSlice,
+    filter: filterFriendSlice,
+    friendRequest: friendRequestSlice,
   },
 });
 

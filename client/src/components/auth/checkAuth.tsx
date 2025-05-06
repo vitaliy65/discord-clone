@@ -35,7 +35,7 @@ export default function CheckAuth({ children }: { children: ReactNode }) {
 
   if (isLoading) {
     return (
-      <div className="items-position-center">
+      <div className="items-position-center w-screen h-screen">
         <div className="main-loading-spinner"></div>
       </div>
     );

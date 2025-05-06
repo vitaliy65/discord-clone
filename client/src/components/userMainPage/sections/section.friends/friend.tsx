@@ -43,7 +43,7 @@ export default function Friend({
 
   return (
     <li className="w-full">
-      <button
+      <div
         className="friend-button hover:bg-custom-focus focus:bg-clicked"
         onClick={handleOpenChat}
       >
@@ -70,7 +70,7 @@ export default function Friend({
             />
           </svg>
         </button>
-      </button>
+      </div>
 
       <PopUpContainer
         text={"Подтвердите удаление пользователя из вашего списка друзей:"}

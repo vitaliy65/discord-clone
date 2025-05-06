@@ -16,6 +16,10 @@ import chatRoutes from "./routes/api/chat.js";
 
 //handlers
 import handleChat from "./handlers/chatHandler.js";
+import {
+  handleNewFriendRequest,
+  handleAcceptFriendRequest,
+} from "./handlers/friendRequestHandler.js";
 
 // Load environment variables
 config();
@@ -65,6 +69,14 @@ io.on("connection", (socket) => {
   // Initialize chat handlers
   socket.on("send_message", ({ chatId, content, senderId }) =>
     handleChat({ chatId, content, senderId, socket, io })
+  );
+
+  socket.on("friend_request_send", ({ username }) =>
+    handleNewFriendRequest({ username, socket, io })
+  );
+
+  socket.on("accept_friend_request", ({ senderId, receiverId }) =>
+    handleAcceptFriendRequest({ senderId, receiverId, socket, io })
   );
 
   socket.on("disconnect", () => {

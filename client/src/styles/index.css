@@ -52,7 +52,7 @@
 }
 
 .items-position-center{
-  @apply flex justify-center items-center h-screen w-screen;
+  @apply flex justify-center items-center;
 }
 
 .main-loading-spinner{

@@ -22,6 +22,9 @@ import "@/styles/App.css";
 import "@/styles/index.css";
 
 import { Provider } from "react-redux";
+import Chat from "./components/userMainPage/chat";
+import AddFriend from "./components/userMainPage/sections/section.friends/addFriend";
+import FriendRequets from "./components/userMainPage/sections/section.friendRequests/friendRequets";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -34,16 +37,12 @@ const router = createBrowserRouter(
             <Me />
           </CheckAuth>
         }
-      />
-
-      <Route
-        path="channels/me/:id"
-        element={
-          <CheckAuth>
-            <Me />
-          </CheckAuth>
-        }
-      />
+      >
+        <Route path="" element={<Chat />} />
+        <Route path=":id" element={<Chat />} />
+        <Route path="addFriend" element={<AddFriend />} />
+        <Route path="friendRequests" element={<FriendRequets />} />
+      </Route>
 
       {/* Main Layout */}
       <Route path="/" element={<Layout />}>

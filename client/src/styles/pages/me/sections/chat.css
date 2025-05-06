@@ -5,11 +5,15 @@
 }
 
 .chat-container {
-    @apply flex flex-col w-full h-screen overflow-hidden;
+    @apply flex flex-col w-full h-full overflow-hidden;
 }
 
 .chat-header-container {
     @apply flex justify-start items-center flex-row w-full p-4 h-14 gap-4;
+}
+
+.chat-header-menu-container {
+    @apply flex flex-row justify-start items-center w-full overflow-hidden p-4 h-14 gap-4;
 }
 
 

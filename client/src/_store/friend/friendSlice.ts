@@ -59,13 +59,8 @@ const friendSlice = createSlice({
 
 export const fetchFriends = createAsyncThunk(
   "friend/fetchFriends",
-  async (_, { rejectWithValue, getState }) => {
+  async (_, { rejectWithValue }) => {
     try {
-      const state = getState();
-      const user = (state as RootState).user.user;
-
-      if (!user.id) return rejectWithValue([]);
-
       const response = await axios.get(`${SERVER_API_URL}/friend/list`, {
         headers: {
           Authorization: `${localStorage.getItem("token")}`,

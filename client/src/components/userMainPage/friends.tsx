@@ -26,7 +26,7 @@ export default function Friends() {
       }
     });
     setFriendChats(friendChats);
-  }, [friends]);
+  }, [friends, chats]);
 
   return (
     <div className="friends-container border-r border-r-channels">
