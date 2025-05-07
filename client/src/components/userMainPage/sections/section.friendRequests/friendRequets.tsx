@@ -43,7 +43,7 @@ export default function FriendRequets() {
           return (
             <div key={index} className="friend-request-container bg-friends">
               <div className="friend-request-user-info-container">
-                <ProfilePicture user={fr.sender} />
+                <ProfilePicture userId={fr.sender._id} />
                 <span className="friend-requests-username">
                   {fr.sender.username}
                 </span>
