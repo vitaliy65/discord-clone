@@ -38,13 +38,15 @@ const friendSlice = createSlice({
       state,
       action: PayloadAction<{ friendId: string; status: boolean }>
     ) => {
-      const friend = state.friends.find(
-        (f) => f._id === action.payload.friendId
-      );
+      const { friendId, status } = action.payload;
+      const friend = state.friends.find((f) => f._id === friendId);
 
       if (friend) {
-        friend.onlineStatus = action.payload.status;
+        friend.onlineStatus = status;
       }
+
+      if (state.selectedFriend != null && state.selectedFriend._id === friendId)
+        state.selectedFriend.onlineStatus = status;
     },
   },
   extraReducers: (builder) => {
