@@ -1,5 +1,5 @@
 import {
-  // deleteFriend,
+  deleteFriend,
   FriendType,
   setCurrentFriend,
 } from "@/_store/friend/friendSlice";
@@ -37,9 +37,9 @@ export default function Friend({
     });
   };
 
-  // const handleDeleteFriend = async () => {
-  //   await dispatch(deleteFriend(friend._id));
-  // };
+  const handleDeleteFriend = async () => {
+    await dispatch(deleteFriend(friend._id));
+  };
 
   return (
     <li className="w-full">
@@ -76,9 +76,7 @@ export default function Friend({
         text={"Подтвердите удаление пользователя из вашего списка друзей:"}
         buttonText={"удалить"}
         isVisible={openPopUp}
-        onClickAccept={() => {
-          /*handleDeleteFriend*/
-        }}
+        onClickAccept={handleDeleteFriend}
         onClickCancel={() => setOpenPopUp(false)}
       />
     </li>

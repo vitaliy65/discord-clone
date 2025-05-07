@@ -2,6 +2,7 @@ import { config } from "dotenv";
 import User from "../../models/User.js"; // Використовується нижній регістр для відповідності назві файлу
 import { Router } from "express";
 import passport from "passport";
+import { io } from "../../server.js";
 
 // Load input validation
 
@@ -75,22 +76,35 @@ router.get(
 router.delete(
   "/:id",
   passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    // check if the user is trying to delete themselves
-    if (req.params.id === req.user.id) {
-      return res.status(400).json({ error: "Cannot delete yourself" });
-    }
+  async (req, res) => {
+    try {
+      if (req.params.id === req.user.id) {
+        return res.status(400).json({ error: "Cannot delete yourself" });
+      }
 
-    // check if the friend exists in the user's friends list
-    if (!req.user.friends.includes(req.params.id)) {
-      return res.status(400).json({ error: "Friend not found in your list" });
-    }
+      const friend = await User.findById(req.params.id);
+      if (!friend) {
+        return res.status(404).json({ error: "Friend not found" });
+      }
 
-    // remove the friend from the user's friends list
-    req.user.friends = req.user.friends.filter(
-      (friendId) => friendId.toString() !== req.params.id
-    );
-    req.user.save();
+      // Удаляем друг друга из списков друзей
+      req.user.friends = req.user.friends.filter(
+        (friendId) => friendId.toString() !== req.params.id
+      );
+      friend.friends = friend.friends.filter(
+        (friendId) => friendId.toString() !== req.user.id
+      );
+
+      await Promise.all([req.user.save(), friend.save()]);
+
+      // Отправляем сокет-событие обоим пользователям
+      io.to(req.user.id).emit("friend_deleted");
+      io.to(friend.id).emit("friend_deleted");
+
+      return res.status(200).json({ message: "Friend deleted successfully" });
+    } catch (error) {
+      return res.status(500).json({ error: error.message });
+    }
   }
 );
 

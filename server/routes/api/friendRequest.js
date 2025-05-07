@@ -47,7 +47,7 @@ router.post(
         ],
       });
 
-      if (existingRequest) {
+      if (existingRequest != null && existingRequest.status === "pending") {
         return res.status(400).json({ error: "Friend request already exists" });
       }
 
@@ -112,15 +112,35 @@ router.post(
       sender.friends.push(req.user._id);
       await sender.save();
 
-      // Create new chat for the two users
-      const chat = await Chat.create({
-        participants: [req.user._id, friendRequest.sender],
-        messages: [],
+      // Перед созданием нового чата добавляем проверку
+      const existingChat = await Chat.findOne({
+        participants: {
+          $all: [req.user._id, friendRequest.sender],
+          $size: 2,
+        },
       });
-      req.user.chats.push(chat._id);
-      await req.user.save();
-      sender.chats.push(chat._id);
-      await sender.save();
+
+      if (existingChat) {
+        // Проверяем есть ли чат у пользователей в списке
+        if (!req.user.chats.includes(existingChat._id)) {
+          req.user.chats.push(existingChat._id);
+          await req.user.save();
+        }
+        if (!sender.chats.includes(existingChat._id)) {
+          sender.chats.push(existingChat._id);
+          await sender.save();
+        }
+      } else {
+        // Создаем новый чат если его нет
+        const chat = await Chat.create({
+          participants: [req.user._id, friendRequest.sender],
+          messages: [],
+        });
+        req.user.chats.push(chat._id);
+        await req.user.save();
+        sender.chats.push(chat._id);
+        await sender.save();
+      }
 
       // Remove from my friend requests
       req.user.friendRequests.map((request) => {

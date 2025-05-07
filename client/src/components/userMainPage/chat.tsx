@@ -20,7 +20,7 @@ export default function Chat() {
         }
       }
     }
-  }, [currentChat, chats.length]);
+  }, [currentChat, chats]);
 
   if (currentChat == null) {
     return (

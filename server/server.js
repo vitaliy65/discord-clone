@@ -52,7 +52,7 @@ mongoose
 const httpServer = createServer(app);
 
 // Initialize Socket.IO ===================================================================
-const io = new Server(httpServer, {
+export const io = new Server(httpServer, {
   cors: {
     origin: dev
       ? "http://localhost:5173" // 👈 клієнтський домен у режимі розробки
