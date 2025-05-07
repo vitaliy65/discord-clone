@@ -34,6 +34,18 @@ const friendSlice = createSlice({
     removeCurrentFriend: (state) => {
       state.selectedFriend = null;
     },
+    changeFriendOnlineStatus: (
+      state,
+      action: PayloadAction<{ friendId: string; status: boolean }>
+    ) => {
+      const friend = state.friends.find(
+        (f) => f._id === action.payload.friendId
+      );
+
+      if (friend) {
+        friend.onlineStatus = action.payload.status;
+      }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(
@@ -95,5 +107,9 @@ export const deleteFriend = createAsyncThunk(
   }
 );
 
-export const { setCurrentFriend, removeCurrentFriend } = friendSlice.actions;
+export const {
+  setCurrentFriend,
+  removeCurrentFriend,
+  changeFriendOnlineStatus,
+} = friendSlice.actions;
 export default friendSlice.reducer;

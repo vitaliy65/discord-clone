@@ -20,6 +20,7 @@ import {
   handleNewFriendRequest,
   handleAcceptFriendRequest,
 } from "./handlers/friendRequestHandler.js";
+import { friendStatusHandler } from "./handlers/friendHandler.js";
 
 // Load environment variables
 config();
@@ -77,6 +78,10 @@ io.on("connection", (socket) => {
 
   socket.on("accept_friend_request", ({ senderId, receiverId }) =>
     handleAcceptFriendRequest({ senderId, receiverId, socket, io })
+  );
+
+  socket.on("user_status_change", async ({ userId, status }) =>
+    friendStatusHandler({ userId, status, socket, io })
   );
 
   socket.on("disconnect", () => {

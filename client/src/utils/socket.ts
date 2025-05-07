@@ -7,7 +7,10 @@ import {
 } from "@/_store/chat/chatSlice";
 import { store as StoreType } from "@/_store/store";
 import { fetchFriendRequestList } from "@/_store/friendRequest/friendRequestSlice";
-import { fetchFriends } from "@/_store/friend/friendSlice";
+import {
+  fetchFriends,
+  changeFriendOnlineStatus,
+} from "@/_store/friend/friendSlice";
 import { Navigate } from "react-router-dom";
 
 export const socket = io(SERVER_URL, {
@@ -44,6 +47,13 @@ export const initializeSocketEvents = (store: typeof StoreType) => {
     ]);
     await Navigate({ to: "/channels/me", replace: true });
   });
+
+  socket.on(
+    "update_friend_online_status",
+    async ({ friendId, status }: { friendId: string; status: boolean }) => {
+      store.dispatch(changeFriendOnlineStatus({ friendId, status }));
+    }
+  );
 
   isInitialized = true;
 };
