@@ -2,7 +2,6 @@ import User from "../models/User.js";
 
 export const friendStatusHandler = async ({ userId, status, socket, io }) => {
   try {
-    console.log(userId, status);
     // Update user status in DB
     const user = await User.findById(userId);
     user.onlineStatus = status;

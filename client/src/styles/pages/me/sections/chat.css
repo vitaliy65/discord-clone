@@ -20,6 +20,10 @@
 
 
 .message-container {
+    @apply flex flex-row items-end gap-4;
+}
+
+.text-message-container {
     @apply flex flex-row items-end w-fit max-w-3xl h-fit rounded-xl p-0.5 px-2 whitespace-pre-wrap overflow-hidden break-words;
 }
 
