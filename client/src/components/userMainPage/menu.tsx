@@ -14,10 +14,11 @@ import "@/styles/components/custom.buttons/filter.buttons.css";
 import { useNavigate } from "react-router-dom";
 
 export default function Menu() {
-  const [activeIndex, setActiveIndex] = useState<number | null>(2);
+  const [activeIndex, setActiveIndex] = useState<number>(2);
   const friendRequestCount = useAppSelector(
     (state) => state.friendRequest.requests.length
   );
+  const filter = useAppSelector((state) => state.filter.action);
   const dispatch = useAppDispatch();
   const navigator = useNavigate();
 
@@ -45,9 +46,9 @@ export default function Menu() {
       </FilterButton>
       <div className="friend-request-filter-button">
         <FilterButton
-          isActive={activeIndex == 3}
+          isActive={filter.showPending}
           onClick={() => {
-            action(3, setShowPending);
+            action(activeIndex, setShowPending);
             navigator("friendRequests", { replace: true });
           }}
         >

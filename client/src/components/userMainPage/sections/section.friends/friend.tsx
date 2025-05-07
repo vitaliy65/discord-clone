@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import PopUpContainer from "@/components/animatedComponents/popUpContainer";
 import ProfileWithStatus from "@/components/img-containers/profile-status";
+import { setHidePending } from "@/_store/filter/filterFriendSlice";
 
 export default function Friend({
   friend,
@@ -30,6 +31,7 @@ export default function Friend({
       dispatch(setCurrentChat(chatId)),
       dispatch(setCurrentChatMessages(chatId)),
       dispatch(setCurrentFriend(friend)),
+      dispatch(setHidePending()),
     ]);
 
     await navigator(`/channels/me/${chatId}`, {

@@ -14,6 +14,7 @@ interface FriendChat {
 export default function Friends() {
   const friends = useAppSelector((state) => state.friend.friends);
   const chats = useAppSelector((state) => state.chat.chats);
+  const filter = useAppSelector((state) => state.filter.action);
   const [_friendChats, setFriendChats] = useState<FriendChat[]>([]);
 
   useEffect(() => {
@@ -37,9 +38,16 @@ export default function Friends() {
         role="list"
       >
         {/* Render the list of friends */}
-        {_friendChats.map((fc) => (
-          <Friend key={fc.chatId} friend={fc.friend} chatId={fc.chatId} />
-        ))}
+        {filter.showAll &&
+          _friendChats.map((fc) => (
+            <Friend key={fc.chatId} friend={fc.friend} chatId={fc.chatId} />
+          ))}
+        {filter.showOnline &&
+          _friendChats
+            .filter((fc) => fc.friend.onlineStatus == true)
+            .map((fc) => (
+              <Friend key={fc.chatId} friend={fc.friend} chatId={fc.chatId} />
+            ))}
       </ul>
     </div>
   );

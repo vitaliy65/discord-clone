@@ -33,9 +33,8 @@ const userSchema = new mongoose.Schema({
     default: "user",
   },
   onlineStatus: {
-    type: String,
-    enum: ["online", "offline"],
-    default: "offline",
+    type: Boolean,
+    default: false,
   },
   friends: [
     {

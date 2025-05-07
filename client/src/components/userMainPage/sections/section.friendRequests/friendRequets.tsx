@@ -26,6 +26,16 @@ export default function FriendRequets() {
     await dispatch(rejectFriendRequest(requestId));
   };
 
+  if (friendRequests.length === 0) {
+    return (
+      <div className="items-position-center w-full h-full bg-channels">
+        <p className="select-chat-container bg-friends">
+          No new friend requests :&#40;
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="friend-requests-container bg-channels">
       {friendRequests &&

@@ -25,17 +25,16 @@ const filterFriendSlice = createSlice({
     setShowAll: (state) => {
       state.action.showAll = true;
       state.action.showOnline = false;
-      state.action.showPending = false;
     },
     setShowOnline: (state) => {
       state.action.showAll = false;
       state.action.showOnline = true;
-      state.action.showPending = false;
     },
     setShowPending: (state) => {
-      state.action.showAll = false;
-      state.action.showOnline = false;
       state.action.showPending = true;
+    },
+    setHidePending: (state) => {
+      state.action.showPending = false;
     },
     setOpenAddFriendForm: (state) => {
       state.action.openAddFriendForm = true;
@@ -52,5 +51,6 @@ export const {
   setShowPending,
   setOpenAddFriendForm,
   setCloseAddFriendForm,
+  setHidePending,
 } = filterFriendSlice.actions;
 export default filterFriendSlice.reducer;
