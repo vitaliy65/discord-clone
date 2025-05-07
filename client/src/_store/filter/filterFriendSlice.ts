@@ -6,6 +6,7 @@ type filterFriendState = {
     showOnline: boolean;
     showPending: boolean;
     openAddFriendForm: boolean;
+    searchParams: string;
   };
 };
 
@@ -15,6 +16,7 @@ const initialState: filterFriendState = {
     showOnline: false,
     showPending: false,
     openAddFriendForm: false,
+    searchParams: "",
   },
 };
 
@@ -42,6 +44,9 @@ const filterFriendSlice = createSlice({
     setCloseAddFriendForm: (state) => {
       state.action.openAddFriendForm = false;
     },
+    setSearchParams: (state, action) => {
+      state.action.searchParams = action.payload;
+    },
   },
 });
 
@@ -52,5 +57,6 @@ export const {
   setOpenAddFriendForm,
   setCloseAddFriendForm,
   setHidePending,
+  setSearchParams,
 } = filterFriendSlice.actions;
 export default filterFriendSlice.reducer;

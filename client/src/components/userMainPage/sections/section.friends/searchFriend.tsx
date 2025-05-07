@@ -1,13 +1,14 @@
-import { useState } from "react";
+import { useAppDispatch, useAppSelector } from "@/_hooks/hooks";
+import { setSearchParams } from "@/_store/filter/filterFriendSlice";
 
 export default function SearchFriend() {
-  const [searchUsername, setSearchUsername] = useState<string>("");
+  const searchParams = useAppSelector(
+    (state) => state.filter.action.searchParams
+  );
+  const dispatch = useAppDispatch();
 
-  const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      // Handle search logic here
-      console.log("Searching for:", searchUsername);
-    }
+  const handleSearch = (value: string) => {
+    dispatch(setSearchParams(value));
   };
 
   return (
@@ -16,9 +17,8 @@ export default function SearchFriend() {
         className="search-friend-input bg-channels"
         type="text"
         placeholder="Найти друга"
-        value={searchUsername}
-        onChange={(e) => setSearchUsername(e.target.value)}
-        onKeyDown={handleEnter}
+        value={searchParams}
+        onChange={(e) => handleSearch(e.target.value)}
         autoComplete="off"
       />
     </div>

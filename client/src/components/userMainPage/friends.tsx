@@ -38,16 +38,20 @@ export default function Friends() {
         role="list"
       >
         {/* Render the list of friends */}
-        {filter.showAll &&
-          _friendChats.map((fc) => (
+        {_friendChats
+          .filter((fc) => {
+            // Apply search filter
+            if (filter.searchParams) {
+              return fc.friend.username
+                .toLowerCase()
+                .includes(filter.searchParams.toLowerCase());
+            }
+            // Apply online/all filter
+            return filter.showOnline ? fc.friend.onlineStatus : filter.showAll;
+          })
+          .map((fc) => (
             <Friend key={fc.chatId} friend={fc.friend} chatId={fc.chatId} />
           ))}
-        {filter.showOnline &&
-          _friendChats
-            .filter((fc) => fc.friend.onlineStatus == true)
-            .map((fc) => (
-              <Friend key={fc.chatId} friend={fc.friend} chatId={fc.chatId} />
-            ))}
       </ul>
     </div>
   );
