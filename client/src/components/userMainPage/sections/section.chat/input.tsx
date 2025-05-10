@@ -5,7 +5,7 @@ import { addMessage } from "@/_store/chat/chatSlice";
 export default function ChatInput() {
   const [message, setMessage] = useState("");
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.user.user);
+  const user = useAppSelector((state) => state.user.info);
   const currentChatId = useAppSelector((state) => state.chat.currentChat);
 
   const handleSendMessage = async (

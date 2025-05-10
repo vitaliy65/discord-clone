@@ -10,20 +10,25 @@ export default function Channels() {
   const Channels = useAppSelector((state) => state.channel.channels);
 
   return (
-    <div className="channel-section-container bg-channels">
-      <Home isActive={activeIndex === -1} onClick={() => setActiveIndex(-1)} />
-      {Channels.map((channel, index) => (
-        <ChannelsIcon
-          key={channel._id}
-          isActive={activeIndex === index}
-          onClick={() => setActiveIndex(index)}
-          channel={channel}
+    <div className="channel-container bg-channels">
+      <div className="channel-section scrollbar-hide">
+        <Home
+          isActive={activeIndex === -1}
+          onClick={() => setActiveIndex(-1)}
         />
-      ))}
-      <AddChannel
-        isActive={activeIndex === -2}
-        onClick={() => setActiveIndex(-2)}
-      />
+        {Channels.map((channel, index) => (
+          <ChannelsIcon
+            key={channel._id}
+            isActive={activeIndex === index}
+            onClick={() => setActiveIndex(index)}
+            channel={channel}
+          />
+        ))}
+        <AddChannel
+          isActive={activeIndex === -2}
+          onClick={() => setActiveIndex(-2)}
+        />
+      </div>
     </div>
   );
 }

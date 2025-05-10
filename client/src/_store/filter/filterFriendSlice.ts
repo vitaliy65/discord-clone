@@ -1,16 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { filterFriendType } from "@/types/types";
 
-type filterFriendState = {
-  action: {
-    showAll: boolean;
-    showOnline: boolean;
-    showPending: boolean;
-    openAddFriendForm: boolean;
-    searchParams: string;
-  };
-};
-
-const initialState: filterFriendState = {
+const initialState: filterFriendType = {
   action: {
     showAll: true,
     showOnline: false,

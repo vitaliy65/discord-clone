@@ -4,7 +4,7 @@ import { useAppSelector } from "@/_hooks/hooks";
 
 import "@/styles/pages/me/sections/friends.css";
 import { useEffect, useState } from "react";
-import { FriendType } from "@/_store/friend/friendSlice";
+import { FriendType } from "@/types/types";
 
 interface FriendChat {
   friend: FriendType;
@@ -30,10 +30,10 @@ export default function Friends() {
   }, [friends, chats]);
 
   return (
-    <div className="friends-container border-r border-r-channels">
+    <div className="friends-container bg-friends border-r-channels">
       <SearchFriend />
       <ul
-        className="friend-section-container bg-friends"
+        className="friend-section-container scrollbar-small"
         aria-label="friends"
         role="list"
       >

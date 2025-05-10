@@ -31,7 +31,7 @@ export default function Menu() {
   };
 
   return (
-    <div className="chat-header-menu-container bg-friends borde-b-channels">
+    <section className="chat-header-menu-container bg-friends borde-b-channels">
       <FilterButton
         isActive={activeIndex == 1}
         onClick={() => action(1, setShowOnline)}
@@ -68,6 +68,6 @@ export default function Menu() {
       >
         Добавить в друзья
       </AddFriendButton>
-    </div>
+    </section>
   );
 }

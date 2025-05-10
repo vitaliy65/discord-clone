@@ -24,19 +24,19 @@ export default function Chat() {
 
   if (currentChat == null) {
     return (
-      <div className="items-position-center w-full h-full bg-channels">
+      <main className="items-position-center w-full h-full bg-channels">
         <p className="select-chat-container bg-friends">
           Select a chat to start messaging
         </p>
-      </div>
+      </main>
     );
   }
 
   return (
-    <div className="chat-container bg-channels">
+    <main className="chat-container bg-channels">
       <ChatHeader />
       <Messages />
       <ChatInput />
-    </div>
+    </main>
   );
 }

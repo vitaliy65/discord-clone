@@ -1,10 +1,7 @@
-import {
-  deleteFriend,
-  FriendType,
-  setCurrentFriend,
-} from "@/_store/friend/friendSlice";
+import { deleteFriend, setCurrentFriend } from "@/_store/friend/friendSlice";
 
 import { useAppDispatch } from "@/_hooks/hooks";
+import { FriendType } from "@/types/types";
 import {
   setCurrentChat,
   setCurrentChatMessages,

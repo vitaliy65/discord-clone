@@ -2,15 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { SERVER_API_URL } from "@/utils/constants";
 import { RootState } from "@/_store/store";
-
-export interface ChannelType {
-  _id: string;
-  channelName: string;
-  channelDescription: string;
-  channelAvatar: string;
-  dateCreated: string;
-  members: string[];
-}
+import { ChannelType } from "@/types/types";
 
 type ChannelState = {
   channels: ChannelType[];
@@ -42,7 +34,7 @@ export const fetchChannels = createAsyncThunk(
   async (_, { rejectWithValue, getState }) => {
     try {
       const state = getState();
-      const user = (state as RootState).user.user;
+      const user = (state as RootState).user.info;
 
       if (!user.id) return rejectWithValue([]);
 

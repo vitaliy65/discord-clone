@@ -14,7 +14,7 @@ export default function FriendRequets() {
   const friendRequests = useAppSelector(
     (state) => state.friendRequest.requests
   );
-  const userId = useAppSelector((s) => s.user.user.id);
+  const userId = useAppSelector((s) => s.user.info.id);
 
   const Accept = async (requestId: string, senderId: string) => {
     await dispatch(

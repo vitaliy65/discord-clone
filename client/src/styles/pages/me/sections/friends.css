@@ -2,7 +2,7 @@
 
 /* friend list section */
 .friends-container{
-    @apply flex flex-col min-w-2xs h-screen
+    @apply flex flex-col min-w-2xs h-screen border-r
 }
 
 .friend-button{
@@ -10,7 +10,11 @@
 }
 
 .friend-image-container{
-    @apply flex shrink-0 justify-end items-end h-8 w-8
+    @apply relative flex shrink-0 justify-end items-end h-8 w-8
+}
+
+.profile-image-container{
+    @apply relative flex shrink-0 justify-end items-end h-10 w-10
 }
 
 .friend-img{
@@ -19,6 +23,10 @@
 
 .friend-online-status{
     @apply absolute rounded-full h-3 w-3
+}
+
+.profile-online-status{
+    @apply absolute rounded-full h-4 w-4
 }
 
 .friend-username{
@@ -37,7 +45,7 @@
 
 /* friend section container */
 .friend-section-container{
-    @apply flex flex-col grow items-start overflow-y-auto gap-3 py-4 px-4 max-h-full;
+    @apply flex flex-col grow items-start overflow-y-auto gap-3 py-4 px-4 max-h-full mb-19;
 }
 
 /* buttons */

@@ -9,7 +9,7 @@ export default function CheckAuth({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
   const navigator = useNavigate();
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.user.user);
+  const user = useAppSelector((state) => state.user.info);
 
   useEffect(() => {
     const checkAuth = async () => {

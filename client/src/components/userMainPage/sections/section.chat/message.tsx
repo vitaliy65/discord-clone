@@ -10,7 +10,7 @@ export default function Message({
   message: MessageType;
   drawPicture: boolean;
 }) {
-  const currentUser = useAppSelector((state) => state.user.user);
+  const currentUser = useAppSelector((state) => state.user.info);
 
   return (
     <div className="message-container">

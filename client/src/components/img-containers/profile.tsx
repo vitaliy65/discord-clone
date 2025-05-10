@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 export default function ProfilePicture({ userId }: { userId: string }) {
   const [avatar, setAvatar] = useState<string>("/friend/user.png");
-  const user = useAppSelector((s) => s.user.user);
+  const user = useAppSelector((s) => s.user.info);
   const friends = useAppSelector((s) => s.friend.friends);
 
   useEffect(() => {

@@ -14,7 +14,7 @@ export default function InitialDataLoader({
   children,
 }: InitialDataLoaderProps) {
   const [isLoading, setIsLoading] = useState(true);
-  const userId = useAppSelector((state) => state.user.user.id);
+  const userId = useAppSelector((state) => state.user.info.id);
   const dispatch = useAppDispatch();
 
   useEffect(() => {

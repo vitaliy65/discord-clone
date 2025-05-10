@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 export default function Messages() {
   const messages = useAppSelector((state) => state.chat.currentChatMessages);
-  const currentUserId = useAppSelector((state) => state.user.user.id);
+  const currentUserId = useAppSelector((state) => state.user.info.id);
   const [windowWidthLessLG, setWindowWidthLessLG] = useState(
     window.innerWidth < 1024
   ); // 1024px is Tailwind's lg breakpoint

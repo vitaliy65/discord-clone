@@ -2,21 +2,10 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import { SERVER_API_URL } from "@/utils/constants";
 import { socket } from "@/utils/socket";
-
-// Types
-export interface FriendRequestSender {
-  sender: {
-    _id: string;
-    username: string;
-    user_unique_id: string;
-    email: string;
-    avatar: string;
-  };
-  requestId: string;
-}
+import { FriendRequestSenderType } from "@/types/types";
 
 export interface FriendRequestState {
-  requests: FriendRequestSender[];
+  requests: FriendRequestSenderType[];
   loading: boolean;
   error: string | null;
 }

@@ -1,18 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { SERVER_API_URL } from "@/utils/constants";
-
-export interface FriendType {
-  Channels: string[];
-  onlineStatus: boolean;
-  _id: string;
-  username: string;
-  user_unique_id: string;
-  email: string;
-  avatar: string;
-  date: string;
-  friends: string[];
-}
+import { FriendType } from "@/types/types";
 
 type FriendState = {
   friends: FriendType[];

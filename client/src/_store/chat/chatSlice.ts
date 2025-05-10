@@ -2,22 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { SERVER_API_URL } from "@/utils/constants";
 import { socket } from "@/utils/socket";
-
-export interface MessageType {
-  sender: string;
-  content: string;
-  timestamp: string;
-}
-
-export interface ChatType {
-  chats: {
-    _id: string;
-    participants: string[];
-    messages: MessageType[];
-  }[];
-  currentChat: string | null;
-  currentChatMessages: MessageType[];
-}
+import { MessageType, ChatType } from "@/types/types";
 
 const initialState: ChatType = {
   chats: [],
