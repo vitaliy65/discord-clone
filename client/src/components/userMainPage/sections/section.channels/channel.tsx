@@ -1,4 +1,4 @@
-import { ChannelType } from "@/_store/channel/channelSlice";
+import { ChannelType } from "@/types/types";
 import { motion } from "motion/react";
 
 interface ChannelsIconProps {

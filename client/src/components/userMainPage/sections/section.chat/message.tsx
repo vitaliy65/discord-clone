@@ -1,6 +1,6 @@
 import { useAppSelector } from "@/_hooks/hooks";
 import { formatTime } from "@/utils/constants";
-import { MessageType } from "@/_store/chat/chatSlice";
+import { MessageType } from "@/types/types";
 import ProfilePicture from "@/components/img-containers/profile";
 
 export default function Message({
