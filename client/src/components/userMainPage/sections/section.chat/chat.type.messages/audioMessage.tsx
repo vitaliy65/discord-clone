@@ -13,6 +13,7 @@ export default function AudioMessage({
         <source src={message.content} />
         Your browser does not support the audio element.
       </audio>
+      <div onClick={download}></div>
     </div>
   );
 }

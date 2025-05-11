@@ -16,6 +16,7 @@ export default function ImageMessage({
         loading="lazy"
         onClick={download}
       />
+      <div onClick={download}></div>
     </div>
   );
 }

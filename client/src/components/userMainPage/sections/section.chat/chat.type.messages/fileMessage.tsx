@@ -16,6 +16,7 @@ export default function FileMessage({
         <img src="/chat/file.png" alt="file" className="w-6 h-6" />
         <span className="truncate">{fileName}</span>
       </div>
+      <div onClick={download}></div>
     </div>
   );
 }
