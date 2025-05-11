@@ -3,7 +3,7 @@ import { formatTime } from "@/utils/constants";
 import { MessageType } from "@/types/types";
 import FileMessage from "./chat.type.messages/fileMessage";
 import AudioMessage from "./chat.type.messages/audioMessage";
-import ImageMessage from "./chat.type.messages/ImageMessage";
+import ImageMessage from "./chat.type.messages/imageMessage";
 import VideoMessage from "./chat.type.messages/videoMessage";
 import ProfilePicture from "@/components/img-containers/profile";
 
