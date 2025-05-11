@@ -16,7 +16,12 @@ const chatSlice = createSlice({
   reducers: {
     addMessage: (
       _,
-      action: PayloadAction<{ chatId: string; sender: string; content: string }>
+      action: PayloadAction<{
+        chatId: string;
+        sender: string;
+        content: string;
+        type: "file" | "text" | "image" | "soundMessage";
+      }>
     ) => {
       const { chatId, sender, content } = action.payload;
       // Only emit to Socket.IO, don't add locally

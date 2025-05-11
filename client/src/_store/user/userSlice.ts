@@ -45,5 +45,6 @@ export const fetchUserData = createAsyncThunk(
     }
   }
 );
+
 export const { setOnlineStatus } = userSlice.actions;
 export default userSlice.reducer;

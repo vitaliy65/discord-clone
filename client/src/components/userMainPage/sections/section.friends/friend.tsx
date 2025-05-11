@@ -48,7 +48,7 @@ export default function Friend({
       >
         <div className="flex flex-row gap-3">
           <ProfileWithStatus user={friend} />
-          <p className="border-friend-list-background">{friend.username}</p>
+          <p className="border-friend-list-background items-position-center">{friend.username}</p>
         </div>
         <button
           className="delete-friend-button"

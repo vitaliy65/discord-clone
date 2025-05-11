@@ -52,6 +52,7 @@ export interface MessageType {
   sender: string;
   content: string;
   timestamp: string;
+  type: "file" | "text" | "image" | "soundMessage";
 }
 
 //           Chat type             //

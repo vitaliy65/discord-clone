@@ -23,6 +23,11 @@ const chatSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
       },
+      type: {
+        type: String,
+        enum: ["file", "text", "image", "soundMessage"],
+        default: "text",
+      },
     },
   ],
   createdAt: {

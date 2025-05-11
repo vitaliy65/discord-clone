@@ -4,8 +4,6 @@ export const friendStatusHandler = async ({ userId, status, socket, io }) => {
   try {
     // Update user status in DB
     const user = await User.findById(userId);
-    user.onlineStatus = status;
-    await user.save();
 
     if (user) {
       user.onlineStatus = status;
