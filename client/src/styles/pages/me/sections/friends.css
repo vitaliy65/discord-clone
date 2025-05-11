@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+/* friend list section */
+.friends-container{
+    @apply flex flex-col min-w-2xs h-screen border-r
+}
+
+.friend-button{
+    @apply flex flex-row justify-between items-center w-full rounded-sm cursor-pointer p-1
+}
+
+.friend-image-container{
+    @apply relative flex shrink-0 justify-end items-end h-8 w-8
+}
+
+.profile-image-container{
+    @apply relative flex shrink-0 justify-end items-end h-10 w-10
+}
+
+.friend-img{
+    @apply rounded-full
+}
+
+.friend-online-status{
+    @apply absolute rounded-full h-3 w-3
+}
+
+.profile-online-status{
+    @apply absolute rounded-full h-4 w-4
+}
+
+.friend-username{
+    @apply truncate text-[16px] w-full text-left
+}
+
+
+/* seacrh friend input field */
+.search-friend-container {
+    @apply flex justify-center items-center w-full p-4 h-14 drop-shadow-[0_4px_4px_rgba(0,0,0,0.25)];
+}
+
+.search-friend-input{
+    @apply w-full p-2 h-7 text-white outline-0 rounded-md
+}
+
+/* friend section container */
+.friend-section-container{
+    @apply flex flex-col grow items-start overflow-y-auto gap-3 py-4 px-4 max-h-full mb-19;
+}
+
+/* buttons */
+.delete-friend-button{
+    @apply flex justify-center items-center rounded-md text-gray-400 hover:text-gray-300 cursor-pointer opacity-0
+}
+
+.friend-button:hover .delete-friend-button {
+    @apply opacity-100;
+}
