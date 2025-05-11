@@ -14,7 +14,6 @@ export default function ImageMessage({
         alt="Uploaded image"
         className="max-w-md max-h-60 object-contain"
         loading="lazy"
-        onClick={download}
       />
       <div onClick={download}></div>
     </div>
