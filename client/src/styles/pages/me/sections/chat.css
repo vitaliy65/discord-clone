@@ -90,3 +90,20 @@
 .file-item button {
     @apply ml-2 text-gray-500 hover:text-gray-700;
 }
+
+
+.file-message-container {
+    @apply flex flex-col gap-2 max-w-2xl m-1;
+}
+
+.file-message-container > img {
+    @apply rounded shadow-lg ;
+}
+
+.file-message-container > audio {
+    @apply rounded shadow-lg;
+}
+
+.file-message-container > video {
+    @apply rounded shadow-lg max-h-60;
+}

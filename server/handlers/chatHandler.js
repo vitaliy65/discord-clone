@@ -3,6 +3,7 @@ import Chat from "../models/Chat.js";
 export default async function handleChat({
   chatId,
   content,
+  type,
   senderId,
   socket,
   io,
@@ -16,6 +17,7 @@ export default async function handleChat({
     const newMessage = {
       sender: senderId,
       content: content,
+      type: type,
       timestamp: new Date(),
     };
 

@@ -13,6 +13,7 @@ import friendRoutes from "./routes/api/friend.js";
 import friendRequestRoutes from "./routes/api/friendRequest.js";
 import channelRoutes from "./routes/api/channel.js";
 import chatRoutes from "./routes/api/chat.js";
+import uploadRoutes from "./routes/api/upload.js";
 
 //handlers
 import handleChat from "./handlers/chatHandler.js";
@@ -68,8 +69,8 @@ io.on("connection", (socket) => {
   console.log("Client connected:", socket.id);
 
   // Initialize chat handlers
-  socket.on("send_message", ({ chatId, content, senderId }) =>
-    handleChat({ chatId, content, senderId, socket, io })
+  socket.on("send_message", ({ chatId, content, type, senderId }) =>
+    handleChat({ chatId, content, type, senderId, socket, io })
   );
 
   socket.on("friend_request_send", ({ username }) =>
@@ -103,6 +104,7 @@ app.use("/api/friend", friendRoutes);
 app.use("/api/friendRequest", friendRequestRoutes);
 app.use("/api/channel", channelRoutes);
 app.use("/api/chat", chatRoutes);
+app.use("/api", uploadRoutes);
 
 // Start server
 httpServer.listen(PORT, () => {

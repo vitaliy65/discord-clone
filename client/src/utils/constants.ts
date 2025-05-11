@@ -7,3 +7,24 @@ export const formatTime = (timestamp: string) => {
   const minutes = String(date.getMinutes()).padStart(2, "0");
   return `${hours}:${minutes}`;
 };
+
+export const getFileType = (
+  file: File
+): "file" | "text" | "image" | "audio" | "video" => {
+  const mimeType = file.type;
+  console.log(mimeType);
+
+  // Check file type categories
+  if (mimeType.startsWith("image/")) return "image";
+  if (mimeType.startsWith("audio/")) return "audio";
+  if (mimeType.startsWith("video/")) return "video";
+  if (mimeType === "application/pdf") return "file";
+  if (
+    mimeType.includes("document") ||
+    mimeType.includes("sheet") ||
+    mimeType.includes("presentation")
+  )
+    return "file";
+
+  return "file"; // Default type
+};

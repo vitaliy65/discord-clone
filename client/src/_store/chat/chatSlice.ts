@@ -20,14 +20,15 @@ const chatSlice = createSlice({
         chatId: string;
         sender: string;
         content: string;
-        type: "file" | "text" | "image" | "soundMessage";
+        type: "file" | "text" | "image" | "audio" | "video";
       }>
     ) => {
-      const { chatId, sender, content } = action.payload;
+      const { chatId, sender, type, content } = action.payload;
       // Only emit to Socket.IO, don't add locally
       socket.emit("send_message", {
         chatId: chatId,
         content: content,
+        type: type,
         senderId: sender,
       });
     },

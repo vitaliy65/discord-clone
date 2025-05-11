@@ -4,6 +4,7 @@ import { addMessage } from "@/_store/chat/chatSlice";
 import { motion, AnimatePresence } from "motion/react";
 import axios from "axios";
 import { SERVER_API_URL } from "@/utils/constants";
+import { getFileType } from "@/utils/constants";
 
 interface FileUploadModalProps {
   isOpen: boolean;
@@ -39,6 +40,8 @@ export default function FileUploadModal({
     if (!currentChatId || selectedFiles.length === 0) return;
 
     const formData = new FormData();
+    formData.append("chatId", currentChatId);
+
     selectedFiles.forEach((file) => {
       formData.append("files", file);
     });
@@ -51,13 +54,13 @@ export default function FileUploadModal({
       });
       const fileUrls = response.data;
 
-      fileUrls.forEach(async (url: string) => {
+      fileUrls.forEach(async (url: string, index: number) => {
         await dispatch(
           addMessage({
             chatId: currentChatId,
             sender: user.id,
             content: url,
-            type: "file",
+            type: getFileType(selectedFiles[index]),
           })
         );
       });
