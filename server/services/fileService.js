@@ -16,9 +16,6 @@ export const fileService = {
   },
 
   generateFileUrls: (files, chatId, userId) => {
-    return files.map(
-      (file) =>
-        `${process.env.SERVER_URL}/api/uploads/${chatId}/${userId}/${file.filename}`
-    );
+    return files.map((file) => `${chatId}/${userId}/${file.originalname}`);
   },
 };

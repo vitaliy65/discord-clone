@@ -1,6 +1,6 @@
 import { Router } from "express";
 import passport from "passport";
-import { upload } from "../../config/multerConfig.js";
+import { upload } from "../../config/multer.js";
 import {
   handleFileUpload,
   handleFileGet,

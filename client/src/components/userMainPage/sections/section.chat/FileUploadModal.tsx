@@ -52,7 +52,8 @@ export default function FileUploadModal({
           Authorization: localStorage.getItem("token") || "",
         },
       });
-      const fileUrls = response.data;
+      // Ensure fileUrls is always an array
+      const fileUrls = response.data.urls;
 
       fileUrls.forEach(async (url: string, index: number) => {
         await dispatch(

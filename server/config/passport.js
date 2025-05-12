@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import { ExtractJwt } from "passport-jwt";
 import { Strategy as JwtStrategy } from "passport-jwt";
 import User from "../models/User.js";

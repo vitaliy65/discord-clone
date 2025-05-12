@@ -1,24 +1,29 @@
 import { fileService } from "../services/fileService.js";
-import Chat from "../models/Chat.js";
-import path from "path";
-import fs from "fs";
+import { uploadFiles } from "../config/storage.js";
 
 export const handleFileUpload = async (req, res) => {
   try {
     const chatId = req.body.chatId;
-    await fileService.validateUpload(chatId, req.user.id);
+    const userId = req.user.id;
 
-    const fileUrls = fileService.generateFileUrls(
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ error: "No files provided" });
+    }
+
+    await fileService.validateUpload(chatId, userId);
+
+    const fileOutputPaths = fileService.generateFileUrls(
       req.files,
       chatId,
-      req.user.id
+      userId
     );
-    res.json(fileUrls);
+
+    const uploadedUrls = await uploadFiles(req.files, fileOutputPaths);
+
+    res.json({ urls: uploadedUrls });
   } catch (error) {
-    console.error(error);
-    res
-      .status(error.message === "Chat not found" ? 404 : 500)
-      .json({ error: error.message });
+    console.error("Upload error:", error);
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -26,22 +31,13 @@ export const handleFileGet = async (req, res) => {
   try {
     const { chatId, userId, filename } = req.params;
 
-    // Resolve absolute file path
-    const filePath = path.join(
-      process.cwd(),
-      "uploads",
-      chatId,
-      userId,
-      filename
-    );
+    // Construct storage path
+    const storagePath = `${chatId}/${userId}/${filename}`;
 
-    // Check if file exists
-    if (!fs.existsSync(filePath)) {
-      return res.status(404).json({ error: "File not found" });
-    }
+    // Get public URL
+    const publicUrl = `https://storage.googleapis.com/${process.env.GOOGLE_CLOUD_BUCKET_NAME}/${storagePath}`;
 
-    // Send file with proper content type
-    res.sendFile(filePath);
+    res.json({ url: publicUrl });
   } catch (error) {
     console.error("File access error:", error);
     res.status(500).json({ error: "Error accessing file" });
