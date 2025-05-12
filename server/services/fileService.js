@@ -16,6 +16,11 @@ export const fileService = {
   },
 
   generateFileUrls: (files, chatId, userId) => {
-    return files.map((file) => `${chatId}/${userId}/${file.originalname}`);
+    return files.map((file) => {
+      const correctedName = Buffer.from(file.originalname, "latin1").toString(
+        "utf8"
+      );
+      return `${chatId}/${userId}/${correctedName}`;
+    });
   },
 };

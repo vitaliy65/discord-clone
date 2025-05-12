@@ -17,7 +17,6 @@ export const handleFileUpload = async (req, res) => {
       chatId,
       userId
     );
-
     const uploadedUrls = await uploadFiles(req.files, fileOutputPaths);
 
     res.json({ urls: uploadedUrls });

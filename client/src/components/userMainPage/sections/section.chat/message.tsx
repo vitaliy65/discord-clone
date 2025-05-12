@@ -1,6 +1,7 @@
 import { useAppSelector } from "@/_hooks/hooks";
 import { formatTime } from "@/utils/constants";
 import { MessageType } from "@/types/types";
+import axios from "axios";
 import FileMessage from "./chat.type.messages/fileMessage";
 import AudioMessage from "./chat.type.messages/audioMessage";
 import ImageMessage from "./chat.type.messages/imageMessage";
@@ -20,18 +21,14 @@ export default function Message({
 
   const handleDownload = async () => {
     try {
-      const response = await fetch(message.content, {
-        headers: {
-          Authorization: localStorage.getItem("token") || "",
-        },
+      const response = await axios.get(message.content, {
+        responseType: "blob",
       });
 
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-
+      const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.download = fileName; // Use original filename
+      link.download = fileName;
       document.body.appendChild(link);
       link.click();
 
