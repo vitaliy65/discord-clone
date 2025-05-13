@@ -1,8 +1,6 @@
 import { MessageType } from "@/types/types";
 import { useEffect, useState } from "react";
 
-import "@/styles/pages/me/sections/messages/imageMessage.css";
-
 export default function ImageMessage({
   message,
   download,

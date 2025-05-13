@@ -1,6 +1,7 @@
 import { useAppSelector } from "@/_hooks/hooks";
 import { formatTime } from "@/utils/constants";
 import { MessageType } from "@/types/types";
+import { useState } from "react";
 import axios from "axios";
 import FileMessage from "./chat.type.messages/fileMessage";
 import AudioMessage from "./chat.type.messages/audioMessage";
@@ -15,6 +16,7 @@ export default function Message({
   message: MessageType;
   drawPicture: boolean;
 }) {
+  const [showDownloadButton, setShowDownloadButton] = useState(false);
   const currentUser = useAppSelector((state) => state.user.info);
   const fileName =
     message.content.split("/")[message.content.split("/").length - 1];
@@ -50,9 +52,21 @@ export default function Message({
       case "image":
         return <ImageMessage message={message} download={handleDownload} />;
       case "audio":
-        return <AudioMessage message={message} download={handleDownload} />;
+        return (
+          <AudioMessage
+            message={message}
+            download={handleDownload}
+            showDownloadButton={showDownloadButton}
+          />
+        );
       case "video":
-        return <VideoMessage message={message} download={handleDownload} />;
+        return (
+          <VideoMessage
+            message={message}
+            download={handleDownload}
+            showDownloadButton={showDownloadButton}
+          />
+        );
       default:
         return <p className="message-text">{message.content}</p>;
     }
@@ -69,6 +83,8 @@ export default function Message({
         className={`text-message-container bg-message ${
           message.sender === currentUser.id ? "bg-sender" : ""
         }`}
+        onMouseEnter={() => setShowDownloadButton(true)}
+        onMouseLeave={() => setShowDownloadButton(false)}
       >
         {renderMessageContent()}
         <span

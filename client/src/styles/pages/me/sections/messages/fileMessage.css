@@ -1,0 +1,5 @@
+@import "tailwindcss";
+
+.file-download-button{
+    @apply absolute rounded-md p-2 h-8 w-8 -right-16 -top-5 cursor-pointer ring-amber-100;
+}
