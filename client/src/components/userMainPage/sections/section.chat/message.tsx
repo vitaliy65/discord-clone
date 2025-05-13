@@ -50,7 +50,13 @@ export default function Message({
       case "file":
         return <FileMessage message={message} download={handleDownload} />;
       case "image":
-        return <ImageMessage message={message} download={handleDownload} />;
+        return (
+          <ImageMessage
+            message={message}
+            download={handleDownload}
+            showDownloadButton={showDownloadButton}
+          />
+        );
       case "audio":
         return (
           <AudioMessage

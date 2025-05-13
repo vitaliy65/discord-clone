@@ -1,11 +1,14 @@
 import { MessageType } from "@/types/types";
 import { useEffect, useState } from "react";
+import FileDownloadButton from "./buttons/fileDownloadButton";
 
 export default function ImageMessage({
   message,
   download,
+  showDownloadButton,
 }: {
   message: MessageType;
+  showDownloadButton: boolean;
   download: () => void;
 }) {
   const [openPhoto, setOpenPhoto] = useState(false);
@@ -44,6 +47,11 @@ export default function ImageMessage({
 
   return (
     <div className="file-message-container">
+      <FileDownloadButton
+        show={showDownloadButton}
+        handleDownload={handleDownload}
+        isDownloading={isDownloading}
+      />
       <img
         src={message.content}
         alt="Uploaded image"
