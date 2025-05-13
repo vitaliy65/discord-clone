@@ -21,21 +21,24 @@ export default function Message({
 
   const handleDownload = async () => {
     try {
+      // Виконуємо GET запит до URL, вказаного в message.content, для отримання файлу
       const response = await axios.get(message.content, {
-        responseType: "blob",
+        responseType: "blob", // Вказуємо, що очікуємо отримати двійковий об'єкт (blob)
       });
 
+      // Створюємо URL для blob-об'єкта, щоб мати можливість завантажити файл
       const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = fileName;
-      document.body.appendChild(link);
-      link.click();
+      const link = document.createElement("a"); // Створюємо новий елемент <a> для завантаження
+      link.href = url; // Встановлюємо атрибут href на створений URL
+      link.download = fileName; // Встановлюємо атрибут download на ім'я файлу
+      document.body.appendChild(link); // Додаємо елемент <a> до тіла документа
+      link.click(); // Імітуємо клік на елементі <a>, щоб запустити завантаження
 
-      // Cleanup
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
+      // Очищення
+      document.body.removeChild(link); // Видаляємо елемент <a> з документа
+      window.URL.revokeObjectURL(url); // Відкликаємо URL, щоб звільнити ресурси
     } catch (error) {
+      // Обробка помилок: виводимо повідомлення в консоль, якщо завантаження не вдалося
       console.error("Download failed:", error);
     }
   };
