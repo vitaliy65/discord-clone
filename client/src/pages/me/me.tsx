@@ -8,7 +8,7 @@ import { socket } from "@/utils/socket";
 import { initializeSocketEvents } from "@/utils/socket";
 import { store } from "@/_store/store";
 
-import "@/styles/pages/me/userMainPage.css";
+import "@/styles/pages/containers/containers.css";
 import { useAppDispatch, useAppSelector } from "@/_hooks/hooks";
 import { setOnlineStatus } from "@/_store/user/userSlice";
 
@@ -38,8 +38,8 @@ export default function Me() {
   }, []);
 
   return (
-    <div className="user-main-page-container">
-      <section className="user-main-left-sidebar-container">
+    <div className="main-page-container">
+      <section className="main-left-section-container">
         <Channels />
         <Friends />
         <UserProfile />

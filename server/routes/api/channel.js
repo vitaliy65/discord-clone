@@ -1,9 +1,20 @@
-import { config } from "dotenv";
-import Channel from "../../models/Channel.js";
 import { Router } from "express";
 import passport from "passport";
-
-config();
+import {
+  getChannelById,
+  getListChannel,
+  createChannel,
+  deleteChannelById,
+  getChannelTextChats,
+  getChannelVoiceChats,
+  addTextChat,
+  addVoiceChat,
+  deleteTextChat,
+  deleteVoiceChat,
+  addMessage,
+  editMessage,
+  deleteMessage,
+} from "../../controllers/channelController.js";
 
 const router = Router();
 
@@ -13,20 +24,7 @@ const router = Router();
 router.get(
   "/list",
   passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    // Check if user has any channels
-    if (req.user.channels.length === 0) {
-      return res.status(400).json({ error: "No channels found" });
-    }
-
-    Channel.find({ _id: { $in: req.user.channels } })
-      .then((channels) => {
-        res.json(channels);
-      })
-      .catch((err) => {
-        res.status(500).json({ error: "Error fetching channels" });
-      });
-  }
+  getListChannel
 );
 
 // @route   GET api/channel/:id
@@ -35,23 +33,7 @@ router.get(
 router.get(
   "/:id",
   passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    // Check if user has access to this channel
-    if (!req.user.channels.includes(req.params.id)) {
-      return res.status(403).json({ error: "Access denied to this channel" });
-    }
-
-    Channel.findById(req.params.id)
-      .then((channel) => {
-        if (!channel) {
-          return res.status(404).json({ error: "Channel not found" });
-        }
-        res.json(channel);
-      })
-      .catch((err) => {
-        res.status(500).json({ error: "Error fetching channel" });
-      });
-  }
+  getChannelById
 );
 
 // @route   POST api/channel/create
@@ -60,36 +42,7 @@ router.get(
 router.post(
   "/create",
   passport.authenticate("jwt", { session: false }),
-  async (req, res) => {
-    const { name, description, avatar } = req.body;
-
-    // Validate input
-    if (!name || !description || !avatar) {
-      return res.status(400).json({ error: "All fields are required" });
-    }
-
-    try {
-      // Create a new channel
-      const newChannel = new Channel({
-        name,
-        description,
-        avatar,
-        owner: req.user._id,
-        members: [{ user: req.user._id, userServerRole: "admin" }], // Add the owner as the first member
-      });
-
-      await newChannel.save();
-
-      // Add channel ID to user's channels list
-      req.user.channels.push(newChannel._id);
-      await req.user.save();
-
-      res.status(201).json(newChannel);
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ error: "Error creating channel" });
-    }
-  }
+  createChannel
 );
 
 // @route   DELETE api/channel/:id
@@ -98,33 +51,58 @@ router.post(
 router.delete(
   "/:id",
   passport.authenticate("jwt", { session: false }),
-  async (req, res) => {
-    try {
-      // Check if user has access to this channel
-      if (!req.user.channels.includes(req.params.id)) {
-        return res.status(403).json({ error: "Access denied to this channel" });
-      }
+  deleteChannelById
+);
 
-      const channel = await Channel.findById(req.params.id);
-      if (!channel) {
-        return res.status(404).json({ error: "Channel not found" });
-      }
+// New routes for text chats
+router.get(
+  "/:id/text-chats",
+  passport.authenticate("jwt", { session: false }),
+  getChannelTextChats
+);
+router.post(
+  "/:id/text-chats",
+  passport.authenticate("jwt", { session: false }),
+  addTextChat
+);
+router.delete(
+  "/:id/text-chats/:chatId",
+  passport.authenticate("jwt", { session: false }),
+  deleteTextChat
+);
 
-      // Delete the channel
-      await Channel.findByIdAndDelete(req.params.id);
+// New routes for voice chats
+router.get(
+  "/:id/voice-chats",
+  passport.authenticate("jwt", { session: false }),
+  getChannelVoiceChats
+);
+router.post(
+  "/:id/voice-chats",
+  passport.authenticate("jwt", { session: false }),
+  addVoiceChat
+);
+router.delete(
+  "/:id/voice-chats/:chatId",
+  passport.authenticate("jwt", { session: false }),
+  deleteVoiceChat
+);
 
-      // Remove channel from user's channels list
-      req.user.channels = req.user.channels.filter(
-        (channelId) => channelId.toString() !== req.params.id
-      );
-      await req.user.save();
-
-      res.json({ success: true, message: "Channel deleted successfully" });
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ error: "Error deleting channel" });
-    }
-  }
+// New routes for messages
+router.post(
+  "/:id/text-chats/:chatId/messages",
+  passport.authenticate("jwt", { session: false }),
+  addMessage
+);
+router.put(
+  "/:id/text-chats/:chatId/messages/:messageId",
+  passport.authenticate("jwt", { session: false }),
+  editMessage
+);
+router.delete(
+  "/:id/text-chats/:chatId/messages/:messageId",
+  passport.authenticate("jwt", { session: false }),
+  deleteMessage
 );
 
 const channelRoutes = router;

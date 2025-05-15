@@ -1,9 +1,0 @@
-@import "tailwindcss";
-
-.user-main-page-container {
-  @apply flex flex-row w-screen h-screen overflow-hidden;
-}
-
-.user-main-left-sidebar-container{
-  @apply relative flex flex-row h-full justify-center items-end
-}

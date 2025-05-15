@@ -1,5 +1,5 @@
 @import "tailwindcss";
 
 .auth-form-bg{
-    @apply flex justify-center items-center w-full min-h-screen bg-[url(/web-app-login-bg.png)]
+    @apply flex justify-center items-center w-full min-h-screen bg-[url(/web-app-login-bg.webp)]
  }

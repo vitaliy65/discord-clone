@@ -10,7 +10,7 @@ import Login from "./pages/auth/login";
 import Register from "./pages/auth/register";
 import NotFound from "./pages/not-found";
 import AuthLayout from "./pages/auth/authLayout";
-import Me from "./pages/me/page";
+import Me from "./pages/me/me";
 
 import CheckAuth from "./components/auth/checkAuth";
 import { store } from "@/_store/store";
@@ -22,6 +22,8 @@ import { Provider } from "react-redux";
 import Chat from "./components/userMainPage/chat";
 import AddFriend from "./components/userMainPage/sections/section.friends/addFriend";
 import FriendRequets from "./components/userMainPage/sections/section.friendRequests/friendRequets";
+import Channel from "./pages/channel/channel";
+import ChannelsLayout from "./pages/channel/channelsLayout";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -39,6 +41,17 @@ const router = createBrowserRouter(
         <Route path=":id" element={<Chat />} />
         <Route path="addFriend" element={<AddFriend />} />
         <Route path="friendRequests" element={<FriendRequets />} />
+      </Route>
+
+      <Route
+        path="channels"
+        element={
+          <CheckAuth>
+            <ChannelsLayout />
+          </CheckAuth>
+        }
+      >
+        <Route path=":id/:id" element={<Channel />} />
       </Route>
 
       {/* Main Layout */}

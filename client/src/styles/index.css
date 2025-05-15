@@ -16,11 +16,12 @@
   -moz-osx-font-smoothing: grayscale;
 
   --mainText: #949ba4;
-  --mainBackground: #283443;
+  --message: #283443;
   --channelsBackground: #10151b;
   --friendsBackground: #1d2631;
   --senderMessage: #4c75a8;
-  --profile:var(--mainBackground);
+  --sectionBorder: #4c75a8#283443;
+  --profile: #283443;
   --clicked: #324255;
   --customFocus: #3d5067;
 }
@@ -28,14 +29,17 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
+  --color-section: var(--sectionBorder);
   --color-channels: var(--channelsBackground);
   --color-friends: var(--friendsBackground);
-  --color-message: var(--mainBackground);
+  --color-message: var(--message);
   --color-main-text: var(--mainText);
   --color-sender: var(--senderMessage);
   --color-custom-focus: var(--customFocus);
   --color-clicked: var(--clicked);
   --color-profile: var(--profile);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }

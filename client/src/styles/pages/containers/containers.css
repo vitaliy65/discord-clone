@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+/* main section containers */
+.second-left-container{
+    @apply flex flex-col min-w-2xs h-screen
+}
+
+.main-page-container {
+    @apply flex flex-row w-screen h-screen overflow-hidden;
+}
+  
+.main-left-section-container{
+    @apply relative flex flex-row h-full justify-center items-end
+}
+
+
+
+/* chat section containers */
+.select-chat-container {
+    @apply rounded-full p-0.5 px-2;
+}
+
+.chat-container {
+    @apply flex flex-col w-full h-full overflow-hidden;
+}
+
+.chat-header-container {
+    @apply flex justify-start items-center flex-row w-full p-4 h-14 gap-4;
+}
+
+.chat-header-menu-container {
+    @apply flex flex-row justify-start items-center w-full overflow-hidden p-4 h-14 gap-4;
+}
+
+.message-container {
+    @apply flex flex-row items-end gap-4;
+}
+
+.text-message-container {
+    @apply flex flex-row items-end w-fit max-w-3xl h-fit rounded-xl p-0.5 px-2 whitespace-pre-wrap break-words;
+}
+
+.messages-container {
+    @apply flex flex-col p-4 w-full h-full overflow-y-scroll scroll-smooth gap-2;
+}
+
+.input-container {
+    @apply flex justify-start flex-col w-full p-4 max-h-30;
+}

@@ -74,4 +74,47 @@ export interface ChannelType {
   channelAvatar: string;
   dateCreated: string;
   members: string[];
+  textChats: ChannelTextChatType[];
+  voiceChats: ChannelVoiceChatType[];
+}
+
+interface ChannelTextChatType {
+  name: string;
+  type: "text" | "announcement";
+  messages: ChannelMessageType[];
+}
+
+interface ChannelMessageType {
+  sender: string;
+  content: string;
+  timestamp: string;
+  messageType: "file" | "text" | "image" | "audio" | "video";
+  fileUrl: string;
+  edited: boolean;
+}
+
+interface ChannelVoiceChatType {
+  name: string;
+  maxParticipants: number;
+  connectedUsers: VoiceChatConnectedUsers[];
+  isLocked: boolean;
+  bitrate: number;
+  permissions: VoiceChatPermissions;
+}
+
+interface VoiceChatConnectedUsers {
+  user: string;
+  joinedAt: string;
+  voiceState: {
+    muted: boolean;
+    deafened: boolean;
+    videoEnabled: boolean;
+    screenSharing: boolean;
+  };
+}
+
+interface VoiceChatPermissions {
+  speakingAllowed: boolean;
+  videoAllowed: boolean;
+  screenShareAllowed: boolean;
 }
