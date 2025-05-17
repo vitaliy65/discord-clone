@@ -10,8 +10,6 @@ export const handleFileUpload = async (req, res) => {
       return res.status(400).json({ error: "No files provided" });
     }
 
-    await fileService.validateUpload(chatId, userId);
-
     const fileOutputPaths = fileService.generateFileUrls(
       req.files,
       chatId,

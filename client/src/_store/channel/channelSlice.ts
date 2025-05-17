@@ -2,17 +2,25 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { SERVER_API_URL } from "@/utils/constants";
 import { RootState } from "@/_store/store";
-import { ChannelType } from "@/types/types";
+import {
+  ChannelType,
+  ChannelTextChatType,
+  ChannelVoiceChatType,
+  MessageType,
+} from "@/types/types";
+import { socket } from "@/utils/socket";
 
 type ChannelState = {
   channels: ChannelType[];
   currentChannel: ChannelType | null;
+  currentChat: ChannelTextChatType | ChannelVoiceChatType | null;
   activeChannelIndex: number;
 };
 
 const initialState: ChannelState = {
   channels: [],
   currentChannel: null,
+  currentChat: null,
   activeChannelIndex: -1,
 };
 
@@ -33,8 +41,61 @@ const channelSlice = createSlice({
 
       state.currentChannel = foundChannel;
     },
+    setCurrentChat: (
+      state,
+      action: PayloadAction<ChannelTextChatType | ChannelVoiceChatType | null>
+    ) => {
+      state.currentChat = action.payload;
+    },
     setActiveChannelIndex: (state, action: PayloadAction<number>) => {
       state.activeChannelIndex = action.payload;
+    },
+    addMessageToCurrentChat: (
+      _,
+      action: PayloadAction<{
+        channelId: string;
+        chatId: string;
+        sender: string;
+        content: string;
+        type: "file" | "text" | "image" | "audio" | "video";
+      }>
+    ) => {
+      const { channelId, chatId, sender, type, content } = action.payload;
+
+      socket.emit("channel_send_message", {
+        channelId: channelId,
+        chatId: chatId,
+        content: content,
+        type: type,
+        senderId: sender,
+      });
+    },
+    receiveChannelMessage: (
+      state,
+      action: PayloadAction<{
+        channelId: string;
+        chatId: string;
+        message: MessageType;
+      }>
+    ) => {
+      const { channelId, chatId, message } = action.payload;
+      // Update in currentChat
+      if (
+        state.currentChat &&
+        "messages" in state.currentChat &&
+        state.currentChat._id === chatId
+      ) {
+        state.currentChat.messages.push(message);
+      }
+
+      // Update in channels array
+      const channel = state.channels.find((ch) => ch._id === channelId);
+      if (channel) {
+        const chat = channel.textChats.find((chat) => chat._id === chatId);
+        if (chat && "messages" in chat) {
+          chat.messages.push(message);
+        }
+      }
     },
   },
   extraReducers: (builder) => {
@@ -107,6 +168,11 @@ export const createChannel = createAsyncThunk(
   }
 );
 
-export const { setActiveChannelIndex, setCurrentChannel } =
-  channelSlice.actions;
+export const {
+  addMessageToCurrentChat,
+  setActiveChannelIndex,
+  setCurrentChannel,
+  setCurrentChat,
+  receiveChannelMessage,
+} = channelSlice.actions;
 export default channelSlice.reducer;

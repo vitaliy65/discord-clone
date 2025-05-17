@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import { useAppSelector } from "@/_hooks/hooks";
+import { useAppDispatch, useAppSelector } from "@/_hooks/hooks";
+import { addMessage } from "@/_store/chat/chatSlice";
 
 import ChatHeader from "./sections/section.chat/chat-header";
 import Messages from "./sections/section.chat/messages";
@@ -7,6 +8,8 @@ import ChatInput from "./sections/section.chat/input";
 
 export default function Chat() {
   const { chats, currentChat } = useAppSelector((state) => state.chat);
+  const messages = useAppSelector((state) => state.chat.currentChatMessages);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (currentChat) {
@@ -33,8 +36,20 @@ export default function Chat() {
   return (
     <main className="chat-container bg-channels">
       <ChatHeader />
-      <Messages />
-      <ChatInput />
+      <Messages messages={messages} />
+      <ChatInput
+        currentChatId={currentChat}
+        saveMessageFun={async (user, message, type) => {
+          await dispatch(
+            addMessage({
+              chatId: currentChat,
+              sender: user.id,
+              content: message,
+              type: type,
+            })
+          );
+        }}
+      />
     </main>
   );
 }

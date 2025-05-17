@@ -1,9 +1,9 @@
 import { useAppSelector } from "@/_hooks/hooks";
 import Message from "./message";
 import { useEffect, useState } from "react";
+import { MessageType } from "@/types/types";
 
-export default function Messages() {
-  const messages = useAppSelector((state) => state.chat.currentChatMessages);
+export default function Messages({ messages }: { messages: MessageType[] }) {
   const currentUserId = useAppSelector((state) => state.user.info.id);
   const [windowWidthLessLG, setWindowWidthLessLG] = useState(
     window.innerWidth < 1024

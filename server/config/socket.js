@@ -3,6 +3,7 @@ import {
   handleNewFriendRequest,
   handleAcceptFriendRequest,
 } from "../handlers/friendRequestHandler.js";
+import handleChannelChat from "../handlers/channelChatHandler.js";
 import { friendStatusHandler } from "../handlers/friendHandler.js";
 
 const initializeSocket = (io) => {
@@ -33,6 +34,21 @@ const initializeSocket = (io) => {
     socket.on("register_user", (userId) => {
       socket.join(userId);
     });
+
+    socket.on(
+      "channel_send_message",
+      ({ channelId, chatId, content, type, senderId }) => {
+        handleChannelChat({
+          channelId,
+          chatId,
+          content,
+          type,
+          senderId,
+          socket,
+          io,
+        });
+      }
+    );
   });
 };
 

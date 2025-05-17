@@ -45,5 +45,5 @@
 }
 
 .input-container {
-    @apply flex justify-start flex-col w-full p-4 max-h-30;
+    @apply flex justify-start flex-col w-full p-4 max-h-30 border-t;
 }

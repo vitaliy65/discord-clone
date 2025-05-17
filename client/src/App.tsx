@@ -52,6 +52,7 @@ const router = createBrowserRouter(
         }
       >
         <Route path=":id" element={<ChannelChat />} />
+        <Route path=":id/:id" element={<ChannelChat />} />
       </Route>
 
       {/* Main Layout */}

@@ -7,6 +7,7 @@ import { ChannelType } from "@/types/types";
 import {
   setActiveChannelIndex,
   setCurrentChannel,
+  setCurrentChat,
 } from "@/_store/channel/channelSlice";
 
 export default function Channels() {
@@ -18,9 +19,12 @@ export default function Channels() {
   const dispatch = useAppDispatch();
 
   const handleOpenChannel = async (channel: ChannelType, index: number) => {
-    await dispatch(setActiveChannelIndex(index));
-    await dispatch(setCurrentChannel(channel._id));
-    await navigate(`/channels/${channel._id}`, { replace: true });
+    await Promise.all([
+      dispatch(setActiveChannelIndex(index)),
+      dispatch(setCurrentChannel(channel._id)),
+      dispatch(setCurrentChat(null)),
+    ]);
+    navigate(`/channels/${channel._id}`, { replace: true });
   };
 
   const handleHome = async () => {

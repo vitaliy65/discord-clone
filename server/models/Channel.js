@@ -52,7 +52,6 @@ const channelSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
             required: true,
-            index: true,
           },
           content: {
             type: String,
@@ -61,17 +60,11 @@ const channelSchema = new mongoose.Schema({
           timestamp: {
             type: Date,
             default: Date.now,
-            index: true,
           },
-          messageType: {
+          type: {
             type: String,
-            enum: ["text", "file", "image", "audio", "video"],
+            enum: ["file", "text", "image", "audio", "video"],
             default: "text",
-          },
-          fileUrl: String,
-          edited: {
-            type: Boolean,
-            default: false,
           },
         },
       ],

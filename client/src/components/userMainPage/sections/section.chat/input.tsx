@@ -1,15 +1,25 @@
 import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "@/_hooks/hooks";
-import { addMessage } from "@/_store/chat/chatSlice";
+import { useAppSelector } from "@/_hooks/hooks";
 import IconButton from "@/components/img-containers/icon-button";
 import FileUploadModal from "./FileUploadModal";
+import { UserType } from "@/types/types";
 
-export default function ChatInput() {
+interface ChatInputProps {
+  currentChatId: string;
+  saveMessageFun: (
+    user: UserType,
+    message: string,
+    type: "file" | "text" | "image" | "audio" | "video"
+  ) => void;
+}
+
+export default function ChatInput({
+  currentChatId,
+  saveMessageFun,
+}: ChatInputProps) {
   const [message, setMessage] = useState("");
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
-  const dispatch = useAppDispatch();
-  const currentChatId = useAppSelector((state) => state.chat.currentChat);
   const user = useAppSelector((state) => state.user.info);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,22 +34,15 @@ export default function ChatInput() {
   const handleSendMessage = async (
     e: React.KeyboardEvent<HTMLInputElement>
   ) => {
-    if (e.key === "Enter" && message.trim() && currentChatId) {
+    if (e.key === "Enter" && message.trim()) {
       e.preventDefault();
-      await dispatch(
-        addMessage({
-          chatId: currentChatId,
-          sender: user.id,
-          content: message,
-          type: "text",
-        })
-      );
+      saveMessageFun(user, message, "text");
       setMessage("");
     }
   };
 
   return (
-    <div className="input-container bg-friends">
+    <div className="input-container bg-friends border-channels">
       <div className="flex flex-row">
         <label className="file-input-label">
           <input
@@ -61,12 +64,14 @@ export default function ChatInput() {
       </div>
 
       <FileUploadModal
+        currentChatId={currentChatId}
         isOpen={isUploadModalOpen}
         onClose={() => {
           setIsUploadModalOpen(false);
           setSelectedFiles([]);
         }}
         initialFiles={selectedFiles}
+        saveMessageFun={saveMessageFun}
       />
     </div>
   );

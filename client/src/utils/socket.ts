@@ -11,6 +11,7 @@ import {
   fetchFriends,
   changeFriendOnlineStatus,
 } from "@/_store/friend/friendSlice";
+import { receiveChannelMessage } from "@/_store/channel/channelSlice";
 import { Navigate } from "react-router-dom";
 
 export const socket = io(SERVER_URL, {
@@ -25,7 +26,6 @@ export const initializeSocketEvents = (store: typeof StoreType) => {
   socket.on("receive_message", (data) => {
     const { chatId, message } = data;
     store.dispatch(reciveMessage({ chatId, message }));
-    console.log("Received message: ", data);
   });
 
   socket.on("friend_request_received", () => {
@@ -54,6 +54,10 @@ export const initializeSocketEvents = (store: typeof StoreType) => {
       store.dispatch(changeFriendOnlineStatus({ friendId, status }));
     }
   );
+
+  socket.on("channel_chat_message_receive", (data) => {
+    store.dispatch(receiveChannelMessage(data));
+  });
 
   isInitialized = true;
 };

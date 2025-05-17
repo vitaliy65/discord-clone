@@ -78,24 +78,14 @@ export interface ChannelType {
   voiceChats: ChannelVoiceChatType[];
 }
 
-interface ChannelTextChatType {
+export interface ChannelTextChatType {
   _id: string;
   name: string;
   type: "text" | "announcement";
-  messages: ChannelMessageType[];
+  messages: MessageType[];
 }
 
-interface ChannelMessageType {
-  _id: string;
-  sender: string;
-  content: string;
-  timestamp: string;
-  messageType: "file" | "text" | "image" | "audio" | "video";
-  fileUrl: string;
-  edited: boolean;
-}
-
-interface ChannelVoiceChatType {
+export interface ChannelVoiceChatType {
   _id: string;
   name: string;
   maxParticipants: number;

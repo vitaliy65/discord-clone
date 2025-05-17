@@ -1,26 +1,32 @@
 import { useState, useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "@/_hooks/hooks";
-import { addMessage } from "@/_store/chat/chatSlice";
+import { useAppSelector } from "@/_hooks/hooks";
 import { motion, AnimatePresence } from "motion/react";
 import axios from "axios";
 import { SERVER_API_URL } from "@/utils/constants";
 import { getFileType } from "@/utils/constants";
+import { UserType } from "@/types/types";
 
 interface FileUploadModalProps {
+  currentChatId: string;
   isOpen: boolean;
   onClose: () => void;
   initialFiles: File[];
+  saveMessageFun: (
+    user: UserType,
+    message: string,
+    type: "file" | "text" | "image" | "audio" | "video"
+  ) => void;
 }
 
 export default function FileUploadModal({
+  currentChatId,
   isOpen,
   onClose,
   initialFiles,
+  saveMessageFun,
 }: FileUploadModalProps) {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-  const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user.info);
-  const currentChatId = useAppSelector((state) => state.chat.currentChat);
 
   useEffect(() => {
     if (isOpen) {
@@ -56,14 +62,7 @@ export default function FileUploadModal({
       const fileUrls = response.data.urls;
 
       fileUrls.forEach(async (url: string, index: number) => {
-        await dispatch(
-          addMessage({
-            chatId: currentChatId,
-            sender: user.id,
-            content: url,
-            type: getFileType(selectedFiles[index]),
-          })
-        );
+        saveMessageFun(user, url, getFileType(selectedFiles[index]));
       });
       setSelectedFiles([]);
       onClose();

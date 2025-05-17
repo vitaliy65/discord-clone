@@ -12,7 +12,6 @@ export const getFileType = (
   file: File
 ): "file" | "text" | "image" | "audio" | "video" => {
   const mimeType = file.type;
-  console.log(mimeType);
 
   // Check file type categories
   if (mimeType.startsWith("image/")) return "image";
