@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+.channel-chats-container {
+  @apply flex flex-col min-w-2xs h-screen border-l;
+}
+
+.channel-name {
+  @apply p-4 border-b;
+}
+
+.chats-section {
+  @apply flex flex-col py-2 w-full;
+}
+
+.chat-category {
+  @apply py-2 text-sm text-gray-400;
+}
+
+.chat-item {
+  @apply flex items-center px-1  py-1.5 rounded hover:bg-message cursor-pointer text-gray-300 hover:text-white;
+}
+
+.text-chat {
+  @apply flex items-center gap-2;
+}
+
+.voice-chat {
+  @apply flex items-center gap-2;
+}

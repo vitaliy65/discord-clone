@@ -69,9 +69,9 @@ export interface ChatType {
 //          Channel type           //
 export interface ChannelType {
   _id: string;
-  channelName: string;
-  channelDescription: string;
-  channelAvatar: string;
+  name: string;
+  description: string;
+  avatar: string;
   dateCreated: string;
   members: string[];
   textChats: ChannelTextChatType[];
@@ -79,12 +79,14 @@ export interface ChannelType {
 }
 
 interface ChannelTextChatType {
+  _id: string;
   name: string;
   type: "text" | "announcement";
   messages: ChannelMessageType[];
 }
 
 interface ChannelMessageType {
+  _id: string;
   sender: string;
   content: string;
   timestamp: string;
@@ -94,6 +96,7 @@ interface ChannelMessageType {
 }
 
 interface ChannelVoiceChatType {
+  _id: string;
   name: string;
   maxParticipants: number;
   connectedUsers: VoiceChatConnectedUsers[];
@@ -103,6 +106,7 @@ interface ChannelVoiceChatType {
 }
 
 interface VoiceChatConnectedUsers {
+  _id: string;
   user: string;
   joinedAt: string;
   voiceState: {

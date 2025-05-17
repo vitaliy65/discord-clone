@@ -2,7 +2,6 @@ import SearchFriend from "./sections/section.friends/searchFriend";
 import Friend from "./sections/section.friends/friend";
 import { useAppSelector } from "@/_hooks/hooks";
 
-import "@/styles/pages/me/sections/friends.css";
 import { useEffect, useState } from "react";
 import { FriendType } from "@/types/types";
 

@@ -1,5 +1,3 @@
-import "@/styles/pages/auth/register.css";
-
 export default function Input({
   type,
   name,

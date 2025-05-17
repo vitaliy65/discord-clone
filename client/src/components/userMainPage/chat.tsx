@@ -5,8 +5,6 @@ import ChatHeader from "./sections/section.chat/chat-header";
 import Messages from "./sections/section.chat/messages";
 import ChatInput from "./sections/section.chat/input";
 
-import "@/styles/pages/me/sections/chat.css";
-
 export default function Chat() {
   const { chats, currentChat } = useAppSelector((state) => state.chat);
 

@@ -4,8 +4,6 @@ import { addMessage } from "@/_store/chat/chatSlice";
 import IconButton from "@/components/img-containers/icon-button";
 import FileUploadModal from "./FileUploadModal";
 
-import "@/styles/pages/me/sections/chat.css";
-
 export default function ChatInput() {
   const [message, setMessage] = useState("");
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);

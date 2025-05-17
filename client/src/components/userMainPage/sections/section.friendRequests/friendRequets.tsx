@@ -7,8 +7,6 @@ import {
 } from "@/_store/friendRequest/friendRequestSlice";
 import ProfilePicture from "@/components/img-containers/profile";
 
-import "@/styles/pages/me/sections/friendRequests.css";
-
 export default function FriendRequets() {
   const dispatch = useAppDispatch();
   const friendRequests = useAppSelector(

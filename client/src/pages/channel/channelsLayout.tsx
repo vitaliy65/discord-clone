@@ -5,8 +5,6 @@ import ChannelMembers from "@/components/channels.layout/channelMembers";
 import ChannelChats from "@/components/channels.layout/channelChats";
 import ChannelMenu from "@/components/channels.layout/channelMenu";
 
-import "@/styles/pages/containers/containers.css";
-
 export default function ChannelsLayout() {
   return (
     <div className="main-page-container">

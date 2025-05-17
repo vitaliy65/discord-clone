@@ -1,0 +1,63 @@
+.channel-modal__overlay {
+    @apply fixed inset-0 bg-black/50 flex items-center justify-center z-50;
+  }
+  
+  .channel-modal__content {
+    @apply bg-friends p-6 rounded-lg shadow-xl w-[480px];
+  }
+  
+  .channel-modal__title {
+    @apply text-2xl font-bold mb-6;
+  }
+  
+  .channel-modal__form {
+    @apply space-y-4;
+  }
+  
+  .channel-modal__field {
+    @apply block text-sm font-medium mb-1;
+  }
+  
+  .channel-modal__input {
+    @apply w-full p-2 rounded bg-channels focus:outline-none focus:ring-2 focus:ring-blue-500;
+  }
+  
+  .channel-modal__textarea {
+    @apply w-full p-2 rounded bg-channels focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[100px];
+  }
+  
+  .channel-modal__avatar-container {
+    @apply flex items-center space-x-4;
+  }
+  
+  .channel-modal__avatar {
+    @apply w-16 h-16 rounded-full;
+  }
+  
+  .channel-modal__info {
+    @apply bg-channels p-4 rounded text-sm opacity-75;
+  }
+  
+  .channel-modal__info-list {
+    @apply list-disc list-inside mt-2;
+  }
+  
+  .channel-modal__error {
+    @apply text-red-500 text-sm;
+  }
+  
+  .channel-modal__buttons {
+    @apply flex justify-end space-x-3 pt-4;
+  }
+  
+  .channel-modal__button {
+    @apply px-4 py-2 rounded;
+  }
+  
+  .channel-modal__button--cancel {
+    @apply hover:bg-message text-gray-400;
+  }
+  
+  .channel-modal__button--create {
+    @apply bg-blue-500 hover:bg-blue-600 text-white;
+  }

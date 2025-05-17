@@ -5,8 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { SERVER_API_URL } from "@/utils/constants";
 import FadeInFadeOut from "@/components/animatedComponents/fadeInFadeOut";
 
-import "@/styles/pages/auth/login.css";
-
 export interface LoginUserData {
   email: string;
   password: string;

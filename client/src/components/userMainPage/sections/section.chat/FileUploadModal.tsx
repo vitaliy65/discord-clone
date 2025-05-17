@@ -6,9 +6,6 @@ import axios from "axios";
 import { SERVER_API_URL } from "@/utils/constants";
 import { getFileType } from "@/utils/constants";
 
-import "@/styles/pages/me/sections/messages/imageMessage.css";
-import "@/styles/pages/me/sections/messages/fileMessage.css";
-
 interface FileUploadModalProps {
   isOpen: boolean;
   onClose: () => void;

@@ -1,4 +1,19 @@
 @import "tailwindcss";
+@import "./animated-components/pop-up.css";
+@import "./components/custom.buttons/filter.buttons.css";
+@import "./pages/auth/bg.css";
+@import "./pages/auth/login.css";
+@import "./pages/auth/register.css";
+@import "./pages/containers/containers.css";
+@import "./pages/me/sections/channels.css";
+@import "./pages/me/sections/chat.css";
+@import "./pages/me/sections/friendRequests.css";
+@import "./pages/me/sections/friends.css";
+@import "./pages/me/sections/userProfile.css";
+@import "./pages/me/sections/messages/fileMessage.css";
+@import "./pages/me/sections/messages/imageMessage.css";
+@import "./pages/channel/channel.modal.css";
+@import "./pages/channel/channel.chat.list.css";
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -20,7 +35,7 @@
   --channelsBackground: #10151b;
   --friendsBackground: #1d2631;
   --senderMessage: #4c75a8;
-  --sectionBorder: #4c75a8#283443;
+  --sectionBorder: #283443;
   --profile: #283443;
   --clicked: #324255;
   --customFocus: #3d5067;

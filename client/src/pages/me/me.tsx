@@ -8,7 +8,6 @@ import { socket } from "@/utils/socket";
 import { initializeSocketEvents } from "@/utils/socket";
 import { store } from "@/_store/store";
 
-import "@/styles/pages/containers/containers.css";
 import { useAppDispatch, useAppSelector } from "@/_hooks/hooks";
 import { setOnlineStatus } from "@/_store/user/userSlice";
 

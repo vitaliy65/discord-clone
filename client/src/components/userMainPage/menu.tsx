@@ -10,7 +10,6 @@ import {
   setOpenAddFriendForm,
 } from "@/_store/filter/filterFriendSlice";
 
-import "@/styles/components/custom.buttons/filter.buttons.css";
 import { useNavigate } from "react-router-dom";
 
 export default function Menu() {

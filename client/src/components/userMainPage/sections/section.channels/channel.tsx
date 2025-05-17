@@ -21,12 +21,7 @@ export default function ChannelsIcon({
       className="channel-button-img bg-friends"
       onClick={onClick}
     >
-      <img
-        src={channel.channelAvatar}
-        alt="channelsIcon"
-        width={128}
-        height={128}
-      />
+      <img src={channel.avatar} alt="channelsIcon" width={128} height={128} />
     </motion.button>
   );
 }

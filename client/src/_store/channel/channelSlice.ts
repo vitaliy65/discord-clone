@@ -7,11 +7,13 @@ import { ChannelType } from "@/types/types";
 type ChannelState = {
   channels: ChannelType[];
   currentChannel: ChannelType | null;
+  activeChannelIndex: number;
 };
 
 const initialState: ChannelState = {
   channels: [],
   currentChannel: null,
+  activeChannelIndex: -1,
 };
 
 const channelSlice = createSlice({
@@ -30,6 +32,9 @@ const channelSlice = createSlice({
       }
 
       state.currentChannel = foundChannel;
+    },
+    setActiveChannelIndex: (state, action: PayloadAction<number>) => {
+      state.activeChannelIndex = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -102,5 +107,6 @@ export const createChannel = createAsyncThunk(
   }
 );
 
-export const { setCurrentChannel } = channelSlice.actions;
+export const { setActiveChannelIndex, setCurrentChannel } =
+  channelSlice.actions;
 export default channelSlice.reducer;

@@ -1,5 +1,4 @@
 import { AnimatePresence, motion } from "motion/react";
-import "@/styles/animated-components/pop-up.css";
 import Input from "../auth/custom.input";
 import { useState } from "react";
 

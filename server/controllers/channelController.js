@@ -51,7 +51,28 @@ export const createChannel = async (req, res) => {
       description,
       avatar,
       owner: req.user._id,
-      members: [{ user: req.user._id, userServerRole: "admin" }], // Add the owner as the first member
+      members: [{ user: req.user._id, userServerRole: "admin" }],
+      textChats: [
+        {
+          name: "general",
+          type: "text",
+          messages: [],
+        },
+      ],
+      voiceChats: [
+        {
+          name: "Group",
+          maxParticipants: 99,
+          connectedUsers: [],
+          isLocked: false,
+          bitrate: 64000,
+          permissions: {
+            speakingAllowed: true,
+            videoAllowed: true,
+            screenShareAllowed: true,
+          },
+        },
+      ],
     });
 
     await newChannel.save();
