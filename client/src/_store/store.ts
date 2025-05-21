@@ -5,6 +5,7 @@ import channelSlice from "./channel/channelSlice";
 import chatSlice from "./chat/chatSlice";
 import filterFriendSlice from "./filter/filterFriendSlice";
 import friendRequestSlice from "./friendRequest/friendRequestSlice";
+import channelMembersSlice from "./channelMembers/channelMembersSlice";
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     friend: friendSlice,
     filter: filterFriendSlice,
     friendRequest: friendRequestSlice,
+    channelMembers: channelMembersSlice,
   },
 });
 
