@@ -8,7 +8,7 @@ import { friendStatusHandler } from "../handlers/friendHandler.js";
 
 const initializeSocket = (io) => {
   io.on("connection", (socket) => {
-    console.log("Client connected:", socket.id);
+    //console.log("Client connected:", socket.id);
 
     // Initialize chat handlers
     socket.on("send_message", ({ chatId, content, type, senderId }) =>
@@ -28,7 +28,7 @@ const initializeSocket = (io) => {
     );
 
     socket.on("disconnect", () => {
-      console.log("Client disconnected:", socket.id);
+      //console.log("Client disconnected:", socket.id);
     });
 
     socket.on("register_user", (userId) => {

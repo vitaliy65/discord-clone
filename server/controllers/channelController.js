@@ -39,6 +39,7 @@ export const getChannelById = (req, res) => {
 
 export const getChannelMembers = async (req, res) => {
   // Перевірка, чи має користувач доступ до цього каналу
+  //console.log("i'am getting members");
   if (!req.user.channels.includes(req.params.id)) {
     return res.status(403).json({ error: "Access denied to this channel" });
   }
