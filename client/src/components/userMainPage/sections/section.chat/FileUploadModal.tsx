@@ -3,7 +3,7 @@ import { useAppSelector } from "@/_hooks/hooks";
 import { motion, AnimatePresence } from "motion/react";
 import axios from "axios";
 import { SERVER_API_URL } from "@/utils/constants";
-import { getFileType } from "@/utils/constants";
+import { getFileType } from "@/utils/functions";
 import { UserType } from "@/types/types";
 
 interface FileUploadModalProps {

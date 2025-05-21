@@ -14,6 +14,7 @@ import {
   addMessage,
   editMessage,
   deleteMessage,
+  getChannelMembers,
 } from "../../controllers/channelController.js";
 
 const router = Router();
@@ -52,6 +53,15 @@ router.delete(
   "/:id",
   passport.authenticate("jwt", { session: false }),
   deleteChannelById
+);
+
+// @route   GET api/channel/:id/members
+// @desc    GET members by ID
+// @access  Private
+router.get(
+  "/:id/members",
+  passport.authenticate("jwt", { session: false }),
+  getChannelMembers
 );
 
 // New routes for text chats

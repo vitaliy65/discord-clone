@@ -1,5 +1,6 @@
 import { config } from "dotenv";
 import Channel from "../models/Channel.js";
+import User from "../models/User.js";
 
 config();
 
@@ -34,6 +35,42 @@ export const getChannelById = (req, res) => {
     .catch((err) => {
       res.status(500).json({ error: "Error fetching channel" });
     });
+};
+
+export const getChannelMembers = async (req, res) => {
+  // Перевірка, чи має користувач доступ до цього каналу
+  if (!req.user.channels.includes(req.params.id)) {
+    return res.status(403).json({ error: "Access denied to this channel" });
+  }
+
+  try {
+    // Знайти канал за ID
+    const channel = await Channel.findById(req.params.id).populate(
+      "members.user"
+    );
+    if (!channel) {
+      return res.status(404).json({ error: "Channel not found" });
+    }
+
+    // Отримати список користувачів з їх ролями
+    const membersDetails = await Promise.all(
+      channel.members.map(async (member) => {
+        const user = await User.findById(
+          member.user,
+          "_id username user_unique_id avatar onlineStatus"
+        );
+        return {
+          ...user.toObject(), // Перетворюємо документ на об'єкт
+          userServerRole: member.userServerRole, // Додаємо роль користувача
+        };
+      })
+    );
+
+    res.json(membersDetails);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error fetching channel members details" });
+  }
 };
 
 export const createChannel = async (req, res) => {

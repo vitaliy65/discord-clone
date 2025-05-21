@@ -7,6 +7,7 @@ import {
   ChannelTextChatType,
   ChannelVoiceChatType,
   MessageType,
+  ChannelMembers,
 } from "@/types/types";
 import { socket } from "@/utils/socket";
 
@@ -114,6 +115,23 @@ const channelSlice = createSlice({
         state.channels.push(action.payload);
       }
     );
+    builder.addCase(
+      fetchChannelMembers.fulfilled,
+      (
+        state,
+        action: PayloadAction<{ channelId: string; data: ChannelMembers[] }>
+      ) => {
+        const { channelId, data } = action.payload;
+
+        const channel = state.channels.find((ch) => ch._id === channelId);
+
+        if (channel) channel.members = data;
+
+        if (state.currentChannel && state.currentChannel._id === channelId) {
+          state.currentChannel.members = data;
+        }
+      }
+    );
   },
 });
 
@@ -133,6 +151,27 @@ export const fetchChannels = createAsyncThunk(
       });
 
       return response.data;
+    } catch (error) {
+      console.error(error);
+      return rejectWithValue([]);
+    }
+  }
+);
+
+export const fetchChannelMembers = createAsyncThunk(
+  "friend/fetchChannelMembers",
+  async (channelId: string, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(
+        `${SERVER_API_URL}/channel/${channelId}/members`,
+        {
+          headers: {
+            Authorization: `${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      return { channelId, data: response.data };
     } catch (error) {
       console.error(error);
       return rejectWithValue([]);

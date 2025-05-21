@@ -73,9 +73,19 @@ export interface ChannelType {
   description: string;
   avatar: string;
   dateCreated: string;
-  members: string[];
+  public: boolean;
+  members: ChannelMembers[];
   textChats: ChannelTextChatType[];
   voiceChats: ChannelVoiceChatType[];
+}
+
+export interface ChannelMembers {
+  _id: string;
+  username: string;
+  user_unique_id: string;
+  avatar: string;
+  onlineStatus: boolean;
+  userServerRole: "admin" | "moderator" | "member";
 }
 
 export interface ChannelTextChatType {

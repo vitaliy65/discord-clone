@@ -1,14 +1,16 @@
 import ChannelsIcon from "./sections/section.channels/channel";
-import Home from "./sections/section.channels/homeChannel";
-import AddChannel from "./sections/section.channels/addChannel";
+import Home from "./sections/section.channels/channel-home";
+import AddChannel from "./sections/section.channels/channel-add";
 import { useAppSelector, useAppDispatch } from "@/_hooks/hooks";
 import { useNavigate } from "react-router-dom";
 import { ChannelType } from "@/types/types";
 import {
+  fetchChannelMembers,
   setActiveChannelIndex,
   setCurrentChannel,
   setCurrentChat,
 } from "@/_store/channel/channelSlice";
+import SearchChannel from "./sections/section.channels/channel-search";
 
 export default function Channels() {
   const navigate = useNavigate();
@@ -23,13 +25,15 @@ export default function Channels() {
       dispatch(setActiveChannelIndex(index)),
       dispatch(setCurrentChannel(channel._id)),
       dispatch(setCurrentChat(null)),
+      dispatch(fetchChannelMembers(channel._id)),
     ]);
-    navigate(`/channels/${channel._id}`, { replace: true });
+
+    navigate(`/channels/${channel._id}`);
   };
 
   const handleHome = async () => {
     await dispatch(setActiveChannelIndex(-1));
-    await navigate(`/channels/me`, { replace: true });
+    navigate(`/channels/me`);
   };
 
   return (
@@ -48,6 +52,7 @@ export default function Channels() {
           isActive={activeIndex === -2}
           onClick={() => dispatch(setActiveChannelIndex(-2))}
         />
+        <SearchChannel />
       </div>
     </div>
   );

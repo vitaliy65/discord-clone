@@ -1,5 +1,5 @@
 import { ChannelType } from "@/types/types";
-import { motion } from "motion/react";
+import ChannelButton from "./channel-button";
 
 interface ChannelsIconProps {
   channel: ChannelType;
@@ -13,15 +13,11 @@ export default function ChannelsIcon({
   onClick,
 }: ChannelsIconProps) {
   return (
-    <motion.button
-      initial={{ borderRadius: "32px" }}
-      animate={{ borderRadius: isActive ? "12px" : "32px" }}
-      whileHover={{ borderRadius: "12px" }}
-      transition={{ duration: 0.3 }}
-      className="channel-button-img bg-friends"
+    <ChannelButton
+      isActive={isActive}
       onClick={onClick}
-    >
-      <img src={channel.avatar} alt="channelsIcon" width={128} height={128} />
-    </motion.button>
+      src={channel.avatar}
+      alt={channel.name}
+    />
   );
 }

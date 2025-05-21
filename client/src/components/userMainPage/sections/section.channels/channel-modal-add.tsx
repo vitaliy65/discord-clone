@@ -7,6 +7,7 @@ import { ModalInput } from "./modal/ModalInput";
 import { ModalTextArea } from "./modal/ModalTextArea";
 import { ModalAvatarInput } from "./modal/ModalAvatarInput";
 import { ModalButtons } from "./modal/ModalButtons";
+import ModalPublicSelector from "./modal/ModalPublicSelector";
 
 interface AddChannelModalProps {
   isOpen: boolean;
@@ -21,7 +22,10 @@ export default function AddChannelModal({
   const [channelData, setChannelData] = useState({
     name: "",
     description: "",
-    avatar: "/channels/default.png", // Default avatar
+    public: true,
+    avatar: `/channels/background/group-${
+      Math.floor(Math.random() * 3) + 1
+    }.png`,
   });
   const [error, setError] = useState("");
 
@@ -39,7 +43,10 @@ export default function AddChannelModal({
       setChannelData({
         name: "",
         description: "",
-        avatar: "/channels/default.png",
+        public: true,
+        avatar: `/channels/background/group-${
+          Math.floor(Math.random() * 3) + 1
+        }.png`,
       });
       setError("");
     } catch (err) {
@@ -53,6 +60,12 @@ export default function AddChannelModal({
         <ModalOverlay onClose={onClose}>
           <h2 className="channel-modal__title">Create Channel</h2>
           <form onSubmit={handleSubmit} className="channel-modal__form">
+            <ModalAvatarInput
+              onChange={(value) =>
+                setChannelData((prev) => ({ ...prev, avatar: value }))
+              }
+            />
+
             <ModalInput
               label="Channel Name"
               value={channelData.name}
@@ -71,13 +84,6 @@ export default function AddChannelModal({
               placeholder="Enter channel description"
             />
 
-            <ModalAvatarInput
-              avatarUrl={channelData.avatar}
-              onChange={(value) =>
-                setChannelData((prev) => ({ ...prev, avatar: value }))
-              }
-            />
-
             <div className="channel-modal__info">
               <p>The following will be created automatically:</p>
               <ul className="channel-modal__info-list">
@@ -85,6 +91,13 @@ export default function AddChannelModal({
                 <li>Voice channel: Group</li>
               </ul>
             </div>
+
+            <ModalPublicSelector
+              value={channelData.public}
+              onChange={(value: boolean) =>
+                setChannelData((prev) => ({ ...prev, public: value }))
+              }
+            />
 
             {error && <p className="channel-modal__error">{error}</p>}
 

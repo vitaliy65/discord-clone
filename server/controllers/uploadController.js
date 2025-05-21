@@ -4,17 +4,20 @@ import { uploadFiles } from "../config/storage.js";
 export const handleFileUpload = async (req, res) => {
   try {
     const chatId = req.body.chatId;
+    const path = req.body.path;
     const userId = req.user.id;
+    let fileOutputPaths = [];
 
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({ error: "No files provided" });
     }
 
-    const fileOutputPaths = fileService.generateFileUrls(
-      req.files,
-      chatId,
-      userId
-    );
+    if (!chatId) {
+      fileOutputPaths = fileService.generateFileUrls(req.files, path, userId);
+    } else {
+      fileOutputPaths = fileService.generateFileUrls(req.files, chatId, userId);
+    }
+
     const uploadedUrls = await uploadFiles(req.files, fileOutputPaths);
 
     res.json({ urls: uploadedUrls });

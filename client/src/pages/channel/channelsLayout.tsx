@@ -4,25 +4,22 @@ import { Outlet } from "react-router-dom";
 import ChannelMembers from "@/components/channels.layout/channelMembers";
 import ChannelChats from "@/components/channels.layout/channelChats";
 import ChannelMenu from "@/components/channels.layout/channelMenu";
-import StatusLoader from "@/components/dataLoader/statusLoader";
 
 export default function ChannelsLayout() {
   return (
-    <StatusLoader>
-      <div className="main-page-container">
-        <section className="main-left-section-container">
-          <Channels />
-          <ChannelChats />
-          <UserProfile />
-        </section>
-        <section className="chat-container">
-          <ChannelMenu />
-          <Outlet />
-        </section>
-        <section className="chat-members-container">
-          <ChannelMembers />
-        </section>
-      </div>
-    </StatusLoader>
+    <div className="main-page-container">
+      <section className="main-left-section-container">
+        <Channels />
+        <ChannelChats />
+        <UserProfile />
+      </section>
+      <section className="chat-container">
+        <ChannelMenu />
+        <Outlet />
+      </section>
+      <section className="chat-members-container">
+        <ChannelMembers />
+      </section>
+    </div>
   );
 }

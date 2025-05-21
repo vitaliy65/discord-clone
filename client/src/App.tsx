@@ -24,35 +24,32 @@ import AddFriend from "./components/userMainPage/sections/section.friends/addFri
 import FriendRequets from "./components/userMainPage/sections/section.friendRequests/friendRequets";
 import ChannelChat from "./components/channels.layout/channelChat";
 import ChannelsLayout from "./pages/channel/channelsLayout";
+import Discoverylayout from "./pages/channel/discovery/layout";
+import ChannelSearch from "./pages/channel/discovery/channelSearch";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       {/* Check Auth pages*/}
-      <Route
-        path="channels/me"
-        element={
-          <CheckAuth>
-            <Me />
-          </CheckAuth>
-        }
-      >
-        <Route path="" element={<Chat />} />
-        <Route path=":id" element={<Chat />} />
-        <Route path="addFriend" element={<AddFriend />} />
-        <Route path="friendRequests" element={<FriendRequets />} />
-      </Route>
+      {/* Групуємо всі захищені сторінки під CheckAuth */}
+      <Route element={<CheckAuth />}>
+        <Route path="channels/me" element={<Me />}>
+          <Route path="" element={<Chat />} />
+          <Route path=":id" element={<Chat />} />
+          <Route path="addFriend" element={<AddFriend />} />
+          <Route path="friendRequests" element={<FriendRequets />} />
+        </Route>
 
-      <Route
-        path="channels"
-        element={
-          <CheckAuth>
-            <ChannelsLayout />
-          </CheckAuth>
-        }
-      >
-        <Route path=":id" element={<ChannelChat />} />
-        <Route path=":id/:id" element={<ChannelChat />} />
+        {/* channel layout */}
+        <Route path="channels" element={<ChannelsLayout />}>
+          <Route path=":id" element={<ChannelChat />} />
+          <Route path=":id/:id" element={<ChannelChat />} />
+        </Route>
+
+        {/* search channels layout */}
+        <Route path="discovery" element={<Discoverylayout />}>
+          <Route path="servers" element={<ChannelSearch />} />
+        </Route>
       </Route>
 
       {/* Main Layout */}

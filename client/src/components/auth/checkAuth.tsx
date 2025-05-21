@@ -1,10 +1,11 @@
-import { ReactNode, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/_hooks/hooks";
 import { fetchUserData } from "@/_store/user/userSlice";
 import InitialDataLoader from "@/components/dataLoader/initialDataLoader";
+import StatusLoader from "../dataLoader/statusLoader";
 
-export default function CheckAuth({ children }: { children: ReactNode }) {
+export default function CheckAuth() {
   // Check if the user is authenticated by checking the token in local storage
   const [isLoading, setIsLoading] = useState(true);
   const navigator = useNavigate();
@@ -41,5 +42,11 @@ export default function CheckAuth({ children }: { children: ReactNode }) {
     );
   }
 
-  return <InitialDataLoader>{children}</InitialDataLoader>;
+  return (
+    <InitialDataLoader>
+      <StatusLoader>
+        <Outlet />
+      </StatusLoader>
+    </InitialDataLoader>
+  );
 }

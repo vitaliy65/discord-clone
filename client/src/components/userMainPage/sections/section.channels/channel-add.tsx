@@ -1,6 +1,7 @@
-import { motion } from "motion/react";
 import { useState } from "react";
-import AddChannelModal from "./addChannelModal";
+import AddChannelModal from "./channel-modal-add";
+import ChannelButton from "./channel-button";
+import Plus from "@/assets/icons/plus";
 
 interface ChannelsIconProps {
   isActive: boolean;
@@ -18,22 +19,14 @@ export default function AddChannel({ isActive, onClick }: ChannelsIconProps) {
   return (
     <>
       <hr className="me-channel-underline text-friends" />
-      <motion.button
-        initial={{ borderRadius: "32px" }}
-        animate={{ borderRadius: isActive ? "12px" : "32px" }}
-        whileHover={{ borderRadius: "12px" }}
-        transition={{ duration: 0.3 }}
-        className="channel-button-img bg-friends"
+      <ChannelButton
+        isActive={isActive}
         onClick={handleClick}
+        src="/channels/add.png"
+        alt="channelsIcon"
       >
-        <img
-          className="h-8 w-8"
-          src="/channels/add.png"
-          alt="channelsIcon"
-          width={128}
-          height={128}
-        />
-      </motion.button>
+        <Plus />
+      </ChannelButton>
 
       <AddChannelModal
         isOpen={isModalOpen}

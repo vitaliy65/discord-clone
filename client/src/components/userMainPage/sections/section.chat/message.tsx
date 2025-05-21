@@ -1,5 +1,5 @@
 import { useAppSelector } from "@/_hooks/hooks";
-import { formatTime } from "@/utils/constants";
+import { formatTime } from "@/utils/functions";
 import { MessageType } from "@/types/types";
 import { useState } from "react";
 import axios from "axios";

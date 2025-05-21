@@ -26,7 +26,9 @@ export default function ChannelChats() {
 
   return (
     <div className="channel-chats-container bg-channels border-section">
-      <div className="channel-name border-section">{currentChannel?.name}</div>
+      <div className="channel-upper-section border-section">
+        <span>{currentChannel?.name}</span>
+      </div>
       <div className="friend-section-container scrollbar-small">
         {currentChannel && currentChannel?.textChats.length > 0 && (
           <div className="chats-section">

@@ -4,8 +4,8 @@
   @apply flex flex-col min-w-2xs h-screen border-l;
 }
 
-.channel-name {
-  @apply p-4 border-b;
+.channel-upper-section {
+  @apply flex max-h-14 min-h-14 border-b justify-start items-center p-4;
 }
 
 .chats-section {

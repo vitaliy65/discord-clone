@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+.channel-members-container{
+    @apply w-full h-full p-2 bg-friends border-l border-channels
+}
+
+.channel-member{
+    @apply flex items-center w-full rounded-sm cursor-pointer p-1
+}
+
+.channel-member:hover{
+    @apply bg-custom-focus
+}
+
+.channel-member:focus{
+    @apply bg-clicked
+}
