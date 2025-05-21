@@ -2,9 +2,11 @@ import { useAppSelector } from "@/_hooks/hooks";
 import ProfileWithStatus from "../img-containers/profile-status";
 
 export default function ChannelMembers() {
-  const currentChannel = useAppSelector((s) => s.channel.currentChannel);
+  const channelMembers = useAppSelector(
+    (s) => s.channelMembers.selectedChannel
+  );
 
-  if (!currentChannel) return null;
+  if (!channelMembers) return null;
 
   return (
     <div className="flex flex-col w-xs h-screen overflow-hidden">
@@ -19,7 +21,7 @@ export default function ChannelMembers() {
         <>
           <div className="flex flex-col gap-1">
             <p className="text-xs text-green-400 mb-1 mt-2">В мережі</p>
-            {currentChannel.members
+            {channelMembers.members
               .filter((member) => member.onlineStatus)
               .map((member) => (
                 <div key={member._id} className="channel-member">
@@ -30,7 +32,7 @@ export default function ChannelMembers() {
           </div>
           <div>
             <p className="text-xs text-gray-400 mb-1 mt-4">Не в мережі</p>
-            {currentChannel.members
+            {channelMembers.members
               .filter((member) => !member.onlineStatus)
               .map((member) => (
                 <div key={member._id} className="flex items-center opacity-60">

@@ -6,17 +6,19 @@ import { SERVER_API_URL } from "@/utils/constants";
 
 type ChannelMembersState = {
   channels: { _id: string; members: ChannelMembers[] }[];
+  selectedChannel: { _id: string; members: ChannelMembers[] } | null;
 };
 
 const initialState: ChannelMembersState = {
   channels: [],
+  selectedChannel: null,
 };
 
 const channelMemberslSlice = createSlice({
   name: "channel",
   initialState,
   reducers: {
-    SetNewChannel(state, action: PayloadAction<string>) {
+    setNewChannel(state, action: PayloadAction<string>) {
       // Додаємо новий канал з учасниками до списку каналів, якщо його ще немає
       const exists = state.channels.some((ch) => ch._id === action.payload);
       if (!exists) {
@@ -25,6 +27,11 @@ const channelMemberslSlice = createSlice({
           members: [],
         });
       }
+    },
+    setSelectedChannel(state, action: PayloadAction<string>) {
+      const selected = state.channels.find((c) => c._id === action.payload);
+
+      if (selected) state.selectedChannel = selected;
     },
   },
   extraReducers: (builder) => {
@@ -65,5 +72,6 @@ export const fetchChannelMembers = createAsyncThunk(
   }
 );
 
-export const { SetNewChannel } = channelMemberslSlice.actions;
+export const { setNewChannel, setSelectedChannel } =
+  channelMemberslSlice.actions;
 export default channelMemberslSlice.reducer;

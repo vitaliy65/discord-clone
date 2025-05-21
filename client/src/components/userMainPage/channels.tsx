@@ -11,7 +11,8 @@ import {
 } from "@/_store/channel/channelSlice";
 import {
   fetchChannelMembers,
-  SetNewChannel,
+  setNewChannel,
+  setSelectedChannel,
 } from "@/_store/channelMembers/channelMembersSlice";
 import SearchChannel from "./sections/section.channels/channel-search";
 
@@ -27,11 +28,12 @@ export default function Channels() {
       dispatch(setActiveChannelIndex(index)),
       dispatch(setCurrentChannel(channel._id)),
       dispatch(setCurrentChat(null)),
+      dispatch(setSelectedChannel(channel._id)),
     ]);
 
     // Перевірка наявності каналу в channelsMembers
     if (!channelsMembers.some((cm) => cm._id === channel._id)) {
-      await dispatch(SetNewChannel(channel._id));
+      await dispatch(setNewChannel(channel._id));
     }
 
     const localChannelMembers = channelsMembers.find(
