@@ -19,6 +19,51 @@ export const getListChannel = (req, res) => {
     });
 };
 
+export const getAllChannel = async (req, res) => {
+  try {
+    const { channelsCount } = await req.params;
+
+    let query = Channel.find({
+      public: true,
+    }).select("_id avatar name description members");
+
+    if (channelsCount && Number.isInteger(channelsCount)) {
+      query = query.limit(channelsCount);
+    }
+
+    const channels = await query;
+
+    // Формуємо масив з потрібними полями, додаючи membersCount
+    const result = channels.map((channel) => ({
+      _id: channel._id,
+      avatar: channel.avatar,
+      name: channel.name,
+      description: channel.description,
+      membersCount: channel.members.length,
+    }));
+
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: "Помилка при отриманні всіх каналів" });
+  }
+};
+
+export const getServer = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const server = await Channel.findById(id);
+
+    if (!server) {
+      return res.status(404).json({ error: "Сервер не знайдено" });
+    }
+
+    res.json(server);
+  } catch (err) {
+    res.status(500).json({ error: "Помилка при отриманні сервера", err });
+  }
+};
+
 export const getChannelById = (req, res) => {
   // Check if user has access to this channel
   if (!req.user.channels.includes(req.params.id)) {
@@ -40,9 +85,6 @@ export const getChannelById = (req, res) => {
 export const getChannelMembers = async (req, res) => {
   // Перевірка, чи має користувач доступ до цього каналу
   //console.log("i'am getting members");
-  if (!req.user.channels.includes(req.params.id)) {
-    return res.status(403).json({ error: "Access denied to this channel" });
-  }
 
   try {
     // Знайти канал за ID

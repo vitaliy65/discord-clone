@@ -15,6 +15,8 @@
 @import "./pages/channel/channel.modal.css";
 @import "./pages/channel/channel.chat.list.css";
 @import "./pages/channel/channel.members.css";
+@import "./animations/animations.css";
+@import "./components/server/card.css";
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;

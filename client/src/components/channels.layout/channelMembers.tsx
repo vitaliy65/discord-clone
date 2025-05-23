@@ -6,7 +6,15 @@ export default function ChannelMembers() {
     (s) => s.channelMembers.selectedChannel
   );
 
-  if (!channelMembers) return null;
+  if (!channelMembers)
+    return (
+      <div className="flex flex-col w-xs h-screen overflow-hidden">
+        <div className="channel-upper-section shadow-md border-channels bg-friends scale-z-50"></div>
+        <div className="channel-members-container flex justify-center items-center scrollbar-small overflow-hidden">
+          <div className="main-loading-spinner"></div>
+        </div>
+      </div>
+    );
 
   return (
     <div className="flex flex-col w-xs h-screen overflow-hidden">

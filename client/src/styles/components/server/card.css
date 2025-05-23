@@ -1,0 +1,31 @@
+.server-card-container {
+    @apply relative grid grid-cols-1 grid-rows-[3fr_2fr] w-full min-h-80 max-h-80 bg-channels rounded-xl overflow-hidden
+}
+
+.server-card-container:hover{
+    @apply ring-2 ring-gray-300 scale-105 transition-all duration-100 cursor-pointer
+}
+
+.server-card-avatar-container {
+    @apply flex overflow-hidden
+}
+
+.server-card-info-container {
+    @apply flex flex-col justify-between p-4
+}
+
+.server-card-avatar {
+    @apply w-full h-auto object-cover
+}
+
+.server-card-name {
+    @apply text-lg font-semibold
+}
+
+.server-card-description {
+    @apply flex h-12 text-xs overflow-ellipsis
+}
+
+.server-card-members {
+    @apply text-xs mt-2
+}

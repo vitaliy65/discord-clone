@@ -13,6 +13,29 @@
     @apply relative flex flex-row h-full justify-center items-end
 }
 
+/* general container */
+.full-center-container{
+    @apply flex justify-center items-center w-full h-full
+}
+
+.full-container{
+    @apply flex w-full h-full
+}
+
+.center-container{
+    @apply flex justify-center items-center
+}
+
+/* grid containers */
+.four-cols-grid {
+    @apply grid grid-cols-1 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 place-items-center gap-4 w-full ;
+}
+
+/* .four-cols-grid {
+    @apply grid gap-4 w-full h-full;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    place-items: center;
+} */
 
 
 /* chat section containers */

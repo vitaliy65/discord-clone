@@ -15,6 +15,8 @@ import {
   editMessage,
   deleteMessage,
   getChannelMembers,
+  getAllChannel,
+  getServer,
 } from "../../controllers/channelController.js";
 
 const router = Router();
@@ -26,6 +28,24 @@ router.get(
   "/list",
   passport.authenticate("jwt", { session: false }),
   getListChannel
+);
+
+// @route   GET api/channel/all
+// @desc    Get all channels for authenticated user
+// @access  Private
+router.get(
+  "/all",
+  passport.authenticate("jwt", { session: false }),
+  getAllChannel
+);
+
+// @route   GET api/channel/all
+// @desc    Get all channels for authenticated user
+// @access  Private
+router.get(
+  "/server/:id",
+  passport.authenticate("jwt", { session: false }),
+  getServer
 );
 
 // @route   GET api/channel/:id

@@ -1,3 +1,4 @@
+import HomeIcon from "@/assets/icons/home";
 import { motion } from "motion/react";
 
 interface ChannelsIconProps {
@@ -16,13 +17,7 @@ export default function Home({ isActive, onClick }: ChannelsIconProps) {
         className="channel-button-img bg-friends"
         onClick={onClick}
       >
-        <img
-          className="h-8 w-8"
-          src="/channels/me.png"
-          alt="channelsIcon"
-          width={128}
-          height={128}
-        />
+        <HomeIcon />
       </motion.button>
 
       <hr className="me-channel-underline text-friends" />

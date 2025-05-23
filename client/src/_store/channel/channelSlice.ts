@@ -28,7 +28,7 @@ const channelSlice = createSlice({
   name: "channel",
   initialState,
   reducers: {
-    setCurrentChannel: (state, action: PayloadAction<string>) => {
+    setCurrentChannelById: (state, action: PayloadAction<string>) => {
       const foundChannel = state.channels.find(
         (channel) => channel._id === action.payload
       );
@@ -40,6 +40,9 @@ const channelSlice = createSlice({
       }
 
       state.currentChannel = foundChannel;
+    },
+    setCurrentChannel: (state, action: PayloadAction<ChannelType>) => {
+      state.currentChannel = action.payload;
     },
     setCurrentChat: (
       state,
@@ -171,6 +174,7 @@ export const createChannel = createAsyncThunk(
 export const {
   addMessageToCurrentChat,
   setActiveChannelIndex,
+  setCurrentChannelById,
   setCurrentChannel,
   setCurrentChat,
   receiveChannelMessage,

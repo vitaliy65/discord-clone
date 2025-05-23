@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { ChannelType } from "@/types/types";
 import {
   setActiveChannelIndex,
-  setCurrentChannel,
+  setCurrentChannelById,
   setCurrentChat,
 } from "@/_store/channel/channelSlice";
 import {
@@ -24,13 +24,6 @@ export default function Channels() {
   const dispatch = useAppDispatch();
 
   const handleOpenChannel = async (channel: ChannelType, index: number) => {
-    await Promise.all([
-      dispatch(setActiveChannelIndex(index)),
-      dispatch(setCurrentChannel(channel._id)),
-      dispatch(setCurrentChat(null)),
-      dispatch(setSelectedChannel(channel._id)),
-    ]);
-
     // Перевірка наявності каналу в channelsMembers
     if (!channelsMembers.some((cm) => cm._id === channel._id)) {
       await dispatch(setNewChannel(channel._id));
@@ -44,6 +37,13 @@ export default function Channels() {
     if (!localChannelMembers || localChannelMembers.members.length === 0) {
       await dispatch(fetchChannelMembers(channel._id));
     }
+
+    await Promise.all([
+      dispatch(setActiveChannelIndex(index)),
+      dispatch(setCurrentChannelById(channel._id)),
+      dispatch(setCurrentChat(null)),
+      dispatch(setSelectedChannel(channel._id)),
+    ]);
 
     navigate(`/channels/${channel._id}`);
   };

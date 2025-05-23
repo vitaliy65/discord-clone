@@ -122,3 +122,11 @@ interface VoiceChatPermissions {
   videoAllowed: boolean;
   screenShareAllowed: boolean;
 }
+
+export interface ServerInfo {
+  _id: string;
+  avatar: string;
+  name: string;
+  description: string;
+  membersCount: string;
+}

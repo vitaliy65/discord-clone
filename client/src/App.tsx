@@ -24,8 +24,7 @@ import AddFriend from "./components/userMainPage/sections/section.friends/addFri
 import FriendRequets from "./components/userMainPage/sections/section.friendRequests/friendRequets";
 import ChannelChat from "./components/channels.layout/channelChat";
 import ChannelsLayout from "./pages/channel/channelsLayout";
-import Discoverylayout from "./pages/channel/discovery/layout";
-import ChannelSearch from "./pages/channel/discovery/channelSearch";
+import Discoverylayout from "./pages/discovery/discoveryLayout";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -47,9 +46,7 @@ const router = createBrowserRouter(
         </Route>
 
         {/* search channels layout */}
-        <Route path="discovery" element={<Discoverylayout />}>
-          <Route path="servers" element={<ChannelSearch />} />
-        </Route>
+        <Route path="discovery/servers" element={<Discoverylayout />} />
       </Route>
 
       {/* Main Layout */}
