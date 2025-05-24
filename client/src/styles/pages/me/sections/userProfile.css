@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 .user-profile-container{
-    @apply absolute h-19 w-full p-2
+    @apply absolute  bottom-0 h-19 w-full p-2
 }
 
 .user-profile-items-section{

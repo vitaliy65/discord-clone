@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+.channel-banner-container {
+    @apply relative mx-4
+  }
+  
+  .channel-banner-back-button {
+    @apply absolute flex flex-row left-0 px-2 py-1 rounded-md ring-1 ring-white cursor-pointer shadow-sm
+  }
+
+  .channel-banner-back-button:hover {
+    @apply bg-white/15
+  }
+
+  .channel-banner-back-button:focus {
+    @apply bg-black/15 
+  }
+  
+  .channel-banner-text-container {
+    @apply flex flex-row gap-6
+  }
+  
+  .channel-banner-text {
+    @apply m-auto h-full
+  }
+  
+  .channel-banner-join-button {
+    @apply px-2 py-1 rounded-md ring-1 ring-white cursor-pointer shadow-sm
+  }
+
+  .channel-banner-join-button:hover {
+    @apply bg-white/15
+  }
+  
+
+  .channel-banner-join-button:focus {
+    @apply bg-black/15
+  }
+  
+  

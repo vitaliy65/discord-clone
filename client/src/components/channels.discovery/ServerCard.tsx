@@ -33,7 +33,10 @@ export default function ServerCard({
         <p className="server-card-members">members: {server.membersCount}</p>
       </div>
       {loading === server._id && (
-        <div className="absolute full-center-container bg-black/50">
+        <div
+          className="absolute full-center-container bg-black/50 cursor-default"
+          onClick={(e) => e.stopPropagation()}
+        >
           <div className="main-loading-spinner"></div>
         </div>
       )}

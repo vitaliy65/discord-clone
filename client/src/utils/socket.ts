@@ -11,7 +11,14 @@ import {
   fetchFriends,
   changeFriendOnlineStatus,
 } from "@/_store/friend/friendSlice";
-import { receiveChannelMessage } from "@/_store/channel/channelSlice";
+import {
+  receiveChannelMessage,
+  addChannelMember,
+} from "@/_store/channel/channelSlice";
+import {
+  addServerMember,
+  setNewChannel,
+} from "@/_store/channelMembers/channelMembersSlice";
 import { Navigate } from "react-router-dom";
 
 export const socket = io(SERVER_URL, {
@@ -57,6 +64,29 @@ export const initializeSocketEvents = (store: typeof StoreType) => {
 
   socket.on("channel_chat_message_receive", (data) => {
     store.dispatch(receiveChannelMessage(data));
+  });
+
+  socket.on("channel_member_joined", (data) => {
+    const {
+      channelId,
+      newMember,
+    }: {
+      channelId: string;
+      newMember: {
+        _id: string;
+        username: string;
+        user_unique_id: string;
+        avatar: string;
+        onlineStatus: boolean;
+        userServerRole: "member";
+      };
+    } = data;
+
+    Promise.all([
+      store.dispatch(addChannelMember({ channelId, newMember })),
+      store.dispatch(setNewChannel(channelId)),
+      store.dispatch(addServerMember({ channelId, member: newMember })),
+    ]);
   });
 
   isInitialized = true;

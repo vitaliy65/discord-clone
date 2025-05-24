@@ -1,5 +1,5 @@
 import Channels from "@/components/userMainPage/channels";
-import ChannelMenu from "@/components/channels.layout/channelMenu";
+import ChannelMenu from "@/components/channels.layout/channel.Menu";
 import ChannelsList from "@/components/channels.discovery/ChannelsList";
 
 export default function Discoverylayout() {

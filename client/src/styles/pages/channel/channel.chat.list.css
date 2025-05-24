@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 .channel-chats-container {
-  @apply flex flex-col min-w-2xs h-screen border-l;
+  @apply flex flex-col min-w-2xs h-full border-l;
 }
 
 .channel-upper-section {

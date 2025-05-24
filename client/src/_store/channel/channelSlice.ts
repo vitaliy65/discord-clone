@@ -7,6 +7,7 @@ import {
   ChannelTextChatType,
   ChannelVoiceChatType,
   MessageType,
+  ChannelMember,
 } from "@/types/types";
 import { socket } from "@/utils/socket";
 
@@ -15,6 +16,7 @@ type ChannelState = {
   currentChannel: ChannelType | null;
   currentChat: ChannelTextChatType | ChannelVoiceChatType | null;
   activeChannelIndex: number;
+  isGuest: boolean;
 };
 
 const initialState: ChannelState = {
@@ -22,6 +24,7 @@ const initialState: ChannelState = {
   currentChannel: null,
   currentChat: null,
   activeChannelIndex: -1,
+  isGuest: false,
 };
 
 const channelSlice = createSlice({
@@ -39,10 +42,15 @@ const channelSlice = createSlice({
         return;
       }
 
+      state.isGuest = false;
       state.currentChannel = foundChannel;
     },
     setCurrentChannel: (state, action: PayloadAction<ChannelType>) => {
       state.currentChannel = action.payload;
+      console.log(action.payload);
+      state.isGuest = !state.channels.some(
+        (channel) => channel._id === action.payload._id
+      );
     },
     setCurrentChat: (
       state,
@@ -52,6 +60,9 @@ const channelSlice = createSlice({
     },
     setActiveChannelIndex: (state, action: PayloadAction<number>) => {
       state.activeChannelIndex = action.payload;
+    },
+    setIsGuest: (state, action: PayloadAction<boolean>) => {
+      state.isGuest = action.payload;
     },
     addMessageToCurrentChat: (
       _,
@@ -98,6 +109,22 @@ const channelSlice = createSlice({
         if (chat && "messages" in chat) {
           chat.messages.push(message);
         }
+      }
+    },
+    addChannel: (state, action: PayloadAction<ChannelType>) => {
+      state.channels.push(action.payload);
+    },
+    addChannelMember: (
+      state,
+      action: PayloadAction<{ channelId: string; newMember: ChannelMember }>
+    ) => {
+      const { channelId, newMember } = action.payload;
+      const channel = state.channels.find((ch) => ch._id === channelId);
+      if (channel) {
+        channel.members.push(newMember);
+      }
+      if (state.currentChannel?._id === channelId) {
+        state.currentChannel.members.push(newMember);
       }
     },
   },
@@ -178,5 +205,8 @@ export const {
   setCurrentChannel,
   setCurrentChat,
   receiveChannelMessage,
+  addChannelMember,
+  addChannel,
+  setIsGuest,
 } = channelSlice.actions;
 export default channelSlice.reducer;

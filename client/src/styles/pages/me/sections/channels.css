@@ -5,7 +5,7 @@
 }
 
 .channel-container {
-    @apply flex flex-col min-w-20 h-screen overflow-hidden
+    @apply flex flex-col min-w-20 h-full overflow-hidden
 }
 
 .channel-button-img {

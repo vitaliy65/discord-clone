@@ -17,6 +17,7 @@
 @import "./pages/channel/channel.members.css";
 @import "./animations/animations.css";
 @import "./components/server/card.css";
+@import "./pages/channel/channel.joinBanner.css";
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;

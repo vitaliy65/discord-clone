@@ -17,6 +17,7 @@ import {
   getChannelMembers,
   getAllChannel,
   getServer,
+  joinChannel,
 } from "../../controllers/channelController.js";
 
 const router = Router();
@@ -64,6 +65,15 @@ router.post(
   "/create",
   passport.authenticate("jwt", { session: false }),
   createChannel
+);
+
+// @route   POST api/channel/join
+// @desc    join a channel
+// @access  Private
+router.post(
+  "/join",
+  passport.authenticate("jwt", { session: false }),
+  joinChannel
 );
 
 // @route   DELETE api/channel/:id

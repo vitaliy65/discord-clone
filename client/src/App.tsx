@@ -22,7 +22,7 @@ import { Provider } from "react-redux";
 import Chat from "./components/userMainPage/chat";
 import AddFriend from "./components/userMainPage/sections/section.friends/addFriend";
 import FriendRequets from "./components/userMainPage/sections/section.friendRequests/friendRequets";
-import ChannelChat from "./components/channels.layout/channelChat";
+import ChannelChat from "./components/channels.layout/channel.Chat";
 import ChannelsLayout from "./pages/channel/channelsLayout";
 import Discoverylayout from "./pages/discovery/discoveryLayout";
 

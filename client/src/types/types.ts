@@ -74,12 +74,12 @@ export interface ChannelType {
   avatar: string;
   dateCreated: string;
   public: boolean;
-  members: ChannelMembers[];
+  members: ChannelMember[];
   textChats: ChannelTextChatType[];
   voiceChats: ChannelVoiceChatType[];
 }
 
-export interface ChannelMembers {
+export interface ChannelMember {
   _id: string;
   username: string;
   user_unique_id: string;

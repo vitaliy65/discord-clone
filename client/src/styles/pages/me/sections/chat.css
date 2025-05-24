@@ -17,7 +17,7 @@
 }
 
 .chat-input-field {
-    @apply flex-1 h-full outline-none focus:outline-none
+    @apply flex-1 h-full outline-none bg-channels py-1 px-2 rounded-md focus:outline-none
 }
 
 .file-input-label{

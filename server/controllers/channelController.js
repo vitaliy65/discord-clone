@@ -1,6 +1,7 @@
 import { config } from "dotenv";
 import Channel from "../models/Channel.js";
 import User from "../models/User.js";
+import { io } from "../server.js";
 
 config();
 
@@ -113,6 +114,57 @@ export const getChannelMembers = async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Error fetching channel members details" });
+  }
+};
+
+export const joinChannel = async (req, res) => {
+  const { channelId } = req.body;
+  const user = req.user;
+
+  try {
+    const channel = await Channel.findById(channelId);
+
+    if (!channel) {
+      return res.status(404).json({ error: "Канал не знайдено" });
+    }
+
+    if (
+      channel.members.some(
+        (member) => member.user.toString() === user._id.toString()
+      )
+    ) {
+      return res
+        .status(400)
+        .json({ error: "Ви вже є учасником цього сервера" });
+    }
+
+    // Додаємо користувача до списку учасників каналу
+    channel.members.push({ user: user._id, userServerRole: "member" });
+    await channel.save();
+
+    // Додаємо канал до списку каналів користувача
+    user.channels.push(channelId);
+    await user.save();
+
+    // Сповіщаємо всіх учасників каналу про нового учасника
+    channel.members.forEach((member) => {
+      io.to(member.user.toString()).emit("channel_member_joined", {
+        channelId,
+        newMember: {
+          _id: user._id,
+          username: user.username,
+          user_unique_id: user.user_unique_id,
+          avatar: user.avatar,
+          onlineStatus: user.onlineStatus,
+          userServerRole: "member",
+        },
+      });
+    });
+
+    res.status(200).json({ message: "Успішно приєднано до сервера", channel });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Помилка при приєднанні до сервера" });
   }
 };
 

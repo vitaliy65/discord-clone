@@ -21,6 +21,7 @@ export default function ChatInput({
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const user = useAppSelector((state) => state.user.info);
+  const isGuest = useAppSelector((state) => state.channel.isGuest);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -43,24 +44,32 @@ export default function ChatInput({
 
   return (
     <div className="input-container bg-friends border-channels">
-      <div className="flex flex-row">
-        <label className="file-input-label">
-          <input
-            type="file"
-            multiple
-            className="hidden"
-            onChange={handleFileSelect}
-          />
-          <IconButton src="/chat/paperclip.png" alt="Attach file" />
-        </label>
-        <input
-          type="text"
-          value={message}
-          className="chat-input-field"
-          placeholder="Type your message here..."
-          onChange={(e) => setMessage(e.target.value)}
-          onKeyDown={handleSendMessage}
-        />
+      <div className="full-center-container flex-row">
+        {isGuest ? (
+          <div className="chat-input-field">
+            <p>You don't have permission to send messages.</p>
+          </div>
+        ) : (
+          <>
+            <label className="file-input-label">
+              <input
+                type="file"
+                multiple
+                className="hidden"
+                onChange={handleFileSelect}
+              />
+              <IconButton src="/chat/paperclip.png" alt="Attach file" />
+            </label>
+            <input
+              type="text"
+              value={message}
+              className="chat-input-field"
+              placeholder="Type your message here..."
+              onChange={(e) => setMessage(e.target.value)}
+              onKeyDown={handleSendMessage}
+            />
+          </>
+        )}
       </div>
 
       <FileUploadModal

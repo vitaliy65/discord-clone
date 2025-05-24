@@ -1,12 +1,12 @@
-import { ChannelMembers } from "@/types/types";
+import { ChannelMember } from "@/types/types";
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { SERVER_API_URL } from "@/utils/constants";
 // import { socket } from "@/utils/socket";
 
 type ChannelMembersState = {
-  channels: { _id: string; members: ChannelMembers[] }[];
-  selectedChannel: { _id: string; members: ChannelMembers[] } | null;
+  channels: { _id: string; members: ChannelMember[] }[];
+  selectedChannel: { _id: string; members: ChannelMember[] } | null;
 };
 
 const initialState: ChannelMembersState = {
@@ -28,6 +28,20 @@ const channelMemberslSlice = createSlice({
         });
       }
     },
+    addServerMember(
+      state,
+      action: PayloadAction<{ channelId: string; member: ChannelMember }>
+    ) {
+      const channel = state.channels.find(
+        (ch) => ch._id === action.payload.channelId
+      );
+      if (channel) {
+        channel.members.push(action.payload.member);
+      }
+      if (state.selectedChannel?._id === action.payload.channelId) {
+        state.selectedChannel.members.push(action.payload.member);
+      }
+    },
     setSelectedChannel(state, action: PayloadAction<string>) {
       const selected = state.channels.find((c) => c._id === action.payload);
 
@@ -39,7 +53,7 @@ const channelMemberslSlice = createSlice({
       fetchChannelMembers.fulfilled,
       (
         state,
-        action: PayloadAction<{ channelId: string; data: ChannelMembers[] }>
+        action: PayloadAction<{ channelId: string; data: ChannelMember[] }>
       ) => {
         const { channelId, data } = action.payload;
 
@@ -72,6 +86,6 @@ export const fetchChannelMembers = createAsyncThunk(
   }
 );
 
-export const { setNewChannel, setSelectedChannel } =
+export const { setNewChannel, setSelectedChannel, addServerMember } =
   channelMemberslSlice.actions;
 export default channelMemberslSlice.reducer;
