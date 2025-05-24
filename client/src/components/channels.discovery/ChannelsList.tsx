@@ -24,6 +24,8 @@ export default function ChannelsList() {
   const dispatch = useAppDispatch();
   const navigator = useNavigate();
 
+  const [searchedServer, setSearchedServer] = useState<ServerInfo | null>(null);
+
   useEffect(() => {
     const getServers = async () => {
       try {
@@ -93,28 +95,40 @@ export default function ChannelsList() {
             IN DISCORD-CLONE {"<3"}
           </p>
         </div>
-        <DiscoverySearchbar />
+        <DiscoverySearchbar
+          findServer={(server: ServerInfo | null) => setSearchedServer(server)}
+        />
       </div>
       <div className="overflow-y-auto p-4">
         <div className="four-cols-grid">
-          {servers &&
-            servers.map((server) => (
+          {searchedServer ? (
+            <ServerCard
+              server={searchedServer}
+              onClick={() => navigateToServer(searchedServer._id)}
+              loading={loading}
+            />
+          ) : (
+            servers?.map((server) => (
               <ServerCard
+                key={server._id}
                 server={server}
                 onClick={() => navigateToServer(server._id)}
                 loading={loading}
               />
-            ))}
+            )) || null
+          )}
         </div>
         <div className="center-container mt-4">
-          <button
-            onCanPlay={() => {
-              setChannelsCount(channelsCount + 20);
-            }}
-            className="p-2 bg-blue-600 rounded-lg"
-          >
-            Load more...
-          </button>
+          <div className="bg-blue-600 rounded-lg ring-2 ring-white">
+            <button
+              onClick={() => {
+                setChannelsCount(channelsCount + 20);
+              }}
+              className="rounded-lg p-2 w-full h-full cursor-pointer hover:bg-white/15 focus:bg-black/15"
+            >
+              Load more...
+            </button>
+          </div>
         </div>
       </div>
     </div>

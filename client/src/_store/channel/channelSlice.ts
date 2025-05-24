@@ -47,7 +47,6 @@ const channelSlice = createSlice({
     },
     setCurrentChannel: (state, action: PayloadAction<ChannelType>) => {
       state.currentChannel = action.payload;
-      console.log(action.payload);
       state.isGuest = !state.channels.some(
         (channel) => channel._id === action.payload._id
       );

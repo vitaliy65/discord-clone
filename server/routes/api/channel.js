@@ -18,6 +18,7 @@ import {
   getAllChannel,
   getServer,
   joinChannel,
+  searchChannel,
 } from "../../controllers/channelController.js";
 
 const router = Router();
@@ -47,6 +48,15 @@ router.get(
   "/server/:id",
   passport.authenticate("jwt", { session: false }),
   getServer
+);
+
+// @route   GET api/channel/search
+// @desc    Search for a channel by name
+// @access  Private
+router.get(
+  "/search",
+  passport.authenticate("jwt", { session: false }),
+  searchChannel
 );
 
 // @route   GET api/channel/:id

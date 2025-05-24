@@ -1,19 +1,26 @@
 import Search from "@/assets/icons/search";
+import { ServerInfo } from "@/types/types";
+import { SERVER_API_URL } from "@/utils/constants";
 import axios from "axios";
 import { useState } from "react";
 
-export default function DiscoverySearchbar() {
+export default function DiscoverySearchbar({
+  findServer,
+}: {
+  findServer: (server: ServerInfo | null) => void;
+}) {
   const [channelName, setChannelName] = useState("");
 
   const searchChannels = async () => {
-    if (!channelName.trim()) return;
+    if (!channelName.trim()) return findServer(null);
     try {
       // Замість '' вкажіть ваш реальний endpoint
-      const response = await axios.get("/api/channels/search", {
+      const response = await axios.get(`${SERVER_API_URL}/channel/search`, {
+        headers: { Authorization: localStorage.getItem("token") },
         params: { name: channelName },
       });
-      // Тут можна обробити response
-      console.log(response.data);
+
+      findServer(response.data);
     } catch (err) {
       console.log(err);
     }

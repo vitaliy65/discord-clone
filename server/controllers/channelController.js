@@ -22,7 +22,7 @@ export const getListChannel = (req, res) => {
 
 export const getAllChannel = async (req, res) => {
   try {
-    const { channelsCount } = await req.params;
+    const { channelsCount } = await req.query;
 
     let query = Channel.find({
       public: true,
@@ -52,7 +52,7 @@ export const getAllChannel = async (req, res) => {
 export const getServer = async (req, res) => {
   try {
     const { id } = req.params;
-
+    console.log(id);
     const server = await Channel.findById(id);
 
     if (!server) {
@@ -165,6 +165,35 @@ export const joinChannel = async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Помилка при приєднанні до сервера" });
+  }
+};
+
+export const searchChannel = async (req, res) => {
+  const { name } = req.query;
+  console.log(name);
+
+  try {
+    const channel = await Channel.findOne({ name });
+
+    if (!channel) {
+      return res.status(404).json({ error: "Канал не знайдено" });
+    }
+
+    if (channel.public) {
+      const formattedChannel = {
+        _id: channel._id,
+        avatar: channel.avatar,
+        name: channel.name,
+        description: channel.description,
+        membersCount: channel.members.length.toString(),
+      };
+      res.status(200).json(formattedChannel);
+    } else {
+      res.status(403).json({ error: "Канал приватний" });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Помилка при пошуку сервера" });
   }
 };
 
