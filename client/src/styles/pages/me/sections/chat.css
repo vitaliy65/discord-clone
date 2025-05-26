@@ -26,11 +26,11 @@
 
 
 .selected-files-modal-bg{
-    @apply fixed flex inset-0 items-center justify-center
+    @apply fixed flex inset-0 items-center justify-center bg-black/50 z-10
 }
 
 .selected-files-modal-container {
-    @apply p-6 rounded-lg w-96
+    @apply p-6 rounded-lg w-96 ring-2 ring-channels shadow-md
 }
 
 .selected-files-modal-title{

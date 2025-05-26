@@ -47,6 +47,34 @@ const channelMemberslSlice = createSlice({
 
       if (selected) state.selectedChannel = selected;
     },
+    setOnlineStatusOnServer: (
+      state,
+      action: PayloadAction<{
+        channelId: string;
+        memberId: string;
+        status: boolean;
+      }>
+    ) => {
+      const { channelId, memberId, status } = action.payload;
+
+      const channel = state.channels.find((ch) => ch._id === channelId);
+
+      if (channel) {
+        const member = channel.members.find((m) => m._id === memberId);
+        if (member) {
+          member.onlineStatus = status;
+        }
+      }
+
+      if (state.selectedChannel?._id === channelId) {
+        const selectedMember = state.selectedChannel.members.find(
+          (m) => m._id === memberId
+        );
+        if (selectedMember) {
+          selectedMember.onlineStatus = status;
+        }
+      }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(
@@ -86,6 +114,10 @@ export const fetchChannelMembers = createAsyncThunk(
   }
 );
 
-export const { setNewChannel, setSelectedChannel, addServerMember } =
-  channelMemberslSlice.actions;
+export const {
+  setNewChannel,
+  setSelectedChannel,
+  addServerMember,
+  setOnlineStatusOnServer,
+} = channelMemberslSlice.actions;
 export default channelMemberslSlice.reducer;

@@ -1,23 +1,49 @@
 import User from "../models/User.js";
+import Channel from "../models/Channel.js";
 
 export const friendStatusHandler = async ({ userId, status, socket, io }) => {
   try {
-    // Update user status in DB
-    console.log(status);
-    const user = await User.findById(userId);
+    // Отримуємо користувача та його канали паралельно
+    const [user, channels] = await Promise.all([
+      User.findById(userId),
+      Channel.find({ members: { $elemMatch: { user: userId } } }),
+    ]);
 
-    if (user) {
-      user.onlineStatus = status;
-      await user.save();
+    if (!user) return;
 
-      // Send status update to all friends
-      user.friends.forEach((friendId) => {
-        io.to(friendId.toString()).emit("update_friend_online_status", {
-          friendId: userId,
+    // Оновлюємо статус користувача
+    user.onlineStatus = status;
+    await user.save();
+
+    // Підготовлюємо дані для відправки
+    const statusUpdate = {
+      friendId: userId,
+      status: status,
+    };
+
+    // Відправляємо оновлення статусу всім друзям
+    const friendUpdates = user.friends.map((friendId) =>
+      io
+        .to(friendId.toString())
+        .emit("update_friend_online_status", statusUpdate)
+    );
+
+    // Відправляємо оновлення статусу всім учасникам каналів
+    const channelUpdates = channels.flatMap((channel) =>
+      channel.members.map((member) => {
+        const update = {
+          channelId: channel._id.toString(),
+          memberId: userId,
           status: status,
-        });
-      });
-    }
+        };
+        return io
+          .to(member.user.toString())
+          .emit("server_member_change_online", update);
+      })
+    );
+
+    // Виконуємо всі відправки паралельно
+    await Promise.all([...friendUpdates, ...channelUpdates]);
   } catch (err) {
     console.error("Status change error:", err);
   }

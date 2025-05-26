@@ -18,6 +18,7 @@ import {
 import {
   addServerMember,
   setNewChannel,
+  setOnlineStatusOnServer,
 } from "@/_store/channelMembers/channelMembersSlice";
 import { Navigate } from "react-router-dom";
 
@@ -82,11 +83,29 @@ export const initializeSocketEvents = (store: typeof StoreType) => {
       };
     } = data;
 
+    console.log("Channel member joined:", data);
+
     Promise.all([
       store.dispatch(addChannelMember({ channelId, newMember })),
       store.dispatch(setNewChannel(channelId)),
       store.dispatch(addServerMember({ channelId, member: newMember })),
     ]);
+  });
+
+  socket.on("server_member_change_online", (data) => {
+    const {
+      channelId,
+      memberId,
+      status,
+    }: {
+      channelId: string;
+      memberId: string;
+      status: boolean;
+    } = data;
+
+    console.log("Channel member online:", data);
+
+    store.dispatch(setOnlineStatusOnServer({ channelId, memberId, status }));
   });
 
   isInitialized = true;

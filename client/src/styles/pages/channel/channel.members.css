@@ -8,10 +8,22 @@
     @apply flex items-center w-full rounded-sm cursor-pointer p-1
 }
 
+.channel-member-offline{
+    @apply flex items-center w-full rounded-sm cursor-pointer p-1 opacity-60
+}
+
 .channel-member:hover{
     @apply bg-custom-focus
 }
 
 .channel-member:focus{
+    @apply bg-clicked
+}
+
+.channel-member-offline:hover{
+    @apply bg-custom-focus
+}
+
+.channel-member-offline:focus{
     @apply bg-clicked
 }
