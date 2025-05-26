@@ -95,7 +95,10 @@ export default function AddChannelModal({
             <ModalPublicSelector
               value={channelData.public}
               onChange={(value: boolean) =>
-                setChannelData((prev) => ({ ...prev, public: value }))
+                setChannelData((prev) => {
+                  console.log(value);
+                  return { ...prev, public: value };
+                })
               }
             />
 

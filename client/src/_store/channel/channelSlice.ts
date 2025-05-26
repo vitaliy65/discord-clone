@@ -176,6 +176,7 @@ export const createChannel = createAsyncThunk(
       name: string;
       description: string;
       avatar: string;
+      public: boolean;
     },
     { rejectWithValue }
   ) => {

@@ -198,7 +198,7 @@ export const searchChannel = async (req, res) => {
 };
 
 export const createChannel = async (req, res) => {
-  const { name, description, avatar } = req.body;
+  const { name, description, avatar, public: isPublic } = req.body;
 
   // Validate input
   if (!name || !description || !avatar) {
@@ -211,6 +211,7 @@ export const createChannel = async (req, res) => {
       name,
       description,
       avatar,
+      public: isPublic,
       owner: req.user._id,
       members: [{ user: req.user._id, userServerRole: "admin" }],
       textChats: [
