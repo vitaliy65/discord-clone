@@ -15,6 +15,7 @@ type ChannelState = {
   channels: ChannelType[];
   currentChannel: ChannelType | null;
   currentChat: ChannelTextChatType | ChannelVoiceChatType | null;
+  currentServerCategoryId: string | null;
   activeChannelIndex: number;
   isGuest: boolean;
 };
@@ -23,6 +24,7 @@ const initialState: ChannelState = {
   channels: [],
   currentChannel: null,
   currentChat: null,
+  currentServerCategoryId: null,
   activeChannelIndex: -1,
   isGuest: false,
 };
@@ -31,6 +33,12 @@ const channelSlice = createSlice({
   name: "channel",
   initialState,
   reducers: {
+    setCurrentChannelCategoryId: (
+      state,
+      action: PayloadAction<string | null>
+    ) => {
+      state.currentServerCategoryId = action.payload;
+    },
     setCurrentChannelById: (state, action: PayloadAction<string>) => {
       const foundChannel = state.channels.find(
         (channel) => channel._id === action.payload
@@ -64,7 +72,7 @@ const channelSlice = createSlice({
       state.isGuest = action.payload;
     },
     addMessageToCurrentChat: (
-      _,
+      state,
       action: PayloadAction<{
         channelId: string;
         chatId: string;
@@ -77,6 +85,7 @@ const channelSlice = createSlice({
 
       socket.emit("channel_send_message", {
         channelId: channelId,
+        categoryId: state.currentServerCategoryId,
         chatId: chatId,
         content: content,
         type: type,
@@ -203,6 +212,7 @@ export const createChannel = createAsyncThunk(
 );
 
 export const {
+  setCurrentChannelCategoryId,
   addMessageToCurrentChat,
   setActiveChannelIndex,
   setCurrentChannelById,

@@ -11,19 +11,6 @@ export default async function handleChannelChat({
   io,
 }) {
   try {
-    const channel = await Channel.findById(channelId);
-    if (!channel) throw new Error("Channel not found");
-
-    const category = channel.categories.find(
-      (cat) => cat._id.toString() === categoryId
-    );
-    if (!category) throw new Error("Category not found");
-
-    const textChat = category.textChats.find(
-      (chat) => chat._id.toString() === chatId
-    );
-    if (!textChat) throw new Error("Text chat not found");
-
     const newMessage = {
       sender: senderId,
       content,
@@ -31,11 +18,30 @@ export default async function handleChannelChat({
       timestamp: new Date(),
     };
 
-    textChat.messages.push(newMessage);
-    await channel.save();
+    // Використовуємо findOneAndUpdate з атомарним оператором $push
+    const updatedChannel = await Channel.findOneAndUpdate(
+      {
+        _id: channelId,
+        "categories._id": categoryId,
+        "categories.textChats._id": chatId,
+      },
+      {
+        $push: {
+          "categories.$[category].textChats.$[chat].messages": newMessage,
+        },
+      },
+      {
+        arrayFilters: [{ "category._id": categoryId }, { "chat._id": chatId }],
+        new: true, // Повертає оновлений документ
+      }
+    );
+
+    if (!updatedChannel) {
+      throw new Error("Failed to update channel");
+    }
 
     // Emit to all channel members
-    channel.members.forEach((member) => {
+    updatedChannel.members.forEach((member) => {
       io.to(member.user.toString()).emit("channel_chat_message_receive", {
         channelId,
         categoryId,

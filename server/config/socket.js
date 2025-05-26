@@ -37,9 +37,10 @@ const initializeSocket = (io) => {
 
     socket.on(
       "channel_send_message",
-      ({ channelId, chatId, content, type, senderId }) => {
+      ({ channelId, categoryId, chatId, content, type, senderId }) => {
         handleChannelChat({
           channelId,
+          categoryId,
           chatId,
           content,
           type,

@@ -4,7 +4,10 @@ import Hashtag from "@/assets/icons/hashtag";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChannelTextChatType, ChannelVoiceChatType } from "@/types/types";
-import { setCurrentChat } from "@/_store/channel/channelSlice";
+import {
+  setCurrentChannelCategoryId,
+  setCurrentChat,
+} from "@/_store/channel/channelSlice";
 import ListArrow from "@/assets/icons/listArrow";
 import PlusWithoutBg from "@/assets/icons/PlusWithoutBg";
 import TextPopUpWhenHover from "../animatedComponents/textPopUpWhenHover";
@@ -35,11 +38,13 @@ export default function ChannelChats() {
   }, [currentChannel]);
 
   const handleChatSelect = (
-    chat: ChannelTextChatType | ChannelVoiceChatType
+    chat: ChannelTextChatType | ChannelVoiceChatType,
+    categoryId: string
   ) => {
     if ("_id" in chat) {
       setSelectedChatId(chat._id);
       dispatch(setCurrentChat(chat));
+      dispatch(setCurrentChannelCategoryId(categoryId));
       navigator(`/channels/${currentChannel?._id}/${chat._id}`, {
         replace: true,
       });
@@ -97,7 +102,9 @@ export default function ChannelChats() {
                               ? "chat-item--selected"
                               : ""
                           }`}
-                          onClick={() => handleChatSelect(textChat)}
+                          onClick={() =>
+                            handleChatSelect(textChat, category._id)
+                          }
                         >
                           <div className="text-chat">
                             <Hashtag className="h-6 w-6" />
@@ -118,7 +125,9 @@ export default function ChannelChats() {
                               ? "chat-item--selected"
                               : ""
                           }`}
-                          onClick={() => handleChatSelect(voiceChat)}
+                          onClick={() =>
+                            handleChatSelect(voiceChat, category._id)
+                          }
                         >
                           <div className="voice-chat">
                             <Voice className="h-6 w-6" />
