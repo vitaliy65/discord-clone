@@ -74,7 +74,15 @@ export interface ChannelType {
   avatar: string;
   dateCreated: string;
   public: boolean;
+  owner: string;
   members: ChannelMember[];
+  categories: ChannelCategory[];
+}
+
+export interface ChannelCategory {
+  _id: string;
+  name: string;
+  position: number;
   textChats: ChannelTextChatType[];
   voiceChats: ChannelVoiceChatType[];
 }

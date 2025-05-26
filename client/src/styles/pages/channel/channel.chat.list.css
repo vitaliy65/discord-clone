@@ -13,7 +13,11 @@
 }
 
 .chat-category {
-  @apply py-2 text-sm text-gray-400;
+  @apply flex flex-row items-center w-full justify-between py-2 text-sm text-gray-400;
+}
+
+.chat-category:hover{
+  @apply text-white cursor-pointer;
 }
 
 .chat-item {

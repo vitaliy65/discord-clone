@@ -104,9 +104,13 @@ const channelSlice = createSlice({
       // Update in channels array
       const channel = state.channels.find((ch) => ch._id === channelId);
       if (channel) {
-        const chat = channel.textChats.find((chat) => chat._id === chatId);
-        if (chat && "messages" in chat) {
-          chat.messages.push(message);
+        // Шукаємо чат в усіх категоріях
+        for (const category of channel.categories) {
+          const chat = category.textChats.find((chat) => chat._id === chatId);
+          if (chat && "messages" in chat) {
+            chat.messages.push(message);
+            break;
+          }
         }
       }
     },

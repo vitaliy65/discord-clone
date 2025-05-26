@@ -19,6 +19,9 @@ import {
   getServer,
   joinChannel,
   searchChannel,
+  addCategory,
+  deleteCategory,
+  updateCategoryPosition,
 } from "../../controllers/channelController.js";
 
 const router = Router();
@@ -151,6 +154,70 @@ router.put(
 );
 router.delete(
   "/:id/text-chats/:chatId/messages/:messageId",
+  passport.authenticate("jwt", { session: false }),
+  deleteMessage
+);
+
+// New routes for categories
+router.post(
+  "/:channelId/categories",
+  passport.authenticate("jwt", { session: false }),
+  addCategory
+);
+
+router.delete(
+  "/:channelId/categories/:categoryId",
+  passport.authenticate("jwt", { session: false }),
+  deleteCategory
+);
+
+router.put(
+  "/:channelId/categories/:categoryId/position",
+  passport.authenticate("jwt", { session: false }),
+  updateCategoryPosition
+);
+
+// Updated routes for text chats
+router.post(
+  "/:channelId/categories/:categoryId/text-chats",
+  passport.authenticate("jwt", { session: false }),
+  addTextChat
+);
+
+router.delete(
+  "/:channelId/categories/:categoryId/text-chats/:chatId",
+  passport.authenticate("jwt", { session: false }),
+  deleteTextChat
+);
+
+// Updated routes for voice chats
+router.post(
+  "/:channelId/categories/:categoryId/voice-chats",
+  passport.authenticate("jwt", { session: false }),
+  addVoiceChat
+);
+
+router.delete(
+  "/:channelId/categories/:categoryId/voice-chats/:chatId",
+  passport.authenticate("jwt", { session: false }),
+  deleteVoiceChat
+);
+
+// Updated routes for messages
+router.post(
+  "/:channelId/categories/:categoryId/text-chats/:chatId/messages",
+  passport.authenticate("jwt", { session: false }),
+  addMessage
+);
+
+router.put(
+  "/:channelId/categories/:categoryId/text-chats/:chatId/messages/:messageId",
+  passport.authenticate("jwt", { session: false }),
+  editMessage
+);
+
+router.delete(
+  "/:channelId/categories/:categoryId/text-chats/:chatId/messages/:messageId",
   passport.authenticate("jwt", { session: false }),
   deleteMessage
 );

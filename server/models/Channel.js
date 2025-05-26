@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { type } from "os";
 
 const channelSchema = new mongoose.Schema({
   owner: {
@@ -39,84 +40,124 @@ const channelSchema = new mongoose.Schema({
       },
     },
   ],
-  textChats: [
+  categories: [
     {
       name: {
         type: String,
         required: true,
       },
-      type: {
-        type: String,
-        enum: ["text", "announcement"],
-        default: "text",
+      position: {
+        type: Number,
+        required: true,
       },
-      messages: [
+      textChats: [
         {
-          sender: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
-            required: true,
-          },
-          content: {
+          name: {
             type: String,
             required: true,
-          },
-          timestamp: {
-            type: Date,
-            default: Date.now,
           },
           type: {
             type: String,
-            enum: ["file", "text", "image", "audio", "video"],
+            enum: ["text", "announcement"],
             default: "text",
           },
+          messages: [
+            {
+              sender: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User",
+                required: true,
+              },
+              content: {
+                type: String,
+                required: true,
+              },
+              timestamp: {
+                type: Date,
+                default: Date.now,
+              },
+              type: {
+                type: String,
+                enum: ["file", "text", "image", "audio", "video"],
+                default: "text",
+              },
+            },
+          ],
         },
       ],
-    },
-  ],
-  voiceChats: [
-    {
-      name: {
-        type: String,
-        required: true,
-      },
-      maxParticipants: {
-        type: Number,
-        default: 99,
-      },
-      connectedUsers: [
+      voiceChats: [
         {
-          user: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
+          name: {
+            type: String,
+            required: true,
           },
-          joinedAt: {
-            type: Date,
-            default: Date.now,
+          maxParticipants: {
+            type: Number,
+            default: 99,
           },
-          voiceState: {
-            muted: { type: Boolean, default: false },
-            deafened: { type: Boolean, default: false },
-            videoEnabled: { type: Boolean, default: false },
-            screenSharing: { type: Boolean, default: false },
+          connectedUsers: [
+            {
+              user: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User",
+              },
+              joinedAt: {
+                type: Date,
+                default: Date.now,
+              },
+              voiceState: {
+                muted: { type: Boolean, default: false },
+                deafened: { type: Boolean, default: false },
+                videoEnabled: { type: Boolean, default: false },
+                screenSharing: { type: Boolean, default: false },
+              },
+            },
+          ],
+          isLocked: {
+            type: Boolean,
+            default: false,
+          },
+          bitrate: {
+            type: Number,
+            default: 64000,
+          },
+          permissions: {
+            speakingAllowed: { type: Boolean, default: true },
+            videoAllowed: { type: Boolean, default: true },
+            screenShareAllowed: { type: Boolean, default: true },
           },
         },
       ],
-      isLocked: {
-        type: Boolean,
-        default: false,
-      },
-      bitrate: {
-        type: Number,
-        default: 64000, // 64kbps default
-      },
-      permissions: {
-        speakingAllowed: { type: Boolean, default: true },
-        videoAllowed: { type: Boolean, default: true },
-        screenShareAllowed: { type: Boolean, default: true },
-      },
     },
   ],
+});
+
+// Middleware для створення стандартних категорій при створенні нового каналу
+channelSchema.pre("save", function (next) {
+  if (this.isNew) {
+    this.categories = [
+      {
+        name: "Text Channels",
+        position: 0,
+        textChats: [
+          {
+            name: "General",
+            _id: new mongoose.Types.ObjectId(),
+            type: "text",
+            messages: [],
+          },
+        ],
+        voiceChats: [],
+      },
+      {
+        name: "Voice Channels",
+        position: 1,
+        textChats: [],
+        voiceChats: [{ name: "Games", _id: new mongoose.Types.ObjectId() }],
+      },
+    ];
+  }
+  next();
 });
 
 const Channel = mongoose.model("Channel", channelSchema);

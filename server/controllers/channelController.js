@@ -214,25 +214,37 @@ export const createChannel = async (req, res) => {
       public: isPublic,
       owner: req.user._id,
       members: [{ user: req.user._id, userServerRole: "admin" }],
-      textChats: [
+      categories: [
         {
-          name: "general",
-          type: "text",
-          messages: [],
+          name: "Text Channels",
+          position: 0,
+          textChats: [
+            {
+              name: "general",
+              type: "text",
+              messages: [],
+            },
+          ],
+          voiceChats: [],
         },
-      ],
-      voiceChats: [
         {
-          name: "Group",
-          maxParticipants: 99,
-          connectedUsers: [],
-          isLocked: false,
-          bitrate: 64000,
-          permissions: {
-            speakingAllowed: true,
-            videoAllowed: true,
-            screenShareAllowed: true,
-          },
+          name: "Voice Channels",
+          position: 1,
+          textChats: [],
+          voiceChats: [
+            {
+              name: "Group",
+              maxParticipants: 99,
+              connectedUsers: [],
+              isLocked: false,
+              bitrate: 64000,
+              permissions: {
+                speakingAllowed: true,
+                videoAllowed: true,
+                screenShareAllowed: true,
+              },
+            },
+          ],
         },
       ],
     });
@@ -319,46 +331,53 @@ export const getChannelVoiceChats = (req, res) => {
 
 // Add text chat
 export const addTextChat = async (req, res) => {
-  const { name, type = "text" } = req.body;
-
-  if (!name) {
-    return res.status(400).json({ error: "Name is required" });
-  }
+  const { channelId, categoryId, name, type = "text" } = req.body;
 
   try {
-    const channel = await Channel.findById(req.params.id);
+    const channel = await Channel.findById(channelId);
     if (!channel) {
       return res.status(404).json({ error: "Channel not found" });
     }
 
-    channel.textChats.push({
+    const category = channel.categories.find(
+      (cat) => cat._id.toString() === categoryId
+    );
+    if (!category) {
+      return res.status(404).json({ error: "Category not found" });
+    }
+
+    category.textChats.push({
       name,
       type,
       messages: [],
     });
 
     await channel.save();
-    res.status(201).json(channel.textChats[channel.textChats.length - 1]);
+    res.status(201).json(channel);
   } catch (err) {
-    res.status(500).json({ error: "Error creating text chat" });
+    console.error(err);
+    res.status(500).json({ error: "Error adding text chat" });
   }
 };
 
 // Add voice chat
 export const addVoiceChat = async (req, res) => {
-  const { name, maxParticipants = 99 } = req.body;
-
-  if (!name) {
-    return res.status(400).json({ error: "Name is required" });
-  }
+  const { channelId, categoryId, name, maxParticipants = 99 } = req.body;
 
   try {
-    const channel = await Channel.findById(req.params.id);
+    const channel = await Channel.findById(channelId);
     if (!channel) {
       return res.status(404).json({ error: "Channel not found" });
     }
 
-    channel.voiceChats.push({
+    const category = channel.categories.find(
+      (cat) => cat._id.toString() === categoryId
+    );
+    if (!category) {
+      return res.status(404).json({ error: "Category not found" });
+    }
+
+    category.voiceChats.push({
       name,
       maxParticipants,
       connectedUsers: [],
@@ -372,9 +391,10 @@ export const addVoiceChat = async (req, res) => {
     });
 
     await channel.save();
-    res.status(201).json(channel.voiceChats[channel.voiceChats.length - 1]);
+    res.status(201).json(channel);
   } catch (err) {
-    res.status(500).json({ error: "Error creating voice chat" });
+    console.error(err);
+    res.status(500).json({ error: "Error adding voice chat" });
   }
 };
 
@@ -537,5 +557,93 @@ export const deleteMessage = async (req, res) => {
     res.json({ success: true, message: "Message deleted successfully" });
   } catch (err) {
     res.status(500).json({ error: "Error deleting message" });
+  }
+};
+
+export const addCategory = async (req, res) => {
+  const { channelId, name, position } = req.body;
+
+  try {
+    const channel = await Channel.findById(channelId);
+    if (!channel) {
+      return res.status(404).json({ error: "Channel not found" });
+    }
+
+    channel.categories.push({
+      name,
+      position,
+      textChats: [],
+      voiceChats: [],
+    });
+
+    await channel.save();
+    res.status(201).json(channel);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error adding category" });
+  }
+};
+
+export const deleteCategory = async (req, res) => {
+  const { channelId, categoryId } = req.params;
+
+  try {
+    const channel = await Channel.findById(channelId);
+    if (!channel) {
+      return res.status(404).json({ error: "Channel not found" });
+    }
+
+    // Не дозволяємо видаляти стандартні категорії
+    const category = channel.categories.find(
+      (cat) => cat._id.toString() === categoryId
+    );
+    if (!category) {
+      return res.status(404).json({ error: "Category not found" });
+    }
+
+    if (
+      category.name === "Text Channels" ||
+      category.name === "Voice Channels"
+    ) {
+      return res
+        .status(403)
+        .json({ error: "Cannot delete default categories" });
+    }
+
+    channel.categories = channel.categories.filter(
+      (cat) => cat._id.toString() !== categoryId
+    );
+
+    await channel.save();
+    res.status(200).json(channel);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error deleting category" });
+  }
+};
+
+export const updateCategoryPosition = async (req, res) => {
+  const { channelId, categoryId } = req.params;
+  const { position } = req.body;
+
+  try {
+    const channel = await Channel.findById(channelId);
+    if (!channel) {
+      return res.status(404).json({ error: "Channel not found" });
+    }
+
+    const category = channel.categories.find(
+      (cat) => cat._id.toString() === categoryId
+    );
+    if (!category) {
+      return res.status(404).json({ error: "Category not found" });
+    }
+
+    category.position = position;
+    await channel.save();
+    res.status(200).json(channel);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error updating category position" });
   }
 };
