@@ -9,7 +9,7 @@ import {
   setCurrentChat,
 } from "@/_store/channel/channelSlice";
 import ListArrow from "@/assets/icons/listArrow";
-import PlusWithoutBg from "@/assets/icons/PlusWithoutBg";
+import PlusWithoutBg from "@/assets/icons/plusWithoutBg";
 import TextPopUpWhenHover from "../animatedComponents/textPopUpWhenHover";
 
 export default function ChannelChats() {
