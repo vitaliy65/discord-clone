@@ -1,20 +1,30 @@
 import { motion } from "motion/react";
 
-export default function ListArrow({ rotate }: { rotate?: boolean }) {
+export default function ListArrow({
+  size,
+  rotate,
+  angle,
+  initialAngle,
+}: {
+  size: string;
+  rotate?: boolean;
+  angle: number;
+  initialAngle: number;
+}) {
   return (
     <motion.svg
-      width="16"
-      height="16"
+      width={size}
+      height={size}
       fill="none"
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
-      initial={{ rotate: 0 }}
-      animate={{ rotate: rotate ? -90 : 0 }}
+      initial={{ rotate: initialAngle }}
+      animate={{ rotate: rotate ? angle : initialAngle }}
       transition={{ duration: 0.2, ease: "easeInOut" }}
     >
       <g data-name="Layer 2">
         <g data-name="arrow-ios-downward">
-          <rect width="16" height="16" opacity="0" />
+          <rect width={size} height={size} opacity="0" />
           <path
             fill="currentColor"
             fill-rule="evenodd"

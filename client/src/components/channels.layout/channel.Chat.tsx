@@ -12,8 +12,8 @@ export default function ChannelChat() {
   // Return early if no chat selected
   if (!currentChat) {
     return (
-      <div className="items-position-center h-full bg-friends">
-        <p className="px-4 py-2 bg-channels rounded-full shadow-sm">
+      <div className="center-container h-full bg-friends">
+        <p className="px-4 py-2 bg-channels rounded-full shadow-sm whitespace-nowrap">
           Select chat to start messaging!
         </p>
       </div>
@@ -49,6 +49,14 @@ export default function ChannelChat() {
       />
     </main>
   ) : (
-    <main></main>
+    <main className="chat-container bg-friends">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="w-full h-96 bg-black ring-1"></div>
+        <div className="w-full h-96 bg-black ring-1"></div>
+        <div className="w-full h-96 bg-black ring-1"></div>
+        <div className="w-full h-96 bg-black ring-1"></div>
+        <div className="w-full h-96 bg-black ring-1"></div>
+      </div>
+    </main>
   );
 }

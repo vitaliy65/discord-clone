@@ -27,3 +27,11 @@
 .channel-member-offline:focus{
     @apply bg-clicked
 }
+
+.members-container-hide-button{
+    @apply absolute flex justify-center items-center w-8 h-14 rounded-l-xl bg-friends -left-8 z-50 cursor-pointer border-y border-l border-channels
+}
+
+.members-container-hide-button:hover{
+    @apply bg-custom-focus
+}

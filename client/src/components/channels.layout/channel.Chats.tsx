@@ -75,7 +75,12 @@ export default function ChannelChats() {
               >
                 <div className="flex flex-row items-center justify-center gap-2">
                   <p>{category.name}</p>
-                  <ListArrow rotate={hideCategoryChats[category._id]} />
+                  <ListArrow
+                    rotate={hideCategoryChats[category._id]}
+                    initialAngle={0}
+                    angle={-90}
+                    size="16px"
+                  />
                 </div>
                 <div
                   onMouseEnter={() => setShowLable(category._id)}
