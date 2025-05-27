@@ -22,6 +22,7 @@ import {
   addCategory,
   deleteCategory,
   updateCategoryPosition,
+  JoinServerVoiceChat,
 } from "../../controllers/channelController.js";
 
 const router = Router();
@@ -220,6 +221,13 @@ router.delete(
   "/:channelId/categories/:categoryId/text-chats/:chatId/messages/:messageId",
   passport.authenticate("jwt", { session: false }),
   deleteMessage
+);
+
+// user join server voice chat
+router.post(
+  "/server-voice-chat/join",
+  passport.authenticate("jwt", { session: false }),
+  JoinServerVoiceChat
 );
 
 const channelRoutes = router;

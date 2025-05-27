@@ -139,6 +139,47 @@ const channelSlice = createSlice({
         state.currentChannel.members.push(newMember);
       }
     },
+    userJoinedVoiceChat: (
+      state,
+      action: PayloadAction<{
+        userId: string;
+        chatId: string;
+        categoryId: string;
+        channelId: string;
+      }>
+    ) => {
+      const { chatId, categoryId, channelId, userId } = action.payload;
+
+      const newConnectedUser = {
+        user: userId,
+        joinedAt: new Date().toISOString(),
+        voiceState: {
+          muted: false,
+          deafened: false,
+          videoEnabled: false,
+          screenSharing: false,
+        },
+      };
+
+      const channel = state.channels.find((ch) => ch._id === channelId);
+      const category = channel?.categories.find(
+        (cat) => cat._id === categoryId
+      );
+      const voiceChat = category?.voiceChats.find(
+        (chat) => chat._id === chatId
+      );
+
+      if (voiceChat) {
+        voiceChat.connectedUsers.push(newConnectedUser);
+
+        if (
+          state.currentChat?._id === chatId &&
+          "connectedUsers" in state.currentChat
+        ) {
+          state.currentChat.connectedUsers.push(newConnectedUser);
+        }
+      }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(
@@ -222,5 +263,6 @@ export const {
   addChannelMember,
   addChannel,
   setIsGuest,
+  userJoinedVoiceChat,
 } = channelSlice.actions;
 export default channelSlice.reducer;

@@ -14,6 +14,7 @@ import {
 import {
   receiveChannelMessage,
   addChannelMember,
+  userJoinedVoiceChat,
 } from "@/_store/channel/channelSlice";
 import {
   addServerMember,
@@ -83,8 +84,6 @@ export const initializeSocketEvents = (store: typeof StoreType) => {
       };
     } = data;
 
-    console.log("Channel member joined:", data);
-
     Promise.all([
       store.dispatch(addChannelMember({ channelId, newMember })),
       store.dispatch(setNewChannel(channelId)),
@@ -103,9 +102,12 @@ export const initializeSocketEvents = (store: typeof StoreType) => {
       status: boolean;
     } = data;
 
-    console.log("Channel member online:", data);
-
     store.dispatch(setOnlineStatusOnServer({ channelId, memberId, status }));
+  });
+
+  socket.on("user_joined_voice_chat", (data) => {
+    console.log("User joined voice chat:", data);
+    store.dispatch(userJoinedVoiceChat(data));
   });
 
   isInitialized = true;

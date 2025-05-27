@@ -5,6 +5,8 @@ import {
 } from "../handlers/friendRequestHandler.js";
 import handleChannelChat from "../handlers/channelChatHandler.js";
 import { friendStatusHandler } from "../handlers/friendHandler.js";
+import User from "../models/User.js";
+import Channel from "../models/Channel.js";
 
 const initializeSocket = (io) => {
   io.on("connection", (socket) => {
@@ -31,8 +33,19 @@ const initializeSocket = (io) => {
       //console.log("Client disconnected:", socket.id);
     });
 
-    socket.on("register_user", (userId) => {
+    socket.on("register_user", async (userId) => {
+      socket.userId = userId; // Зберігаємо userId в об'єкті сокета
       socket.join(userId);
+
+      // Знаходимо всі канали, де користувач є учасником
+      const channels = await Channel.find({
+        "members.user": userId,
+      });
+
+      // Підписуємо користувача на всі його канали
+      channels.forEach((channel) => {
+        socket.join(channel._id.toString());
+      });
     });
 
     socket.on(

@@ -114,7 +114,6 @@ export interface ChannelVoiceChatType {
 }
 
 interface VoiceChatConnectedUsers {
-  _id: string;
   user: string;
   joinedAt: string;
   voiceState: {

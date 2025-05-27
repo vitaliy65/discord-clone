@@ -11,6 +11,8 @@ import {
 import ListArrow from "@/assets/icons/listArrow";
 import PlusWithoutBg from "@/assets/icons/plusWithoutBg";
 import TextPopUpWhenHover from "../animatedComponents/textPopUpWhenHover";
+import axios from "axios";
+import { SERVER_API_URL } from "@/utils/constants";
 
 export default function ChannelChats() {
   const currentChannel = useAppSelector((s) => s.channel.currentChannel);
@@ -125,9 +127,22 @@ export default function ChannelChats() {
                               ? "chat-item--selected"
                               : ""
                           }`}
-                          onClick={() =>
-                            handleChatSelect(voiceChat, category._id)
-                          }
+                          onClick={async () => {
+                            handleChatSelect(voiceChat, category._id);
+                            await axios.post(
+                              `${SERVER_API_URL}/channel/server-voice-chat/join`,
+                              {
+                                chatId: voiceChat._id,
+                                categoryId: category._id,
+                                channelId: currentChannel?._id,
+                              },
+                              {
+                                headers: {
+                                  Authorization: localStorage.getItem("token"),
+                                },
+                              }
+                            );
+                          }}
                         >
                           <div className="voice-chat">
                             <Voice className="h-6 w-6" />

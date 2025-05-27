@@ -146,19 +146,24 @@ export const joinChannel = async (req, res) => {
     user.channels.push(channelId);
     await user.save();
 
-    // Сповіщаємо всіх учасників каналу про нового учасника
-    channel.members.forEach((member) => {
-      io.to(member.user.toString()).emit("channel_member_joined", {
-        channelId,
-        newMember: {
-          _id: user._id,
-          username: user.username,
-          user_unique_id: user.user_unique_id,
-          avatar: user.avatar,
-          onlineStatus: user.onlineStatus,
-          userServerRole: "member",
-        },
-      });
+    // Підписуємо користувача на канал через Socket.IO
+    io.sockets.sockets.forEach((socket) => {
+      if (socket.userId === user._id.toString()) {
+        socket.join(channelId);
+      }
+    });
+
+    // Відправляємо повідомлення в канал про нового учасника
+    io.to(channelId).emit("channel_member_joined", {
+      channelId,
+      newMember: {
+        _id: user._id,
+        username: user.username,
+        user_unique_id: user.user_unique_id,
+        avatar: user.avatar,
+        onlineStatus: user.onlineStatus,
+        userServerRole: "member",
+      },
     });
 
     res.status(200).json({ message: "Успішно приєднано до сервера", channel });
@@ -645,5 +650,69 @@ export const updateCategoryPosition = async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Error updating category position" });
+  }
+};
+
+export const JoinServerVoiceChat = async (req, res) => {
+  const { channelId, chatId, categoryId } = req.body;
+  const userId = req.user._id;
+
+  try {
+    const channel = await Channel.findOne({
+      _id: channelId,
+      "categories._id": categoryId,
+      "categories.voiceChats._id": chatId,
+    });
+
+    if (!channel) {
+      return res.status(404).json({ error: "Voice chat not found" });
+    }
+
+    // Знаходимо конкретний голосовий чат
+    const category = channel.categories.find(
+      (cat) => cat._id.toString() === categoryId
+    );
+    const voiceChat = category.voiceChats.find(
+      (chat) => chat._id.toString() === chatId
+    );
+
+    if (!voiceChat) {
+      return res.status(404).json({ error: "Voice chat not found" });
+    }
+
+    // Перевіряємо, чи користувач вже в чаті
+    if (
+      voiceChat.connectedUsers.some(
+        (user) => user.user.toString() === userId.toString()
+      )
+    ) {
+      return res.status(400).json({ error: "User already in voice chat" });
+    }
+
+    // Додаємо користувача до голосового чату
+    voiceChat.connectedUsers.push({
+      user: userId,
+      joinedAt: new Date(),
+      voiceState: {
+        muted: false,
+        deafened: false,
+        videoEnabled: false,
+        screenSharing: false,
+      },
+    });
+
+    // Відправляємо повідомлення всім користувачам каналу
+    io.to(channelId).emit("user_joined_voice_chat", {
+      userId,
+      chatId,
+      categoryId,
+      channelId,
+    });
+
+    await channel.save();
+    res.status(200).json({ message: "Joined voice chat successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error joining voice chat" });
   }
 };
