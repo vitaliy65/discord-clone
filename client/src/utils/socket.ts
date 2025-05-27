@@ -109,12 +109,10 @@ export const initializeSocketEvents = (store: typeof StoreType) => {
   });
 
   socket.on("user_joined_voice_chat", (data) => {
-    console.log("user_joined_voice_chat", data);
     store.dispatch(userJoinedVoiceChat(data));
   });
 
   socket.on("user_left_voice_chat", (data) => {
-    console.log("user_left_voice_chat", data);
     store.dispatch(userLeftVoiceChat(data));
   });
 
