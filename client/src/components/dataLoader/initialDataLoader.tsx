@@ -1,9 +1,8 @@
 import { ReactNode, useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "@/_hooks/hooks";
+import { useAppDispatch } from "@/_hooks/hooks";
 import { fetchChannels } from "@/_store/channel/channelSlice";
 import { fetchFriends } from "@/_store/friend/friendSlice";
 import { fetchChats } from "@/_store/chat/chatSlice";
-import { socket } from "@/utils/socket";
 import { fetchFriendRequestList } from "@/_store/friendRequest/friendRequestSlice";
 
 interface InitialDataLoaderProps {
