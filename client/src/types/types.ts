@@ -88,11 +88,13 @@ export interface ChannelCategory {
 }
 
 export interface ChannelMember {
-  _id: string;
-  username: string;
-  user_unique_id: string;
-  avatar: string;
-  onlineStatus: boolean;
+  user: {
+    _id: string;
+    username: string;
+    user_unique_id: string;
+    avatar: string;
+    onlineStatus: boolean;
+  };
   userServerRole: "admin" | "moderator" | "member";
 }
 

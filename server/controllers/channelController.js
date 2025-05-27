@@ -5,19 +5,54 @@ import { io } from "../server.js";
 
 config();
 
-export const getListChannel = (req, res) => {
+const processChannelsWithMembers = async (channels) => {
+  // Перетворюємо одиночний канал в масив
+  const channelsArray = Array.isArray(channels) ? channels : [channels];
+
+  const members = await User.find(
+    {
+      _id: {
+        $in: channelsArray
+          .map((channel) => channel.members.map((m) => m.user))
+          .flat(),
+      },
+    },
+    "_id username user_unique_id avatar onlineStatus"
+  );
+
+  // Створюємо мапу користувачів для швидкого доступу
+  const membersMap = members.reduce((acc, member) => {
+    acc[member._id.toString()] = member;
+    return acc;
+  }, {});
+
+  // Оновлюємо структуру каналів
+  const processedChannels = channelsArray.map((channel) => {
+    const channelObj = channel.toObject();
+    channelObj.members = channelObj.members.map((member) => ({
+      ...member,
+      user: membersMap[member.user.toString()],
+    }));
+    return channelObj;
+  });
+
+  // Повертаємо один канал або масив каналів, залежно від вхідних даних
+  return Array.isArray(channels) ? processedChannels : processedChannels[0];
+};
+
+export const getListChannel = async (req, res) => {
   // Check if user has any channels
   if (req.user.channels.length === 0) {
     return res.status(400).json({ error: "No channels found" });
   }
 
-  Channel.find({ _id: { $in: req.user.channels } })
-    .then((channels) => {
-      res.json(channels);
-    })
-    .catch((err) => {
-      res.status(500).json({ error: "Error fetching channels" });
-    });
+  try {
+    const channels = await Channel.find({ _id: { $in: req.user.channels } });
+    const channelsWithMembers = await processChannelsWithMembers(channels);
+    res.json(channelsWithMembers);
+  } catch (err) {
+    res.status(500).json({ error: "Error fetching channels" });
+  }
 };
 
 export const getAllChannel = async (req, res) => {
@@ -52,14 +87,15 @@ export const getAllChannel = async (req, res) => {
 export const getServer = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(id);
     const server = await Channel.findById(id);
 
     if (!server) {
       return res.status(404).json({ error: "Сервер не знайдено" });
     }
 
-    res.json(server);
+    const channelsWithMembers = await processChannelsWithMembers(server);
+
+    res.json(channelsWithMembers);
   } catch (err) {
     res.status(500).json({ error: "Помилка при отриманні сервера", err });
   }
@@ -85,7 +121,6 @@ export const getChannelById = (req, res) => {
 
 export const getChannelMembers = async (req, res) => {
   // Перевірка, чи має користувач доступ до цього каналу
-  //console.log("i'am getting members");
 
   try {
     // Знайти канал за ID
@@ -175,7 +210,6 @@ export const joinChannel = async (req, res) => {
 
 export const searchChannel = async (req, res) => {
   const { name } = req.query;
-  console.log(name);
 
   try {
     const channel = await Channel.findOne({ name });
@@ -260,7 +294,9 @@ export const createChannel = async (req, res) => {
     req.user.channels.push(newChannel._id);
     await req.user.save();
 
-    res.status(201).json(newChannel);
+    const channelsWithMembers = await processChannelsWithMembers(newChannel);
+
+    res.status(201).json(channelsWithMembers);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Error creating channel" });

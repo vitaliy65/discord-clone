@@ -49,13 +49,14 @@ export default function ChannelChat() {
       />
     </main>
   ) : (
-    <main className="chat-container bg-friends">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        <div className="w-full h-96 bg-black ring-1"></div>
-        <div className="w-full h-96 bg-black ring-1"></div>
-        <div className="w-full h-96 bg-black ring-1"></div>
-        <div className="w-full h-96 bg-black ring-1"></div>
-        <div className="w-full h-96 bg-black ring-1"></div>
+    <main className="full-center-container bg-friends overflow-hidden">
+      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 p-4 w-full h-full overflow-y-auto scrollbar-small place-items-center">
+        {currentChat.connectedUsers.map((user) => (
+          <div
+            key={user.user}
+            className="w-full h-60 bg-black rounded-xl"
+          ></div>
+        ))}
       </div>
     </main>
   );

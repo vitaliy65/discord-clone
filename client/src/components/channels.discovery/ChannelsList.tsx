@@ -6,21 +6,15 @@ import { ServerInfo } from "@/types/types";
 import ServerCard from "./ServerCard";
 import { useNavigate } from "react-router-dom";
 import { setCurrentChannel } from "@/_store/channel/channelSlice";
-import { useAppDispatch, useAppSelector } from "@/_hooks/hooks";
+import { useAppDispatch } from "@/_hooks/hooks";
 import { setCurrentChat } from "@/_store/chat/chatSlice";
 import { setCurrentChat as setCurrentChannelChat } from "@/_store/channel/channelSlice";
-import {
-  fetchChannelMembers,
-  setNewChannel,
-  setSelectedChannel,
-} from "@/_store/channelMembers/channelMembersSlice";
 import { ChannelType } from "@/types/types";
 
 export default function ChannelsList() {
   const [servers, setServers] = useState<ServerInfo[] | null>(null);
   const [channelsCount, setChannelsCount] = useState<number>(20);
   const [loading, setLoading] = useState<string>("");
-  const channelsMembers = useAppSelector((s) => s.channelMembers.channels);
   const dispatch = useAppDispatch();
   const navigator = useNavigate();
 
@@ -51,18 +45,6 @@ export default function ChannelsList() {
   const navigateToServer = async (id: string) => {
     setLoading(id);
 
-    // Перевірка наявності каналу в channelsMembers
-    if (!channelsMembers.some((cm) => cm._id === id)) {
-      await dispatch(setNewChannel(id));
-    }
-
-    const localChannelMembers = channelsMembers.find((cm) => cm._id === id);
-
-    // Перевірка наявності учасників каналу
-    if (!localChannelMembers || localChannelMembers.members.length === 0) {
-      await dispatch(fetchChannelMembers(id));
-    }
-
     const res = await axios.get(`${SERVER_API_URL}/channel/server/${id}`, {
       headers: { Authorization: localStorage.getItem("token") },
     });
@@ -73,7 +55,6 @@ export default function ChannelsList() {
       dispatch(setCurrentChat(null)),
       dispatch(setCurrentChannelChat(null)),
       dispatch(setCurrentChannel(server)),
-      dispatch(setSelectedChannel(id)),
     ]);
     setLoading("");
     navigator(`/channels/${id}`);

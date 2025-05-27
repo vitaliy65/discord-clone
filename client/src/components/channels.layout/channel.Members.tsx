@@ -4,7 +4,7 @@ import { useState } from "react";
 
 export default function ChannelMembers() {
   const channelMembers = useAppSelector(
-    (s) => s.channelMembers.selectedChannel
+    (s) => s.channel.currentChannel?.members || []
   );
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -18,13 +18,15 @@ export default function ChannelMembers() {
       </div>
     );
 
-  const filteredMembers = channelMembers.members.filter((member) =>
-    member.username.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredMembers = channelMembers.filter((member) =>
+    member.user.username.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const onlineMembers = filteredMembers.filter((member) => member.onlineStatus);
+  const onlineMembers = filteredMembers.filter(
+    (member) => member.user.onlineStatus
+  );
   const offlineMembers = filteredMembers.filter(
-    (member) => !member.onlineStatus
+    (member) => !member.user.onlineStatus
   );
 
   return (
@@ -45,9 +47,9 @@ export default function ChannelMembers() {
               В мережі
             </p>
             {onlineMembers.map((member) => (
-              <div key={member._id} className="channel-member">
-                <ProfileWithStatus user={member} />
-                <p className="ml-2">{member.username}</p>
+              <div key={member.user._id} className="channel-member">
+                <ProfileWithStatus user={member.user} />
+                <p className="ml-2">{member.user.username}</p>
               </div>
             ))}
           </div>
@@ -58,9 +60,9 @@ export default function ChannelMembers() {
               Не в мережі
             </p>
             {offlineMembers.map((member) => (
-              <div key={member._id} className="channel-member-offline">
-                <ProfileWithStatus user={member} />
-                <p className="ml-2">{member.username}</p>
+              <div key={member.user._id} className="channel-member-offline">
+                <ProfileWithStatus user={member.user} />
+                <p className="ml-2">{member.user.username}</p>
               </div>
             ))}
           </div>

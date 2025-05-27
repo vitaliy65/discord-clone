@@ -14,7 +14,6 @@ export default function InitialDataLoader({
   children,
 }: InitialDataLoaderProps) {
   const [isLoading, setIsLoading] = useState(true);
-  const userId = useAppSelector((state) => state.user.info.id);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -27,8 +26,6 @@ export default function InitialDataLoader({
           dispatch(fetchChats()),
           dispatch(fetchFriendRequestList()),
         ]);
-
-        socket.emit("register_user", userId);
 
         setIsLoading(false);
       } catch (error) {

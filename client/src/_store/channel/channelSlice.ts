@@ -180,6 +180,31 @@ const channelSlice = createSlice({
         }
       }
     },
+    setOnlineStatusOnServer: (
+      state,
+      action: PayloadAction<{
+        channelId: string;
+        memberId: string;
+        status: boolean;
+      }>
+    ) => {
+      const { channelId, memberId, status } = action.payload;
+      const channel = state.channels.find((ch) => ch._id === channelId);
+      if (channel) {
+        const member = channel.members.find((m) => m.user._id === memberId);
+        if (member) {
+          member.user.onlineStatus = status;
+        }
+      }
+      if (state.currentChannel?._id === channelId) {
+        const currentMember = state.currentChannel.members.find(
+          (m) => m.user._id === memberId
+        );
+        if (currentMember) {
+          currentMember.user.onlineStatus = status;
+        }
+      }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(
@@ -264,5 +289,6 @@ export const {
   addChannel,
   setIsGuest,
   userJoinedVoiceChat,
+  setOnlineStatusOnServer,
 } = channelSlice.actions;
 export default channelSlice.reducer;

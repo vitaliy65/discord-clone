@@ -15,12 +15,8 @@ import {
   receiveChannelMessage,
   addChannelMember,
   userJoinedVoiceChat,
-} from "@/_store/channel/channelSlice";
-import {
-  addServerMember,
-  setNewChannel,
   setOnlineStatusOnServer,
-} from "@/_store/channelMembers/channelMembersSlice";
+} from "@/_store/channel/channelSlice";
 import { Navigate } from "react-router-dom";
 
 export const socket = io(SERVER_URL, {
@@ -85,9 +81,15 @@ export const initializeSocketEvents = (store: typeof StoreType) => {
     } = data;
 
     Promise.all([
-      store.dispatch(addChannelMember({ channelId, newMember })),
-      store.dispatch(setNewChannel(channelId)),
-      store.dispatch(addServerMember({ channelId, member: newMember })),
+      store.dispatch(
+        addChannelMember({
+          channelId,
+          newMember: {
+            user: newMember,
+            userServerRole: newMember.userServerRole,
+          },
+        })
+      ),
     ]);
   });
 
@@ -106,7 +108,6 @@ export const initializeSocketEvents = (store: typeof StoreType) => {
   });
 
   socket.on("user_joined_voice_chat", (data) => {
-    console.log("User joined voice chat:", data);
     store.dispatch(userJoinedVoiceChat(data));
   });
 

@@ -9,10 +9,9 @@ export const friendStatusHandler = async ({ userId, status, socket, io }) => {
       Channel.find({ members: { $elemMatch: { user: userId } } }),
     ]);
 
-    if (!user) return;
-
     // Оновлюємо статус користувача
     user.onlineStatus = status;
+
     await user.save();
 
     // Підготовлюємо дані для відправки
@@ -29,18 +28,16 @@ export const friendStatusHandler = async ({ userId, status, socket, io }) => {
     );
 
     // Відправляємо оновлення статусу всім учасникам каналів
-    const channelUpdates = channels.flatMap((channel) =>
-      channel.members.map((member) => {
-        const update = {
-          channelId: channel._id.toString(),
-          memberId: userId,
-          status: status,
-        };
-        return io
-          .to(member.user.toString())
-          .emit("server_member_change_online", update);
-      })
-    );
+    const channelUpdates = channels.map((channel) => {
+      const update = {
+        channelId: channel._id.toString(),
+        memberId: userId,
+        status: status,
+      };
+
+      // Відправляємо всім підключеним сокетам
+      io.to(channel._id.toString()).emit("server_member_change_online", update);
+    });
 
     // Виконуємо всі відправки паралельно
     await Promise.all([...friendUpdates, ...channelUpdates]);

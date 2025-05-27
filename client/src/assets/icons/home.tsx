@@ -12,9 +12,9 @@ export default function HomeIcon() {
       <circle cx="12" cy="12" r="10" fill="transparent"></circle>
       <path
         fill="currentColor"
-        fill-rule="evenodd"
+        fillRule="evenodd"
         d="M12 20V14H15V20H19V12H22L12 3L2 12H5V20H9V14H12Z"
-        clip-rule="evenodd"
+        clipRule="evenodd"
       />
     </svg>
   );

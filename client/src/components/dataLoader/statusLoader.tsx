@@ -13,6 +13,8 @@ export default function StatusLoader({ children }: { children: ReactElement }) {
   useEffect(() => {
     // Connect to socket server
     socket.connect();
+    socket.emit("register_user", user.id);
+
     dispatch(setOnlineStatus(true));
     socket.emit("user_status_change", { userId: user.id, status: true });
 
@@ -21,7 +23,9 @@ export default function StatusLoader({ children }: { children: ReactElement }) {
       dispatch(setOnlineStatus(false));
       socket.emit("user_status_change", { userId: user.id, status: false });
     };
+
     window.addEventListener("beforeunload", handleUnload);
+
     initializeSocketEvents(store);
 
     // Clean up on component unmount

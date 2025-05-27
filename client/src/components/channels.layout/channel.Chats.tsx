@@ -62,7 +62,7 @@ export default function ChannelChats() {
       {currentChannel && (
         <div className="friend-section-container scrollbar-small">
           {currentChannel.categories.map((category) => (
-            <div className="w-full">
+            <div key={category._id} className="w-full">
               {/* ----- section title ----- */}
               <div
                 className="chat-category"

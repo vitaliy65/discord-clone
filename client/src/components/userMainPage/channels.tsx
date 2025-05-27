@@ -9,40 +9,19 @@ import {
   setCurrentChannelById,
   setCurrentChat,
 } from "@/_store/channel/channelSlice";
-import {
-  fetchChannelMembers,
-  setNewChannel,
-  setSelectedChannel,
-} from "@/_store/channelMembers/channelMembersSlice";
 import SearchChannel from "./sections/section.channels/channel-search";
 
 export default function Channels() {
   const navigate = useNavigate();
   const channels = useAppSelector((s) => s.channel.channels);
   const activeIndex = useAppSelector((s) => s.channel.activeChannelIndex);
-  const channelsMembers = useAppSelector((s) => s.channelMembers.channels);
   const dispatch = useAppDispatch();
 
   const handleOpenChannel = async (channel: ChannelType, index: number) => {
-    // Перевірка наявності каналу в channelsMembers
-    if (!channelsMembers.some((cm) => cm._id === channel._id)) {
-      await dispatch(setNewChannel(channel._id));
-    }
-
-    const localChannelMembers = channelsMembers.find(
-      (cm) => cm._id === channel._id
-    );
-
-    // Перевірка наявності учасників каналу
-    if (!localChannelMembers || localChannelMembers.members.length === 0) {
-      await dispatch(fetchChannelMembers(channel._id));
-    }
-
     await Promise.all([
       dispatch(setActiveChannelIndex(index)),
       dispatch(setCurrentChannelById(channel._id)),
       dispatch(setCurrentChat(null)),
-      dispatch(setSelectedChannel(channel._id)),
     ]);
 
     navigate(`/channels/${channel._id}`);
