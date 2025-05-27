@@ -14,8 +14,9 @@ import { socket } from "@/utils/socket";
 type ChannelState = {
   channels: ChannelType[];
   currentChannel: ChannelType | null;
-  currentChat: ChannelTextChatType | ChannelVoiceChatType | null;
+  currentTextChat: ChannelTextChatType | null;
   currentServerCategoryId: string | null;
+  currentVoiceChat: ChannelVoiceChatType | null;
   activeChannelIndex: number;
   isGuest: boolean;
 };
@@ -23,7 +24,8 @@ type ChannelState = {
 const initialState: ChannelState = {
   channels: [],
   currentChannel: null,
-  currentChat: null,
+  currentTextChat: null,
+  currentVoiceChat: null,
   currentServerCategoryId: null,
   activeChannelIndex: -1,
   isGuest: false,
@@ -59,11 +61,11 @@ const channelSlice = createSlice({
         (channel) => channel._id === action.payload._id
       );
     },
-    setCurrentChat: (
+    setCurrentTextChat: (
       state,
-      action: PayloadAction<ChannelTextChatType | ChannelVoiceChatType | null>
+      action: PayloadAction<ChannelTextChatType | null>
     ) => {
-      state.currentChat = action.payload;
+      state.currentTextChat = action.payload;
     },
     setActiveChannelIndex: (state, action: PayloadAction<number>) => {
       state.activeChannelIndex = action.payload;
@@ -103,11 +105,11 @@ const channelSlice = createSlice({
       const { channelId, chatId, message } = action.payload;
       // Update in currentChat
       if (
-        state.currentChat &&
-        "messages" in state.currentChat &&
-        state.currentChat._id === chatId
+        state.currentTextChat &&
+        "messages" in state.currentTextChat &&
+        state.currentTextChat._id === chatId
       ) {
-        state.currentChat.messages.push(message);
+        state.currentTextChat.messages.push(message);
       }
 
       // Update in channels array
@@ -151,7 +153,7 @@ const channelSlice = createSlice({
       const { chatId, categoryId, channelId, userId } = action.payload;
 
       const newConnectedUser = {
-        user: userId,
+        _id: userId,
         joinedAt: new Date().toISOString(),
         voiceState: {
           muted: false,
@@ -170,15 +172,97 @@ const channelSlice = createSlice({
       );
 
       if (voiceChat) {
-        voiceChat.connectedUsers.push(newConnectedUser);
+        // Перевіряємо, чи користувач вже існує
+        const userExists = voiceChat.connectedUsers.some(
+          (user) => user._id === userId
+        );
 
-        if (
-          state.currentChat?._id === chatId &&
-          "connectedUsers" in state.currentChat
-        ) {
-          state.currentChat.connectedUsers.push(newConnectedUser);
+        if (!userExists) {
+          // Додаємо користувача тільки якщо його ще немає
+          voiceChat.connectedUsers.push(newConnectedUser);
+
+          // Оновлюємо currentVoiceChat, якщо це поточний чат
+          if (state.currentVoiceChat?._id === chatId) {
+            state.currentVoiceChat.connectedUsers = [
+              ...voiceChat.connectedUsers,
+            ];
+          }
         }
       }
+    },
+    userLeftVoiceChat: (
+      state,
+      action: PayloadAction<{
+        userId: string;
+        chatId: string;
+        categoryId: string;
+        channelId: string;
+      }>
+    ) => {
+      const { chatId, categoryId, channelId, userId } = action.payload;
+
+      const channel = state.channels.find((ch) => ch._id === channelId);
+      const category = channel?.categories.find(
+        (cat) => cat._id === categoryId
+      );
+      const voiceChat = category?.voiceChats.find(
+        (chat) => chat._id === chatId
+      );
+
+      if (voiceChat) {
+        voiceChat.connectedUsers = voiceChat.connectedUsers.filter(
+          (user) => user._id !== userId
+        );
+
+        if (state.currentVoiceChat?._id === chatId) {
+          state.currentVoiceChat.connectedUsers =
+            state.currentVoiceChat.connectedUsers.filter(
+              (user) => user._id !== userId
+            );
+        }
+      }
+    },
+    joinVoiceChat: (
+      state,
+      action: PayloadAction<{
+        voiceChat: ChannelVoiceChatType;
+        userId: string;
+        chatId: string;
+        categoryId: string;
+        channelId: string;
+      }>
+    ) => {
+      const { voiceChat, chatId, categoryId, channelId, userId } =
+        action.payload;
+
+      state.currentVoiceChat = voiceChat;
+
+      socket.emit("channel_user_join_voice_chat", {
+        channelId: channelId,
+        categoryId: categoryId,
+        chatId: chatId,
+        userId: userId,
+      });
+    },
+    leftVoiceChat: (
+      state,
+      action: PayloadAction<{
+        userId: string;
+        chatId: string;
+        categoryId: string;
+        channelId: string;
+      }>
+    ) => {
+      const { chatId, categoryId, channelId, userId } = action.payload;
+
+      state.currentVoiceChat = null;
+
+      socket.emit("channel_user_left_voice_chat", {
+        channelId: channelId,
+        categoryId: categoryId,
+        chatId: chatId,
+        userId: userId,
+      });
     },
     setOnlineStatusOnServer: (
       state,
@@ -283,12 +367,15 @@ export const {
   setActiveChannelIndex,
   setCurrentChannelById,
   setCurrentChannel,
-  setCurrentChat,
+  setCurrentTextChat,
   receiveChannelMessage,
   addChannelMember,
   addChannel,
   setIsGuest,
   userJoinedVoiceChat,
   setOnlineStatusOnServer,
+  userLeftVoiceChat,
+  joinVoiceChat,
+  leftVoiceChat,
 } = channelSlice.actions;
 export default channelSlice.reducer;

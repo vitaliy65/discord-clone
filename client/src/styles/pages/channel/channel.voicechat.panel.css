@@ -1,0 +1,19 @@
+.muted-button{
+    @apply h-12 w-12 p-0 bg-red-500/70 hover:bg-red-500/90 text-white rounded-l-xl flex items-center justify-center transition-colors cursor-pointer
+}
+
+.muted-sub-options-button{
+    @apply h-12 w-6 p-0 bg-red-500/70 hover:bg-red-500/90 text-white rounded-r-xl ml-0.5 flex items-center justify-center transition-colors cursor-pointer
+}
+
+.not-muted-button{
+    @apply h-12 w-12 p-0 bg-green-600/70 hover:bg-green-600/90 text-white rounded-l-xl flex items-center justify-center transition-colors cursor-pointer
+}
+
+.options-button{
+    @apply h-12 w-12 p-0 hover:bg-[#404249] text-[#b5bac1] rounded-xl flex items-center justify-center transition-colors cursor-pointer
+}
+
+.left-call-button{
+    @apply h-12 w-12 p-0 bg-red-500/70 hover:bg-red-500/90 text-white rounded-xl ml-1 flex items-center justify-center transition-colors cursor-pointer
+}

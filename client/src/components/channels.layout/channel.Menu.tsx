@@ -4,7 +4,7 @@ import Voice from "@/assets/icons/voice";
 import { ReactElement } from "react";
 
 export default function ChannelMenu({ children }: { children?: ReactElement }) {
-  const currentChat = useAppSelector((s) => s.channel.currentChat);
+  const currentChat = useAppSelector((s) => s.channel.currentTextChat);
 
   return (
     <div className="channel-upper-section shadow-md border-channels bg-friends z-10">

@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { setCurrentChannel } from "@/_store/channel/channelSlice";
 import { useAppDispatch } from "@/_hooks/hooks";
 import { setCurrentChat } from "@/_store/chat/chatSlice";
-import { setCurrentChat as setCurrentChannelChat } from "@/_store/channel/channelSlice";
+import { setCurrentTextChat as setCurrentChannelChat } from "@/_store/channel/channelSlice";
 import { ChannelType } from "@/types/types";
 
 export default function ChannelsList() {

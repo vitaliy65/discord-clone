@@ -116,7 +116,7 @@ export interface ChannelVoiceChatType {
 }
 
 interface VoiceChatConnectedUsers {
-  user: string;
+  _id: string;
   joinedAt: string;
   voiceState: {
     muted: boolean;

@@ -3,7 +3,11 @@ import {
   handleNewFriendRequest,
   handleAcceptFriendRequest,
 } from "../handlers/friendRequestHandler.js";
-import handleChannelChat from "../handlers/channelChatHandler.js";
+import {
+  handleChannelChat,
+  handleJoinVoiceChat,
+  handleLeftVoiceChat,
+} from "../handlers/channelChatHandler.js";
 import { friendStatusHandler } from "../handlers/friendHandler.js";
 import User from "../models/User.js";
 import Channel from "../models/Channel.js";
@@ -62,6 +66,32 @@ const initializeSocket = (io) => {
           io,
         });
       }
+    );
+
+    socket.on(
+      "channel_user_join_voice_chat",
+      ({ channelId, categoryId, chatId, userId }) =>
+        handleJoinVoiceChat({
+          channelId,
+          categoryId,
+          chatId,
+          userId,
+          socket,
+          io,
+        })
+    );
+
+    socket.on(
+      "channel_user_left_voice_chat",
+      ({ channelId, categoryId, chatId, userId }) =>
+        handleLeftVoiceChat({
+          channelId,
+          categoryId,
+          chatId,
+          userId,
+          socket,
+          io,
+        })
     );
   });
 };

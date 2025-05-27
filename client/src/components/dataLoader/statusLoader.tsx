@@ -6,10 +6,17 @@ import { store } from "@/_store/store";
 
 import { useAppDispatch, useAppSelector } from "@/_hooks/hooks";
 import { setOnlineStatus } from "@/_store/user/userSlice";
+import { leftVoiceChat } from "@/_store/channel/channelSlice";
 
 export default function StatusLoader({ children }: { children: ReactElement }) {
   const user = useAppSelector((s) => s.user.info);
+  const currentVoiceChat = useAppSelector((s) => s.channel.currentVoiceChat);
+  const currentCategory = useAppSelector(
+    (s) => s.channel.currentServerCategoryId
+  );
+  const currentChannel = useAppSelector((s) => s.channel.currentChannel);
   const dispatch = useAppDispatch();
+
   useEffect(() => {
     // Connect to socket server
     socket.connect();
@@ -21,6 +28,15 @@ export default function StatusLoader({ children }: { children: ReactElement }) {
     // Add window unload handler
     const handleUnload = () => {
       dispatch(setOnlineStatus(false));
+      if (currentVoiceChat && currentCategory && currentChannel)
+        dispatch(
+          leftVoiceChat({
+            userId: user.id,
+            chatId: currentVoiceChat._id,
+            categoryId: currentCategory,
+            channelId: currentChannel._id,
+          })
+        );
       socket.emit("user_status_change", { userId: user.id, status: false });
     };
 

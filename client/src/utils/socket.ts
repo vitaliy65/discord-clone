@@ -16,6 +16,7 @@ import {
   addChannelMember,
   userJoinedVoiceChat,
   setOnlineStatusOnServer,
+  userLeftVoiceChat,
 } from "@/_store/channel/channelSlice";
 import { Navigate } from "react-router-dom";
 
@@ -108,7 +109,13 @@ export const initializeSocketEvents = (store: typeof StoreType) => {
   });
 
   socket.on("user_joined_voice_chat", (data) => {
+    console.log("user_joined_voice_chat", data);
     store.dispatch(userJoinedVoiceChat(data));
+  });
+
+  socket.on("user_left_voice_chat", (data) => {
+    console.log("user_left_voice_chat", data);
+    store.dispatch(userLeftVoiceChat(data));
   });
 
   isInitialized = true;

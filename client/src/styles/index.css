@@ -18,6 +18,7 @@
 @import "./animations/animations.css";
 @import "./components/server/card.css";
 @import "./pages/channel/channel.joinBanner.css";
+@import "./pages/channel/channel.voicechat.panel.css";
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;

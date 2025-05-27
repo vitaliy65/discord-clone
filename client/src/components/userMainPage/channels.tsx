@@ -7,7 +7,7 @@ import { ChannelType } from "@/types/types";
 import {
   setActiveChannelIndex,
   setCurrentChannelById,
-  setCurrentChat,
+  setCurrentTextChat,
 } from "@/_store/channel/channelSlice";
 import SearchChannel from "./sections/section.channels/channel-search";
 
@@ -21,7 +21,7 @@ export default function Channels() {
     await Promise.all([
       dispatch(setActiveChannelIndex(index)),
       dispatch(setCurrentChannelById(channel._id)),
-      dispatch(setCurrentChat(null)),
+      dispatch(setCurrentTextChat(null)),
     ]);
 
     navigate(`/channels/${channel._id}`);

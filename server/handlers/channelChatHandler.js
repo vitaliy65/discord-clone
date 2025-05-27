@@ -1,6 +1,6 @@
 import Channel from "../models/Channel.js";
 
-export default async function handleChannelChat({
+export async function handleChannelChat({
   channelId,
   categoryId,
   chatId,
@@ -52,5 +52,91 @@ export default async function handleChannelChat({
   } catch (error) {
     console.error("Channel message error:", error);
     socket.emit("channel_message_error", error.message);
+  }
+}
+
+export async function handleJoinVoiceChat({
+  channelId,
+  categoryId,
+  chatId,
+  userId,
+  socket,
+  io,
+}) {
+  try {
+    const channel = await Channel.findOne({
+      _id: channelId,
+      "categories._id": categoryId,
+      "categories.voiceChats._id": chatId,
+    });
+
+    const category = channel.categories.find(
+      (cat) => cat._id.toString() === categoryId.toString()
+    );
+
+    const voiceChat = category.voiceChats.find(
+      (chat) => chat._id.toString() === chatId.toString()
+    );
+
+    const existingUser = voiceChat.connectedUsers.find(
+      (user) => user._id.toString() === userId.toString()
+    );
+
+    if (existingUser) {
+      return;
+    }
+
+    voiceChat.connectedUsers.push(userId);
+    await channel.save();
+
+    // Notify other users in the voice chat\
+    io.to(channel._id.toString()).emit("user_joined_voice_chat", {
+      channelId,
+      categoryId,
+      chatId,
+      userId,
+    });
+  } catch (error) {
+    console.error("Join voice chat error:", error);
+    socket.emit("voice_chat_error", error.message);
+  }
+}
+
+export async function handleLeftVoiceChat({
+  channelId,
+  categoryId,
+  chatId,
+  userId,
+  socket,
+  io,
+}) {
+  try {
+    const channel = await Channel.findOne({
+      _id: channelId,
+      "categories._id": categoryId,
+      "categories.voiceChats._id": chatId,
+    });
+
+    const category = channel.categories.find(
+      (cat) => cat._id.toString() === categoryId.toString()
+    );
+
+    const voiceChat = category.voiceChats.find(
+      (chat) => chat._id.toString() === chatId.toString()
+    );
+
+    voiceChat.connectedUsers.pull(userId);
+    await channel.save();
+
+    // Notify other users in the voice chat
+    io.to(channel._id.toString()).emit("user_left_voice_chat", {
+      channelId,
+      categoryId,
+      chatId,
+      userId,
+    });
+  } catch (error) {
+    console.error("Left voice chat error:", error);
+    socket.emit("voice_chat_error", error.message);
   }
 }

@@ -5,17 +5,18 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChannelTextChatType, ChannelVoiceChatType } from "@/types/types";
 import {
+  joinVoiceChat,
   setCurrentChannelCategoryId,
-  setCurrentChat,
+  setCurrentTextChat,
 } from "@/_store/channel/channelSlice";
 import ListArrow from "@/assets/icons/listArrow";
 import PlusWithoutBg from "@/assets/icons/plusWithoutBg";
 import TextPopUpWhenHover from "../animatedComponents/textPopUpWhenHover";
-import axios from "axios";
-import { SERVER_API_URL } from "@/utils/constants";
 
 export default function ChannelChats() {
   const currentChannel = useAppSelector((s) => s.channel.currentChannel);
+  const currentVoiceChat = useAppSelector((s) => s.channel.currentVoiceChat);
+  const user = useAppSelector((s) => s.user.info);
   const dispatch = useAppDispatch();
   const navigator = useNavigate();
   const [selectedChatId, setSelectedChatId] = useState<string | null>(null);
@@ -41,16 +42,32 @@ export default function ChannelChats() {
 
   const handleChatSelect = (
     chat: ChannelTextChatType | ChannelVoiceChatType,
-    categoryId: string
+    categoryId: string,
+    channelId: string
   ) => {
-    if ("_id" in chat) {
-      setSelectedChatId(chat._id);
-      dispatch(setCurrentChat(chat));
-      dispatch(setCurrentChannelCategoryId(categoryId));
-      navigator(`/channels/${currentChannel?._id}/${chat._id}`, {
-        replace: true,
-      });
+    setSelectedChatId(chat._id);
+
+    if ("messages" in chat) {
+      dispatch(setCurrentTextChat(chat));
+    } else {
+      dispatch(setCurrentTextChat(null));
+      if (currentVoiceChat?._id != chat._id)
+        dispatch(
+          joinVoiceChat({
+            voiceChat: chat,
+            userId: user.id,
+            chatId: chat._id,
+            categoryId,
+            channelId,
+          })
+        );
     }
+
+    dispatch(setCurrentChannelCategoryId(categoryId));
+
+    navigator(`/channels/${currentChannel?._id}/${chat._id}`, {
+      replace: true,
+    });
   };
 
   return (
@@ -110,7 +127,11 @@ export default function ChannelChats() {
                               : ""
                           }`}
                           onClick={() =>
-                            handleChatSelect(textChat, category._id)
+                            handleChatSelect(
+                              textChat,
+                              category._id,
+                              currentChannel._id
+                            )
                           }
                         >
                           <div className="text-chat">
@@ -133,19 +154,10 @@ export default function ChannelChats() {
                               : ""
                           }`}
                           onClick={async () => {
-                            handleChatSelect(voiceChat, category._id);
-                            await axios.post(
-                              `${SERVER_API_URL}/channel/server-voice-chat/join`,
-                              {
-                                chatId: voiceChat._id,
-                                categoryId: category._id,
-                                channelId: currentChannel?._id,
-                              },
-                              {
-                                headers: {
-                                  Authorization: localStorage.getItem("token"),
-                                },
-                              }
+                            handleChatSelect(
+                              voiceChat,
+                              category._id,
+                              currentChannel._id
                             );
                           }}
                         >
